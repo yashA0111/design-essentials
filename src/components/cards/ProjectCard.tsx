@@ -21,6 +21,7 @@ export function ProjectCard({
   return (
     <Link
       href={`/projects/${project.slug}`}
+      data-theme="dark"
       className={cn(
         "group relative block overflow-hidden rounded-sm",
         size === "large" ? "min-h-[520px]" : "min-h-[360px]",
@@ -43,16 +44,16 @@ export function ProjectCard({
       </Badge>
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)]/85 via-[var(--void)]/40 to-transparent" />
       <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover:opacity-100 z-10">
-        <h3 className="text-card-title text-[var(--text-primary)] text-on-image">
+        <h3 className="text-card-title text-[var(--text-primary)]">
           {project.title}
         </h3>
-        <p className="text-nav mt-1 text-[var(--text-secondary)] text-on-image">
+        <p className="text-nav mt-1 text-[var(--text-secondary)]">
           {project.year} · {project.location}
         </p>
-        <span className="text-nav mt-3 text-[var(--gold)] text-on-image">View →</span>
+        <span className="text-nav mt-3 text-[var(--gold)]">View →</span>
       </div>
       <div className="absolute inset-x-0 bottom-0 p-6 transition-opacity duration-[var(--dur-base)] group-hover:opacity-0 z-10">
-        <h3 className="text-card-title text-[var(--text-primary)] text-on-image">
+        <h3 className="text-card-title text-[var(--text-primary)]">
           {project.title}
         </h3>
       </div>

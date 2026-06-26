@@ -28,10 +28,10 @@ export default function AboutPage() {
         </div>
         <div className="container relative z-10">
           <SectionLabel className="mb-4">{aboutContent.heroEyebrow}</SectionLabel>
-          <h1 className="text-hero text-(--text-primary) text-on-image">
+          <h1 className="text-hero text-(--text-primary)">
             {aboutContent.heroTitle}
           </h1>
-          <p className="text-body mt-4 text-lg text-on-image">{aboutContent.heroSubtitle}</p>
+          <p className="text-body mt-4 text-lg">{aboutContent.heroSubtitle}</p>
         </div>
       </section>
 

@@ -71,10 +71,10 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
         <div className="container relative z-10 section-padding">
           <Icon className="mb-4 h-8 w-8 text-[var(--gold)]" strokeWidth={1.5} />
-          <h1 className="text-section text-[var(--text-primary)] text-on-image">
+          <h1 className="text-section text-[var(--text-primary)]">
             {service.name}
           </h1>
-          <p className="text-body mt-4 max-w-2xl text-lg text-on-image">{service.tagline}</p>
+          <p className="text-body mt-4 max-w-2xl text-lg">{service.tagline}</p>
         </div>
       </section>
 

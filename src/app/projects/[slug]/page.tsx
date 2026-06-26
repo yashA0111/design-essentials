@@ -50,8 +50,8 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/40 to-transparent" />
         </div>
         <div className="container relative z-10 flex min-h-[70vh] flex-col justify-end section-padding">
-          <p className="text-eyebrow mb-4 text-on-image">{service?.name}</p>
-          <h1 className="text-section text-[var(--text-primary)] text-on-image">
+          <p className="text-eyebrow mb-4">{service?.name}</p>
+          <h1 className="text-section text-[var(--text-primary)]">
             {project.title}
           </h1>
         </div>
