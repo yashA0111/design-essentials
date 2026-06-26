@@ -16,7 +16,7 @@ export default function ServicesPage() {
       <section className="section-padding pt-32">
         <div className="container">
           <SectionLabel className="mb-6">OUR SERVICES</SectionLabel>
-          <h1 className="text-section mb-6 text-[var(--text-primary)]">
+          <h1 className="text-section mb-6 text-(--text-primary)">
             Complete Design Solutions
           </h1>
           <p className="text-body max-w-2xl text-lg">

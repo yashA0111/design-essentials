@@ -14,13 +14,13 @@ export default function ContactPage() {
     <section className="section-padding pt-32">
       <div className="container">
         <SectionLabel className="mb-6">GET IN TOUCH</SectionLabel>
-        <h1 className="text-section mb-16 text-[var(--text-primary)]">
+        <h1 className="text-section mb-16 text-(--text-primary)">
           Start Your Project
         </h1>
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-[40%_60%]">
           <div>
-            <h2 className="text-card-title mb-6 text-[var(--text-primary)]">
+            <h2 className="text-card-title mb-6 text-(--text-primary)">
               Contact Information
             </h2>
             <address className="text-body space-y-4 not-italic">
@@ -28,7 +28,7 @@ export default function ContactPage() {
               <p>
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="transition-colors hover:text-[var(--gold)]"
+                  className="transition-colors hover:text-(--gold)"
                 >
                   {SITE.email}
                 </a>
@@ -36,7 +36,7 @@ export default function ContactPage() {
               <p>
                 <a
                   href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-                  className="transition-colors hover:text-[var(--gold)]"
+                  className="transition-colors hover:text-(--gold)"
                 >
                   {SITE.phone}
                 </a>
@@ -50,14 +50,14 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-nav capitalize text-[var(--text-secondary)] transition-colors hover:text-[var(--gold)]"
+                  className="text-nav capitalize text-(--text-secondary) transition-colors hover:text-(--gold)"
                 >
                   {key}
                 </a>
               ))}
             </div>
 
-            <div className="mt-12 aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--surface)]">
+            <div className="mt-12 aspect-video overflow-hidden rounded-sm border border-border bg-(--surface)">
               <iframe
                 title="Design Essentials office location map"
                 src="https://maps.google.com/maps?q=Noida+Sector+18&t=&z=13&ie=UTF8&iwloc=&output=embed"

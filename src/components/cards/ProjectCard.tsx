@@ -36,22 +36,23 @@ export function ProjectCard({
             ? "(max-width: 768px) 100vw, 66vw"
             : "(max-width: 768px) 100vw, 33vw"
         }
-        className="transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
+        className="transition-transform duration-(--dur-base) ease-(--ease-out-expo) group-hover:scale-[1.02]"
       />
-      <Badge className="absolute top-4 left-4 border-[var(--border)] bg-[var(--void)]/70 text-[var(--text-secondary)] backdrop-blur-sm">
+      <Badge className="absolute top-4 left-4 border-none bg-black/70 text-white backdrop-blur-sm z-10">
         {service?.name ?? project.category}
       </Badge>
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[var(--void)] via-transparent to-transparent p-6 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover:opacity-100">
-        <h3 className="text-card-title text-[var(--text-primary)]">
+      <div className="absolute inset-0 bg-linear-to-t from-(--void)/85 via-(--void)/40 to-transparent z-0" />
+      <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-(--dur-base) group-hover:opacity-100 z-10">
+        <h3 className="text-card-title text-(--text-primary) text-on-image">
           {project.title}
         </h3>
-        <p className="text-nav mt-1 text-[var(--text-secondary)]">
+        <p className="text-nav mt-1 text-(--text-secondary) text-on-image">
           {project.year} · {project.location}
         </p>
-        <span className="text-nav mt-3 text-[var(--gold)]">View →</span>
+        <span className="text-nav mt-3 text-(--gold) text-on-image">View →</span>
       </div>
-      <div className="absolute inset-x-0 bottom-0 p-6 transition-opacity duration-[var(--dur-base)] group-hover:opacity-0">
-        <h3 className="text-card-title text-[var(--text-primary)]">
+      <div className="absolute inset-x-0 bottom-0 p-6 transition-opacity duration-(--dur-base) group-hover:opacity-0 z-10">
+        <h3 className="text-card-title text-(--text-primary) text-on-image">
           {project.title}
         </h3>
       </div>

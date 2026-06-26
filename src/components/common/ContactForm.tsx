@@ -55,8 +55,8 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-sm border border-[var(--success)]/30 bg-[var(--surface)] p-8 text-center">
-        <h3 className="text-card-title text-[var(--text-primary)]">
+      <div className="rounded-sm border border-(--success)/30 bg-(--surface) p-8 text-center">
+        <h3 className="text-card-title text-(--text-primary)">
           Thank you for reaching out
         </h3>
         <p className="text-body mt-3">
@@ -65,7 +65,7 @@ export function ContactForm() {
         <Button
           type="button"
           variant="outline"
-          className="mt-6 border-[var(--border)]"
+          className="mt-6 border-border"
           onClick={() => setStatus("idle")}
         >
           Send another message
@@ -86,55 +86,55 @@ export function ContactForm() {
       />
 
       <div>
-        <label htmlFor="name" className="text-nav mb-2 block text-[var(--text-secondary)]">
+        <label htmlFor="name" className="text-nav mb-2 block text-(--text-secondary)">
           Name *
         </label>
         <Input
           id="name"
           {...register("name")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-border bg-(--surface)"
         />
         {errors.name && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.name.message}</p>
+          <p className="mt-1 text-sm text-(--error)">{errors.name.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="email" className="text-nav mb-2 block text-[var(--text-secondary)]">
+        <label htmlFor="email" className="text-nav mb-2 block text-(--text-secondary)">
           Email *
         </label>
         <Input
           id="email"
           type="email"
           {...register("email")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-border bg-(--surface)"
         />
         {errors.email && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.email.message}</p>
+          <p className="mt-1 text-sm text-(--error)">{errors.email.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="phone" className="text-nav mb-2 block text-[var(--text-secondary)]">
+        <label htmlFor="phone" className="text-nav mb-2 block text-(--text-secondary)">
           Phone
         </label>
         <Input
           id="phone"
           type="tel"
           {...register("phone")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-border bg-(--surface)"
         />
       </div>
 
       <div>
-        <label htmlFor="service" className="text-nav mb-2 block text-[var(--text-secondary)]">
+        <label htmlFor="service" className="text-nav mb-2 block text-(--text-secondary)">
           Service Interest *
         </label>
         <select
           id="service"
           {...register("service")}
           className={cn(
-            "flex h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--text-primary)] outline-none"
+            "flex h-9 w-full rounded-lg border border-border bg-(--surface) px-3 text-sm text-(--text-primary) outline-none"
           )}
         >
           <option value="">Select a service</option>
@@ -145,33 +145,33 @@ export function ContactForm() {
           ))}
         </select>
         {errors.service && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.service.message}</p>
+          <p className="mt-1 text-sm text-(--error)">{errors.service.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="brief" className="text-nav mb-2 block text-[var(--text-secondary)]">
+        <label htmlFor="brief" className="text-nav mb-2 block text-(--text-secondary)">
           Project Brief *
         </label>
         <Textarea
           id="brief"
           rows={5}
           {...register("brief")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-border bg-(--surface)"
         />
         {errors.brief && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.brief.message}</p>
+          <p className="mt-1 text-sm text-(--error)">{errors.brief.message}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="budget" className="text-nav mb-2 block text-[var(--text-secondary)]">
+        <label htmlFor="budget" className="text-nav mb-2 block text-(--text-secondary)">
           Budget Range
         </label>
         <select
           id="budget"
           {...register("budget")}
-          className="flex h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--text-primary)] outline-none"
+          className="flex h-9 w-full rounded-lg border border-border bg-(--surface) px-3 text-sm text-(--text-primary) outline-none"
         >
           <option value="">Select budget range</option>
           {BUDGET_OPTIONS.map((opt) => (
@@ -183,7 +183,7 @@ export function ContactForm() {
       </div>
 
       {status === "error" && (
-        <p className="text-sm text-[var(--error)]">
+        <p className="text-sm text-(--error)">
           Something went wrong. Please try again or email us directly.
         </p>
       )}
@@ -191,7 +191,7 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={status === "loading"}
-        className="w-full rounded-full bg-[var(--gold)] text-[var(--void)] hover:bg-[var(--gold-muted)]"
+        className="w-full rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
       >
         {status === "loading" ? "Sending..." : "Submit Inquiry"}
       </Button>

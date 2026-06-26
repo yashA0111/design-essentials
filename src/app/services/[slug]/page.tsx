@@ -67,11 +67,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/50 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-(--void) via-(--void)/50 to-transparent" />
         </div>
         <div className="container relative z-10 section-padding">
-          <Icon className="mb-4 h-8 w-8 text-[var(--gold)]" strokeWidth={1.5} />
-          <h1 className="text-section text-[var(--text-primary)]">
+          <Icon className="mb-4 h-8 w-8 text-(--gold)" strokeWidth={1.5} />
+          <h1 className="text-section text-(--text-primary)">
             {service.name}
           </h1>
           <p className="text-body mt-4 max-w-2xl text-lg">{service.tagline}</p>
@@ -85,16 +85,16 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section className="section-padding bg-(--surface)">
         <div className="container">
           <SectionLabel className="mb-6">WHAT WE OFFER</SectionLabel>
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {service.features.map((feature) => (
               <li
                 key={feature}
-                className="flex items-start gap-3 text-[var(--text-secondary)]"
+                className="flex items-start gap-3 text-(--text-secondary)"
               >
-                <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--gold)]" />
+                <Check className="mt-1 h-4 w-4 shrink-0 text-(--gold)" />
                 {feature}
               </li>
             ))}
@@ -109,12 +109,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             {service.process.map((step) => (
               <div
                 key={step.step}
-                className="border border-[var(--border)] p-6"
+                className="border border-border p-6"
               >
-                <span className="font-[family-name:var(--font-display)] text-3xl text-[var(--gold)]">
+                <span className="font-(family-name:--font-display) text-3xl text-(--gold)">
                   {String(step.step).padStart(2, "0")}
                 </span>
-                <h3 className="text-card-title mt-3 text-[var(--text-primary)]">
+                <h3 className="text-card-title mt-3 text-(--text-primary)">
                   {step.title}
                 </h3>
                 <p className="text-body mt-2 text-sm">{step.description}</p>
@@ -124,7 +124,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section className="section-padding bg-(--surface)">
         <div className="container">
           <SectionLabel className="mb-6">GALLERY</SectionLabel>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -132,7 +132,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               (img, i) => (
                 <div
                   key={`${service.id}-gallery-${i}`}
-                  className="relative aspect-[4/3] overflow-hidden rounded-sm"
+                  className="relative aspect-4/3 overflow-hidden rounded-sm"
                 >
                   <ImageWithFallback
                     src={img}
@@ -160,11 +160,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section className="section-padding bg-(--surface)">
         <div className="container text-center">
           <Link
             href="/contact"
-            className="text-nav inline-block rounded-full bg-[var(--gold)] px-8 py-3 text-[var(--void)] transition-colors hover:bg-[var(--gold-muted)]"
+            className="text-nav inline-block rounded-full bg-(--gold) px-8 py-3 text-(--void) transition-colors hover:bg-(--gold-muted)"
           >
             Start Your {service.name} Project
           </Link>

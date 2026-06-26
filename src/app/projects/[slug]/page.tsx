@@ -47,11 +47,11 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-(--void) via-(--void)/40 to-transparent" />
         </div>
         <div className="container relative z-10 flex min-h-[70vh] flex-col justify-end section-padding">
           <p className="text-eyebrow mb-4">{service?.name}</p>
-          <h1 className="text-section text-[var(--text-primary)]">
+          <h1 className="text-section text-(--text-primary)">
             {project.title}
           </h1>
         </div>
@@ -67,10 +67,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               { label: "Location", value: project.location },
             ].map((item) => (
               <div key={item.label}>
-                <p className="text-eyebrow mb-1 text-[var(--text-tertiary)]">
+                <p className="text-eyebrow mb-1 text-(--text-tertiary)">
                   {item.label}
                 </p>
-                <p className="text-nav text-[var(--text-primary)]">
+                <p className="text-nav text-(--text-primary)">
                   {item.value}
                 </p>
               </div>
@@ -84,13 +84,13 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section className="section-padding bg-(--surface)">
         <div className="container">
           <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
             {project.galleryImages.map((img, i) => (
               <div
                 key={`${project.id}-img-${i}`}
-                className="relative mb-4 aspect-[4/3] break-inside-avoid overflow-hidden rounded-sm"
+                className="relative mb-4 aspect-4/3 break-inside-avoid overflow-hidden rounded-sm"
               >
                 <ImageWithFallback
                   src={img}
@@ -117,14 +117,14 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="border-t border-[var(--border)] section-padding">
+      <section className="border-t border-border section-padding">
         <div className="container flex items-center justify-between">
-          <span className="text-nav text-[var(--text-tertiary)]">
+          <span className="text-nav text-(--text-tertiary)">
             Next Project
           </span>
           <Link
             href={`/projects/${nextProject.slug}`}
-            className="text-card-title text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
+            className="text-card-title text-(--gold) transition-colors hover:text-(--gold-muted)"
           >
             {nextProject.title} →
           </Link>

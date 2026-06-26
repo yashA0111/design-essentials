@@ -15,7 +15,7 @@ export function AboutSnippetSection() {
       <div className="container grid grid-cols-1 items-center gap-12 lg:grid-cols-[55%_45%] lg:gap-16">
         <div
           data-reveal
-          className="relative aspect-[4/5] overflow-hidden rounded-sm"
+          className="relative aspect-4/5 overflow-hidden rounded-sm"
         >
           <ImageWithFallback
             src={homeAboutContent.image}
@@ -40,13 +40,13 @@ export function AboutSnippetSection() {
               {p}
             </p>
           ))}
-          <p data-reveal className="text-nav mt-6 text-[var(--text-primary)]">
+          <p data-reveal className="text-nav mt-6 text-(--text-primary)">
             {homeAboutContent.stats}
           </p>
           <Link
             data-reveal
             href="/about"
-            className="text-nav mt-6 inline-block text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
+            className="text-nav mt-6 inline-block text-(--gold) transition-colors hover:text-(--gold-muted)"
           >
             {homeAboutContent.ctaLabel}
           </Link>

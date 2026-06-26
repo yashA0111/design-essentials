@@ -14,7 +14,7 @@ export default function ProjectsPage() {
       <section className="section-padding pt-32">
         <div className="container">
           <SectionLabel className="mb-6">PORTFOLIO</SectionLabel>
-          <h1 className="text-section mb-6 text-[var(--text-primary)]">
+          <h1 className="text-section mb-6 text-(--text-primary)">
             Our Projects
           </h1>
           <p className="text-body max-w-2xl text-lg">
