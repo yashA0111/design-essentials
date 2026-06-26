@@ -20,6 +20,7 @@ export function TestimonialsSection() {
 
   return (
     <section
+      data-theme="light"
       className="section-padding bg-[var(--surface)]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

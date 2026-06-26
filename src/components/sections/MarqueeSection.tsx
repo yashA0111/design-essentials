@@ -6,6 +6,7 @@ export function MarqueeSection() {
   return (
     <section
       aria-label="Services marquee"
+      data-theme="light"
       className="overflow-hidden border-y border-[var(--border)] bg-[var(--surface)] py-5"
     >
       <div className="flex w-max marquee-track">

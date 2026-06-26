@@ -62,7 +62,7 @@ export function StatsSection() {
   const ref = useScrollReveal();
 
   return (
-    <section ref={ref} className="section-padding stats-grid-bg">
+    <section ref={ref} data-theme="light" className="section-padding bg-[var(--void)] stats-grid-bg">
       <div className="container">
         <div className="grid grid-cols-2 gap-12 lg:grid-cols-4">
           {stats.map((stat) => (

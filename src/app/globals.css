@@ -48,7 +48,7 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────── */
+/* ─── DESIGN TOKENS (Dark — default) ───────────────────── */
 :root {
   /* Backgrounds */
   --void: #080808;
@@ -116,6 +116,50 @@
   --sidebar-ring: var(--gold-muted);
 }
 
+/* ─── LIGHT THEME (Approach C: content sections) ─────────── */
+[data-theme="light"] {
+  /* Backgrounds */
+  --void: #f8f6f3;
+  --surface: #ffffff;
+  --surface-2: #f0ede8;
+  --border-soft: #ebe8e3;
+
+  /* Accents — deeper for contrast on white */
+  --gold: #b08d4a;
+  --gold-muted: #8a7248;
+  --sage: #5a8a60;
+  --sage-muted: #4a6b4d;
+
+  /* Typography — dark text, warm grays */
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6560;
+  --text-tertiary: #a39e97;
+
+  /* Functional */
+  --success: #3d7a4e;
+  --error: #b04040;
+
+  /* shadcn overrides for light */
+  --background: var(--void);
+  --foreground: var(--text-primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--gold);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text-primary);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--error);
+  --border: #e2ded8;
+  --input: var(--border-soft);
+  --ring: var(--gold-muted);
+}
+
 /* ─── BASE STYLES ────────────────────────────────────────── */
 *,
 *::before,
@@ -136,43 +180,65 @@ body {
   font-size: 16px;
   line-height: 1.75;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+/* Fallback for GSAP reveal elements if JS/GSAP fails to complete */
+[data-reveal]:not([data-reveal-initialized]) {
+  opacity: 1 !important;
 }
 
 /* ─── TYPOGRAPHY SCALE ───────────────────────────────────── */
 .text-hero {
   font-family: var(--font-display), serif;
-  font-size: clamp(52px, 9vw, 112px);
+  font-size: clamp(56px, 10vw, 120px);
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 .text-section {
   font-family: var(--font-display), serif;
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(40px, 5.5vw, 72px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+/* Sharper headings on light backgrounds */
+[data-theme="light"] .text-section,
+[data-theme="light"] .text-hero,
+[data-theme="light"] .text-card-title {
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .text-card-title {
   font-family: var(--font-body), sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 1.3;
+  color: var(--text-primary);
 }
 
 .text-body {
   font-family: var(--font-body), sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.75;
+  line-height: 1.7;
   color: var(--text-secondary);
+}
+
+/* Heavier body weight on light sections for sharpness */
+[data-theme="light"] .text-body {
+  font-weight: 500;
 }
 
 .text-eyebrow {
   font-family: var(--font-utility), sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.18em;
@@ -181,7 +247,7 @@ body {
 
 .text-nav {
   font-family: var(--font-utility), sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.04em;
 }
@@ -219,6 +285,10 @@ body {
   width: 40px;
   height: 1px;
   background: var(--gold);
+}
+
+.text-on-image {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* ─── MARQUEE ─────────────────────────────────────────────── */

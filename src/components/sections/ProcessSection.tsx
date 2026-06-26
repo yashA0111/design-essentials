@@ -47,6 +47,7 @@ export function ProcessSection() {
   return (
     <section
       ref={sectionRef}
+      data-theme="light"
       className="section-padding overflow-hidden bg-(--surface)"
     >
       <div ref={pinContainerRef} className="w-full">

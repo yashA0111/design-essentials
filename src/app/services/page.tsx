@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <section className="section-padding pt-32">
+      <section data-theme="light" className="section-padding bg-[var(--void)] pt-32">
         <div className="container">
           <SectionLabel className="mb-6">OUR SERVICES</SectionLabel>
           <h1 className="text-section mb-6 text-[var(--text-primary)]">
@@ -26,7 +26,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="section-padding pt-0">
+      <section data-theme="light" className="section-padding bg-[var(--void)] pt-0">
         <div className="container grid grid-cols-1 gap-8 md:grid-cols-2">
           {services.map((service) => (
             <ServiceCard

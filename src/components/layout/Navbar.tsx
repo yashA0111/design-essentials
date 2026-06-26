@@ -17,8 +17,21 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+interface NavbarProps {
+  darkHero?: boolean;
+}
+
+export function Navbar({ darkHero }: NavbarProps = {}) {
   const pathname = usePathname();
+  
+  // Default darkHero to true for homepage, about, and detail pages. Default to false for others.
+  const isDarkHeroDefault = 
+    pathname === "/" || 
+    pathname === "/about" || 
+    (pathname.startsWith("/services/") && pathname !== "/services") || 
+    (pathname.startsWith("/projects/") && pathname !== "/projects");
+    
+  const resolvedDarkHero = darkHero ?? isDarkHeroDefault;
   const [scrolled, setScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -30,12 +43,14 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const isLightState = scrolled || !resolvedDarkHero;
+
   return (
     <header
       className={cn(
         "fixed top-0 right-0 left-0 z-50 transition-all duration-(--dur-base)",
         scrolled
-          ? "border-b border-border bg-(--surface)/90 backdrop-blur-md"
+          ? "border-b border-[#e2ded8] bg-white/95 backdrop-blur-md"
           : "bg-transparent"
       )}
     >
@@ -47,7 +62,10 @@ export function Navbar() {
         >
           <Link
             href="/"
-            className="font-(family-name:--font-display) text-lg leading-tight font-semibold tracking-wide text-(--text-primary)"
+            className={cn(
+              "font-(family-name:--font-display) text-lg leading-tight font-semibold tracking-wide transition-colors",
+              isLightState ? "text-[#1a1a1a]" : "text-(--text-primary)"
+            )}
           >
             DESIGN
             <br />
@@ -73,11 +91,12 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     className={cn(
-                      "text-nav transition-colors hover:text-(--gold)",
+                      "text-nav transition-colors",
+                      isLightState ? "hover:text-[#b08d4a]" : "hover:text-(--gold)",
                       isActive
-                        ? "text-(--gold)"
-                        : scrolled
-                        ? "text-(--text-secondary)"
+                        ? isLightState ? "text-[#b08d4a]" : "text-(--gold)"
+                        : isLightState
+                        ? "text-[#6b6560]"
                         : "text-(--text-primary)"
                     )}
                   >
@@ -93,18 +112,32 @@ export function Navbar() {
                       transition={{ duration: 0.25 }}
                       className="absolute top-full left-1/2 w-[720px] origin-top -translate-x-1/2 pt-4"
                     >
-                      <div className="grid grid-cols-2 gap-3 rounded-sm border border-border bg-(--surface) p-4">
+                      <div className={cn(
+                        "grid grid-cols-2 gap-3 rounded-sm border p-4",
+                        isLightState
+                          ? "border-[#e2ded8] bg-white"
+                          : "border-border bg-(--surface)"
+                      )}>
                         {services.map((service) => (
                           <Link
                             key={service.id}
                             href={`/services/${service.slug}`}
-                            className="rounded-sm p-3 transition-colors hover:bg-(--surface-2)"
+                            className={cn(
+                              "rounded-sm p-3 transition-colors",
+                              isLightState ? "hover:bg-[#f0ede8]" : "hover:bg-(--surface-2)"
+                            )}
                             onClick={() => setMegaOpen(false)}
                           >
-                            <p className="text-card-title text-sm text-(--text-primary)">
+                            <p className={cn(
+                              "text-card-title text-sm",
+                              isLightState ? "text-[#1a1a1a]" : "text-(--text-primary)"
+                            )}>
                               {service.name}
                             </p>
-                            <p className="text-body mt-1 line-clamp-1 text-xs">
+                            <p className={cn(
+                              "text-body mt-1 line-clamp-1 text-xs",
+                              isLightState ? "text-[#6b6560]" : ""
+                            )}>
                               {service.shortDescription}
                             </p>
                           </Link>
@@ -124,11 +157,12 @@ export function Navbar() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "text-nav transition-colors hover:text-(--gold)",
+                    "text-nav transition-colors",
+                    isLightState ? "hover:text-[#b08d4a]" : "hover:text-(--gold)",
                     isActive
-                      ? "text-(--gold)"
-                      : scrolled
-                      ? "text-(--text-secondary)"
+                      ? isLightState ? "text-[#b08d4a]" : "text-(--gold)"
+                      : isLightState
+                      ? "text-[#6b6560]"
                       : "text-(--text-primary)"
                   )}
                 >
@@ -139,7 +173,12 @@ export function Navbar() {
           })}
           <Button
             asChild
-            className="rounded-full bg-(--gold) px-6 text-(--void) hover:bg-(--gold-muted)"
+            className={cn(
+              "rounded-full px-6",
+              isLightState
+                ? "bg-[#b08d4a] text-white hover:bg-[#8a7248]"
+                : "bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
+            )}
           >
             <Link href="/contact">Start Project</Link>
           </Button>
@@ -149,7 +188,12 @@ export function Navbar() {
           <Button
             asChild
             size="sm"
-            className="rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
+            className={cn(
+              "rounded-full",
+              isLightState
+                ? "bg-[#b08d4a] text-white hover:bg-[#8a7248]"
+                : "bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
+            )}
           >
             <Link href="/contact">Start</Link>
           </Button>
@@ -158,7 +202,10 @@ export function Navbar() {
               <button
                 type="button"
                 aria-label="Open menu"
-                className="text-(--text-primary)"
+                className={cn(
+                  "transition-colors",
+                  isLightState ? "text-[#1a1a1a]" : "text-(--text-primary)"
+                )}
               >
                 <Menu className="h-6 w-6" />
               </button>

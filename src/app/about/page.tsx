@@ -28,14 +28,14 @@ export default function AboutPage() {
         </div>
         <div className="container relative z-10">
           <SectionLabel className="mb-4">{aboutContent.heroEyebrow}</SectionLabel>
-          <h1 className="text-hero text-(--text-primary)">
+          <h1 className="text-hero text-(--text-primary) text-on-image">
             {aboutContent.heroTitle}
           </h1>
-          <p className="text-body mt-4 text-lg">{aboutContent.heroSubtitle}</p>
+          <p className="text-body mt-4 text-lg text-on-image">{aboutContent.heroSubtitle}</p>
         </div>
       </section>
 
-      <section className="section-padding">
+      <section data-theme="light" className="section-padding bg-[var(--void)]">
         <div className="container max-w-4xl">
           <p className="font-(family-name:--font-display) text-2xl leading-relaxed text-(--text-primary) md:text-3xl">
             {aboutContent.mission}
@@ -43,7 +43,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-(--surface)">
+      <section data-theme="light" className="section-padding bg-(--surface)">
         <div className="container">
           <SectionLabel className="mb-6">OUR STORY</SectionLabel>
           <p className="text-body mb-16 max-w-3xl text-lg">{aboutContent.storyIntro}</p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-padding">
+      <section data-theme="light" className="section-padding bg-[var(--void)]">
         <div className="container">
           <SectionLabel className="mb-6">OUR TEAM</SectionLabel>
           <SplitTitle rest="The People Behind" italicWord="the Vision" className="mb-16" />
@@ -82,7 +82,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-(--surface)">
+      <section data-theme="light" className="section-padding bg-(--surface)">
         <div className="container">
           <SectionLabel className="mb-6">PHILOSOPHY</SectionLabel>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

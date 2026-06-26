@@ -10,7 +10,7 @@ export function ServicesSection() {
   const ref = useScrollReveal(0.08);
 
   return (
-    <section ref={ref} className="section-padding">
+    <section ref={ref} data-theme="light" className="section-padding bg-[var(--void)]">
       <div className="container">
         <div data-reveal className="mb-16 max-w-2xl">
           <SectionLabel className="mb-6">OUR SERVICES</SectionLabel>

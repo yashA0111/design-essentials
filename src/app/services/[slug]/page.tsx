@@ -71,21 +71,21 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
         <div className="container relative z-10 section-padding">
           <Icon className="mb-4 h-8 w-8 text-[var(--gold)]" strokeWidth={1.5} />
-          <h1 className="text-section text-[var(--text-primary)]">
+          <h1 className="text-section text-[var(--text-primary)] text-on-image">
             {service.name}
           </h1>
-          <p className="text-body mt-4 max-w-2xl text-lg">{service.tagline}</p>
+          <p className="text-body mt-4 max-w-2xl text-lg text-on-image">{service.tagline}</p>
         </div>
       </section>
 
-      <section className="section-padding">
+      <section data-theme="light" className="section-padding bg-[var(--void)]">
         <div className="container max-w-3xl">
           <SectionLabel className="mb-6">OVERVIEW</SectionLabel>
           <p className="text-body text-lg">{service.description}</p>
         </div>
       </section>
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section data-theme="light" className="section-padding bg-[var(--surface)]">
         <div className="container">
           <SectionLabel className="mb-6">WHAT WE OFFER</SectionLabel>
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -102,7 +102,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section-padding">
+      <section data-theme="light" className="section-padding bg-[var(--void)]">
         <div className="container">
           <SectionLabel className="mb-6">OUR PROCESS</SectionLabel>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -124,7 +124,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section data-theme="light" className="section-padding bg-[var(--surface)]">
         <div className="container">
           <SectionLabel className="mb-6">GALLERY</SectionLabel>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -148,7 +148,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </section>
 
       {relatedProjects.length > 0 && (
-        <section className="section-padding">
+        <section data-theme="light" className="section-padding bg-[var(--void)]">
           <div className="container">
             <SectionLabel className="mb-6">RELATED PROJECTS</SectionLabel>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -160,7 +160,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      <section className="section-padding bg-[var(--surface)]">
+      <section data-theme="light" className="section-padding bg-[var(--surface)]">
         <div className="container text-center">
           <Link
             href="/contact"

@@ -11,7 +11,7 @@ export function AboutSnippetSection() {
   const ref = useScrollReveal();
 
   return (
-    <section ref={ref} className="section-padding">
+    <section ref={ref} data-theme="light" className="section-padding bg-[var(--void)]">
       <div className="container grid grid-cols-1 items-center gap-12 lg:grid-cols-[55%_45%] lg:gap-16">
         <div
           data-reveal

@@ -70,7 +70,7 @@ export function HeroSection() {
           </motion.p>
           <motion.h1
             variants={fadeInUpItem}
-            className="text-hero mb-6 text-(--text-primary) drop-shadow-lg"
+            className="text-hero mb-6 text-(--text-primary) text-on-image"
           >
             {heroContent.titleBefore}
             <br />
@@ -81,7 +81,7 @@ export function HeroSection() {
           </motion.h1>
           <motion.p
             variants={fadeInUpItem}
-            className="mx-auto mb-10 max-w-2xl text-lg text-(--text-primary)/80 font-(family-name:--font-body)"
+            className="mx-auto mb-10 max-w-2xl text-lg text-(--text-primary)/80 font-(family-name:--font-body) text-on-image"
           >
             {heroContent.subtitle}
           </motion.p>
