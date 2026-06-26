@@ -21,7 +21,6 @@ export function ProjectCard({
   return (
     <Link
       href={`/projects/${project.slug}`}
-      data-theme="dark"
       className={cn(
         "group relative block overflow-hidden rounded-sm",
         size === "large" ? "min-h-[520px]" : "min-h-[360px]",
@@ -39,23 +38,26 @@ export function ProjectCard({
         }
         className="transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
       />
-      <Badge className="absolute top-4 left-4 border-none bg-black/70 text-white backdrop-blur-sm z-10">
-        {service?.name ?? project.category}
-      </Badge>
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)]/85 via-[var(--void)]/40 to-transparent" />
-      <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-[var(--dur-base)] group-hover:opacity-100 z-10">
-        <h3 className="text-card-title text-[var(--text-primary)]">
-          {project.title}
-        </h3>
-        <p className="text-nav mt-1 text-[var(--text-secondary)]">
-          {project.year} · {project.location}
-        </p>
-        <span className="text-nav mt-3 text-[var(--gold)]">View →</span>
+      
+      {/* Layer 1: Subtle full-card tint — barely visible */}
+      <div className="absolute inset-0 bg-black/10" />
+
+      {/* Layer 2: Bottom gradient — ONLY bottom 55%, strong there */}
+      <div className="absolute inset-0" style={{
+        background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.0) 65%)'
+      }} />
+
+      {/* Text content sits above both layers — z-10 */}
+      <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+        <h3 className="text-white font-medium text-xl">{project.title}</h3>
+        <p className="text-white/75 text-sm mt-1">{project.location} · {project.year}</p>
       </div>
-      <div className="absolute inset-x-0 bottom-0 p-6 transition-opacity duration-[var(--dur-base)] group-hover:opacity-0 z-10">
-        <h3 className="text-card-title text-[var(--text-primary)]">
-          {project.title}
-        </h3>
+
+      {/* Badge stays top-left — z-10 */}
+      <div className="absolute top-5 left-5 z-10">
+        <Badge className="border-none bg-black/70 text-white backdrop-blur-sm">
+          {service?.name ?? project.category}
+        </Badge>
       </div>
     </Link>
   );

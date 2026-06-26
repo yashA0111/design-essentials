@@ -37,7 +37,6 @@ export function ServiceCard({
   return (
     <Link
       href={`/services/${service.slug}`}
-      data-theme="dark"
       className={cn(
         "group relative block min-h-[380px] overflow-hidden rounded-sm",
         variant === "detailed" && "min-h-[420px]",
@@ -51,18 +50,24 @@ export function ServiceCard({
         sizes="(max-width: 768px) 100vw, 33vw"
         className="transition-transform duration-[var(--dur-base)] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)]/85 via-[var(--void)]/40 to-transparent transition-opacity duration-[var(--dur-base)] group-hover:opacity-90" />
-      <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-        <Icon className="mb-4 h-7 w-7 text-[var(--gold)]" strokeWidth={1.5} />
-        <h3 className="text-card-title mb-2 text-[var(--text-primary)]">
-          {service.name}
-        </h3>
-        <p className="text-body mb-4 line-clamp-2 text-sm">
-          {service.shortDescription}
-        </p>
-        <span className="text-nav translate-y-4 text-[var(--gold)] opacity-0 transition-all duration-[var(--dur-base)] group-hover:translate-y-0 group-hover:opacity-100">
-          Explore →
-        </span>
+      
+      {/* Layer 1: Subtle full-card tint — barely visible */}
+      <div className="absolute inset-0 bg-black/10" />
+
+      {/* Layer 2: Bottom gradient — ONLY bottom 55%, strong there */}
+      <div className="absolute inset-0" style={{
+        background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.0) 65%)'
+      }} />
+
+      {/* Text content sits above both layers — z-10 */}
+      <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+        <h3 className="text-white font-medium text-xl">{service.name}</h3>
+        <p className="text-white/75 text-sm mt-1">{service.tagline}</p>
+      </div>
+
+      {/* Icon stays top-left — z-10 */}
+      <div className="absolute top-5 left-5 z-10">
+        <Icon className="text-[var(--gold)] w-7 h-7" />
       </div>
     </Link>
   );
