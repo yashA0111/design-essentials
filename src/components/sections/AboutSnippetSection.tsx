@@ -19,6 +19,7 @@ export function AboutSnippetSection() {
         >
           <ImageWithFallback
             src={homeAboutContent.image}
+            fallbackSrc={homeAboutContent.fallbackImage}
             alt={homeAboutContent.imageAlt}
             fill
             sizes="(max-width: 1024px) 100vw, 55vw"

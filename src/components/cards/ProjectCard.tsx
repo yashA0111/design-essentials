@@ -29,6 +29,7 @@ export function ProjectCard({
     >
       <ImageWithFallback
         src={project.heroImage}
+        fallbackSrc={project.heroImageFallback}
         alt={`${project.title} — ${project.location}`}
         fill
         sizes={

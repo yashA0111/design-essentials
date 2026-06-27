@@ -14,7 +14,9 @@ export type Project = {
   year: number;
   location: string;
   heroImage: string;
+  heroImageFallback?: string;
   galleryImages: string[];
+  galleryImageFallbacks?: string[];
   description: string;
   challenge: string;
   solution: string;

@@ -60,7 +60,7 @@ export default function ContactPage() {
             <div className="mt-12 aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--surface)]">
               <iframe
                 title="Design Essentials office location map"
-                src="https://maps.google.com/maps?q=Noida+Sector+18&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                src={SITE.mapUrl}
                 className="h-full w-full border-0"
                 loading="lazy"
               />

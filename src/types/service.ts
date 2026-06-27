@@ -19,7 +19,9 @@ export type Service = {
   shortDescription: string;
   icon: string;
   heroImage: string;
+  heroImageFallback?: string;
   cardImage: string;
+  cardImageFallback?: string;
   features: string[];
   process: ServiceProcess[];
   seo: ServiceSeo;

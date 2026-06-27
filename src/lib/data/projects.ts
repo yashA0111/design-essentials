@@ -9,9 +9,15 @@ export const projects: Project[] = [
     category: "pre-engineered-homes",
     year: 2024,
     location: "Gurgaon, Haryana",
-    heroImage:
+    heroImage: "/images/services/service-pre-engineered-home.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80",
     galleryImages: [
+      "/images/services/service-pre-engineered-home.jpg",
+      "/images/services/service-pre-engineered-home.jpg",
+      "/images/services/service-pre-engineered-home.jpg",
+    ],
+    galleryImageFallbacks: [
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=80",
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
@@ -37,9 +43,14 @@ export const projects: Project[] = [
     category: "container-architecture",
     year: 2023,
     location: "Noida, Uttar Pradesh",
-    heroImage:
+    heroImage: "/images/services/service-container-home.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1600&q=80",
     galleryImages: [
+      "/images/services/service-container-home.jpg",
+      "/images/services/service-container-home.jpg",
+    ],
+    galleryImageFallbacks: [
       "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1200&q=80",
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
     ],
@@ -64,9 +75,14 @@ export const projects: Project[] = [
     category: "institutional-interiors",
     year: 2023,
     location: "Jaipur, Rajasthan",
-    heroImage:
+    heroImage: "/images/services/service-meuseum-institutional-interiors.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80",
     galleryImages: [
+      "/images/services/service-meuseum-institutional-interiors.jpg",
+      "/images/services/service-meuseum-institutional-interiors.jpg",
+    ],
+    galleryImageFallbacks: [
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80",
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=80",
     ],
@@ -91,9 +107,14 @@ export const projects: Project[] = [
     category: "exhibition-design",
     year: 2024,
     location: "Greater Noida, Uttar Pradesh",
-    heroImage:
+    heroImage: "/images/services/service-exibition-demo-center.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80",
     galleryImages: [
+      "/images/services/service-exibition-demo-center.jpg",
+      "/images/services/service-exibition-demo-center.jpg",
+    ],
+    galleryImageFallbacks: [
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
       "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1200&q=80",
     ],
@@ -118,9 +139,14 @@ export const projects: Project[] = [
     category: "experience-centers",
     year: 2024,
     location: "Bangalore, Karnataka",
-    heroImage:
+    heroImage: "/images/services/service-experience-center.png",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1600&q=80",
     galleryImages: [
+      "/images/services/service-experience-center.png",
+      "/images/services/service-experience-center.png",
+    ],
+    galleryImageFallbacks: [
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=80",
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
     ],

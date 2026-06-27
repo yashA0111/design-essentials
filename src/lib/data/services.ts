@@ -11,9 +11,11 @@ export const services: Service[] = [
     shortDescription:
       "Factory-precision homes with faster timelines and complete design-to-delivery.",
     icon: "House",
-    heroImage:
+    heroImage: "/images/services/service-pre-engineered-home.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80",
-    cardImage:
+    cardImage: "/images/services/service-pre-engineered-home.jpg",
+    cardImageFallback:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
     features: [
       "Faster construction timelines (30–50% faster than conventional)",
@@ -70,9 +72,11 @@ export const services: Service[] = [
     shortDescription:
       "Shipping containers transformed into bold, sustainable bespoke spaces.",
     icon: "Container",
-    heroImage:
+    heroImage: "/images/services/service-container-home.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=1600&q=80",
-    cardImage:
+    cardImage: "/images/services/service-container-home.jpg",
+    cardImageFallback:
       "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=800&q=80",
     features: [
       "Structural repurposing of ISO shipping containers",
@@ -129,16 +133,18 @@ export const services: Service[] = [
     shortDescription:
       "Museum and institutional interiors that educate, inspire, and endure.",
     icon: "Landmark",
-    heroImage:
+    heroImage: "/images/services/service-meuseum-institutional-interiors.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80",
-    cardImage:
+    cardImage: "/images/services/service-meuseum-institutional-interiors.jpg",
+    cardImageFallback:
       "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80",
     features: [
       "Curatorial flow and visitor journey mapping",
       "Climate-controlled display environments",
       "Acoustic and lighting design integration",
-      "Durable, low-maintenance material specification",
-      "Accessibility and wayfinding systems",
+      "Media Architecture and Technology integration",
+      "Precision Fabrication and Exhibit Engineering",
     ],
     process: [
       {
@@ -188,9 +194,11 @@ export const services: Service[] = [
     shortDescription:
       "Exhibition and demo environments designed to captivate and convert.",
     icon: "Presentation",
-    heroImage:
+    heroImage: "/images/services/service-exibition-demo-center.jpg",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80",
-    cardImage:
+    cardImage: "/images/services/service-exibition-demo-center.jpg",
+    cardImageFallback:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
     features: [
       "Brand narrative and spatial storytelling",
@@ -247,9 +255,11 @@ export const services: Service[] = [
     shortDescription:
       "Multi-sensory brand environments that create lasting connections.",
     icon: "Layers",
-    heroImage:
+    heroImage: "/images/services/service-experience-center.png",
+    heroImageFallback:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1600&q=80",
-    cardImage:
+    cardImage: "/images/services/service-experience-center.png",
+    cardImageFallback:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=80",
     features: [
       "Multi-sensory spatial design",

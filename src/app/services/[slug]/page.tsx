@@ -62,6 +62,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         <div className="absolute inset-0">
           <ImageWithFallback
             src={service.heroImage}
+            fallbackSrc={service.heroImageFallback}
             alt={`${service.name} — hero image`}
             fill
             priority
@@ -136,6 +137,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 >
                   <ImageWithFallback
                     src={img}
+                    fallbackSrc={i === 1 ? service.cardImageFallback : service.heroImageFallback}
                     alt={`${service.name} gallery image ${i + 1}`}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"

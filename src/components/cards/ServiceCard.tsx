@@ -45,6 +45,7 @@ export function ServiceCard({
     >
       <ImageWithFallback
         src={service.cardImage}
+        fallbackSrc={service.cardImageFallback}
         alt={`${service.name} — Design Essentials service`}
         fill
         sizes="(max-width: 768px) 100vw, 33vw"

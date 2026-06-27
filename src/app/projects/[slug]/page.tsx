@@ -42,6 +42,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="absolute inset-0">
           <ImageWithFallback
             src={project.heroImage}
+            fallbackSrc={project.heroImageFallback}
             alt={`${project.title} — ${project.location}`}
             fill
             priority
@@ -94,6 +95,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               >
                 <ImageWithFallback
                   src={img}
+                  fallbackSrc={project.galleryImageFallbacks?.[i]}
                   alt={`${project.title} gallery image ${i + 1}`}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

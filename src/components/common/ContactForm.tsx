@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { services } from "@/lib/data/services";
-import { BUDGET_OPTIONS } from "@/lib/constants";
+import { PROJECT_TIMELINE_OPTIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,7 +17,7 @@ const contactSchema = z.object({
   phone: z.string().optional(),
   service: z.string().min(1, "Please select a service"),
   brief: z.string().min(10, "Please provide at least 10 characters"),
-  budget: z.string().optional(),
+  timeline: z.string().min(1, "Please select a project timeline"),
   website: z.string().max(0).optional(),
 });
 
@@ -75,7 +75,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       <input
         type="text"
         {...register("website")}
@@ -92,11 +92,17 @@ export function ContactForm() {
         <Input
           id="name"
           {...register("name")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-[var(--border)] bg-[var(--surface)] text-[#1A1A1A]"
         />
-        {errors.name && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.name.message}</p>
-        )}
+        <p
+          className="text-sm mt-1 min-h-[20px] transition-opacity duration-200"
+          style={{
+            color: 'var(--error)',
+            opacity: errors.name ? 1 : 0,
+          }}
+        >
+          {errors.name?.message ?? '\u00A0'}
+        </p>
       </div>
 
       <div>
@@ -107,11 +113,17 @@ export function ContactForm() {
           id="email"
           type="email"
           {...register("email")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-[var(--border)] bg-[var(--surface)] text-[#1A1A1A]"
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.email.message}</p>
-        )}
+        <p
+          className="text-sm mt-1 min-h-[20px] transition-opacity duration-200"
+          style={{
+            color: 'var(--error)',
+            opacity: errors.email ? 1 : 0,
+          }}
+        >
+          {errors.email?.message ?? '\u00A0'}
+        </p>
       </div>
 
       <div>
@@ -122,8 +134,17 @@ export function ContactForm() {
           id="phone"
           type="tel"
           {...register("phone")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-[var(--border)] bg-[var(--surface)] text-[#1A1A1A]"
         />
+        <p
+          className="text-sm mt-1 min-h-[20px] transition-opacity duration-200"
+          style={{
+            color: 'var(--error)',
+            opacity: errors.phone ? 1 : 0,
+          }}
+        >
+          {errors.phone?.message ?? '\u00A0'}
+        </p>
       </div>
 
       <div>
@@ -133,6 +154,7 @@ export function ContactForm() {
         <select
           id="service"
           {...register("service")}
+          required
           className={cn(
             "flex h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--text-primary)] outline-none"
           )}
@@ -144,9 +166,15 @@ export function ContactForm() {
             </option>
           ))}
         </select>
-        {errors.service && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.service.message}</p>
-        )}
+        <p
+          className="text-sm mt-1 min-h-[20px] transition-opacity duration-200"
+          style={{
+            color: 'var(--error)',
+            opacity: errors.service ? 1 : 0,
+          }}
+        >
+          {errors.service?.message ?? '\u00A0'}
+        </p>
       </div>
 
       <div>
@@ -157,29 +185,45 @@ export function ContactForm() {
           id="brief"
           rows={5}
           {...register("brief")}
-          className="border-[var(--border)] bg-[var(--surface)]"
+          className="border-[var(--border)] bg-[var(--surface)] text-[#1A1A1A]"
         />
-        {errors.brief && (
-          <p className="mt-1 text-sm text-[var(--error)]">{errors.brief.message}</p>
-        )}
+        <p
+          className="text-sm mt-1 min-h-[20px] transition-opacity duration-200"
+          style={{
+            color: 'var(--error)',
+            opacity: errors.brief ? 1 : 0,
+          }}
+        >
+          {errors.brief?.message ?? '\u00A0'}
+        </p>
       </div>
 
       <div>
-        <label htmlFor="budget" className="text-nav mb-2 block text-[var(--text-secondary)]">
-          Budget Range
+        <label htmlFor="timeline" className="text-nav mb-2 block text-[var(--text-secondary)]">
+          Project Timeline *
         </label>
         <select
-          id="budget"
-          {...register("budget")}
+          id="timeline"
+          {...register("timeline")}
+          required
           className="flex h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--text-primary)] outline-none"
         >
-          <option value="">Select budget range</option>
-          {BUDGET_OPTIONS.map((opt) => (
+          <option value="">Select project timeline</option>
+          {PROJECT_TIMELINE_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.label}>
               {opt.label}
             </option>
           ))}
         </select>
+        <p
+          className="text-sm mt-1 min-h-[20px] transition-opacity duration-200"
+          style={{
+            color: 'var(--error)',
+            opacity: errors.timeline ? 1 : 0,
+          }}
+        >
+          {errors.timeline?.message ?? '\u00A0'}
+        </p>
       </div>
 
       {status === "error" && (

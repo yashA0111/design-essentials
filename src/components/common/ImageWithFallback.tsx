@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 type ImageWithFallbackProps = {
   src: string;
   alt: string;
+  fallbackSrc?: string;
   width?: number;
   height?: number;
   fill?: boolean;
@@ -18,6 +19,7 @@ type ImageWithFallbackProps = {
 export function ImageWithFallback({
   src,
   alt,
+  fallbackSrc = "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80",
   width,
   height,
   fill,
@@ -26,8 +28,6 @@ export function ImageWithFallback({
   priority,
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
-  const fallbackSrc =
-    "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80";
 
   if (fill) {
     return (

@@ -10,7 +10,7 @@ const contactSchema = z.object({
   phone: z.string().optional(),
   service: z.string(),
   brief: z.string().min(10),
-  budget: z.string().optional(),
+  timeline: z.string().min(1),
   website: z.string().max(0).optional(),
 });
 

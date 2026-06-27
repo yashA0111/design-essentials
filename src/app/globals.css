@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -158,6 +162,37 @@
   --border: #e2ded8;
   --input: var(--border-soft);
   --ring: var(--gold-muted);
+}
+
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select {
+  color: #1A1A1A !important;
+  font-size: 15px;
+  border: 1px solid #D4CFC9;
+  background: #FFFFFF;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #9A9490;
+}
+
+[data-theme="light"] select {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] select:invalid,
+[data-theme="light"] select option[value=""] {
+  color: #9A9490;
+}
+
+[data-theme="light"] input:focus,
+[data-theme="light"] textarea:focus,
+[data-theme="light"] select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(196, 169, 107, 0.15);
 }
 
 /* ─── BASE STYLES ────────────────────────────────────────── */

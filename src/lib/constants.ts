@@ -3,15 +3,17 @@ export const SITE = {
   tagline: "Where Vision Becomes Space",
   description:
     "Design Essentials is a full-service architectural and interior design firm specializing in pre-engineered homes, container architecture, exhibition design, and immersive experiential spaces across India.",
-  email: "hello@designessentials.in",
-  phone: "+91 98765 43210",
+  email: "email@designessentials.in",
+  phone: "[phone number]",
   address: {
-    line1: "B-12, Sector 18",
-    city: "Noida",
-    state: "Uttar Pradesh",
-    pin: "201301",
-    full: "B-12, Sector 18, Noida, Uttar Pradesh 201301",
+    line1: "[address line 1]",
+    city: "[city]",
+    state: "[state]",
+    pin: "[pin code]",
+    full: "[address line 1], [city], [state] - [pin code]",
   },
+  mapUrl:
+    "https://maps.google.com/maps?q=Noida+Sector+18&t=&z=13&ie=UTF8&iwloc=&output=embed",
   socials: {
     instagram: "https://instagram.com/designessentials",
     linkedin: "https://linkedin.com/company/designessentials",
@@ -29,10 +31,11 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-export const BUDGET_OPTIONS = [
-  { value: "under-50l", label: "Under ₹50L" },
-  { value: "50l-2cr", label: "₹50L – 2Cr" },
-  { value: "2cr-plus", label: "₹2Cr+" },
+export const PROJECT_TIMELINE_OPTIONS = [
+  { value: "ready-immediately", label: "Ready to start immediately" },
+  { value: "planning-1-3", label: "Planning for 1–3 months" },
+  { value: "exploring-3-6", label: "Exploring for 3–6 months" },
+  { value: "researching", label: "Just researching for now" },
 ] as const;
 
 export const PROJECT_FILTERS = [

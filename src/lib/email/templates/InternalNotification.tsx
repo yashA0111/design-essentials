@@ -14,7 +14,7 @@ type InternalNotificationEmailProps = {
   phone?: string;
   service: string;
   brief: string;
-  budget?: string;
+  timeline: string;
 };
 
 export function InternalNotificationEmail({
@@ -23,7 +23,7 @@ export function InternalNotificationEmail({
   phone,
   service,
   brief,
-  budget,
+  timeline,
 }: InternalNotificationEmailProps) {
   return (
     <Html>
@@ -50,11 +50,9 @@ export function InternalNotificationEmail({
           <Text style={{ color: "#F0EDE8" }}>
             <strong>Service:</strong> {service}
           </Text>
-          {budget && (
-            <Text style={{ color: "#F0EDE8" }}>
-              <strong>Budget:</strong> {budget}
-            </Text>
-          )}
+          <Text style={{ color: "#F0EDE8" }}>
+            <strong>Project Timeline:</strong> {timeline}
+          </Text>
           <Text style={{ color: "#8C8C8C", lineHeight: 1.75, marginTop: 24 }}>
             <strong style={{ color: "#F0EDE8" }}>Brief:</strong>
             <br />

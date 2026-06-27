@@ -44,6 +44,7 @@ export function HeroSection() {
       <div ref={imageRef} className="absolute inset-0 scale-100">
         <ImageWithFallback
           src={heroContent.backgroundImage}
+          fallbackSrc={heroContent.fallbackImage}
           alt={heroContent.backgroundAlt}
           fill
           priority

@@ -204,7 +204,8 @@ export const homeAboutContent = {
   ],
   stats: "50+ Projects · 8+ Years · 6 Design Domains",
   ctaLabel: "About Design Essentials →",
-  image:
+  image: "/images/hero/hero-main.jpg",
+  fallbackImage:
     "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80",
   imageAlt:
     "Moody architectural interior showcasing Design Essentials design philosophy",
@@ -220,6 +221,8 @@ export const heroContent = {
   ctaPrimary: "Start Your Project",
   ctaSecondary: "View Our Work ↓",
   backgroundImage:
+    "/images/hero/hero-main.jpg",
+  fallbackImage:
     "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&q=80",
   backgroundAlt: "Dramatic architectural interior with warm lighting",
 };
