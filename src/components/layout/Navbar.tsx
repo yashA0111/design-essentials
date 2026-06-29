@@ -185,7 +185,7 @@ export function Navbar({ darkHero }: NavbarProps = {}) {
               size="sm"
               className="rounded-[2px] bg-[var(--gold)] text-[#1A1A1A] hover:bg-[var(--gold-muted)] uppercase tracking-[0.08em] text-[12px] font-medium"
             >
-              <Link href="/contact">Start</Link>
+              <Link href="/contact">Start Project</Link>
             </Button>
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>

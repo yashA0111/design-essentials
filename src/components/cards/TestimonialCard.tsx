@@ -29,7 +29,7 @@ export function TestimonialCard({
           <p className="text-card-title text-[var(--text-primary)]">
             {testimonial.clientName}
           </p>
-          <p className="text-nav text-[var(--text-secondary)]">
+          <p className="text-nav font-medium text-[var(--text-secondary)]">
             {testimonial.company}
           </p>
         </div>
