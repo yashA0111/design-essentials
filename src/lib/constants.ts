@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Where Vision Becomes Space",
   description:
     "Design Essentials is a full-service architectural and interior design firm specializing in pre-engineered homes, container architecture, exhibition design, and immersive experiential spaces across India.",
-  email: "email@designessentials.in",
+  email: "onboarding@resend.dev", //temporary dev mail as of now for demo
   phone: "[phone number]",
   address: {
     line1: "[address line 1]",
@@ -21,6 +21,8 @@ export const SITE = {
     pinterest: "https://pinterest.com/designessentials",
   },
 } as const;
+
+
 
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
