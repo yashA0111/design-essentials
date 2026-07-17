@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.29.241"],
+  allowedDevOrigins: process.env.DEV_IP 
+    ? [process.env.DEV_IP] 
+    : [],
+    
   images: {
     remotePatterns: [
       {
@@ -10,6 +13,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  
+  serverExternalPackages: ["esbuild"]
 };
 
 export default nextConfig;
