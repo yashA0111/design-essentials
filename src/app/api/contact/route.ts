@@ -15,7 +15,17 @@ const contactSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const body: unknown = await request.json();
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch (error) {
+    console.error("[api/contact] Malformed request body", error);
+    return Response.json(
+      { error: "Request body must be valid JSON" },
+      { status: 400 }
+    );
+  }
+
   const parsed = contactSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -31,6 +41,7 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    console.error("[api/contact] RESEND_API_KEY is not set");
     return Response.json(
       { error: "Email service not configured" },
       { status: 503 }
@@ -39,8 +50,9 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey);
 
+  let results;
   try {
-    await Promise.all([
+    results = await Promise.all([
       resend.emails.send({
         from: `Design Essentials <${SITE.email}>`,
         to: parsed.data.email,
@@ -54,9 +66,27 @@ export async function POST(request: Request) {
         react: InternalNotificationEmail(parsed.data),
       }),
     ]);
-
-    return Response.json({ success: true });
-  } catch {
+  } catch (error) {
+    console.error("[api/contact] Email delivery threw", error);
     return Response.json({ error: "Failed to send email" }, { status: 500 });
   }
+
+  const [confirmation, notification] = results;
+
+  if (confirmation.error) {
+    console.error(
+      "[api/contact] Confirmation email failed",
+      confirmation.error
+    );
+  }
+
+  if (notification.error) {
+    console.error(
+      "[api/contact] Internal notification email failed",
+      notification.error
+    );
+    return Response.json({ error: "Failed to send email" }, { status: 500 });
+  }
+
+  return Response.json({ success: true });
 }

@@ -27,6 +27,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle"
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -39,16 +40,35 @@ export function ContactForm() {
 
   const onSubmit = async (data: ContactFormData) => {
     setStatus("loading");
+    setErrorMessage(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Failed");
+
+      if (!res.ok) {
+        const payload: unknown = await res.json().catch(() => null);
+        const serverError =
+          payload &&
+          typeof payload === "object" &&
+          "error" in payload &&
+          typeof (payload as { error: unknown }).error === "string"
+            ? (payload as { error: string }).error
+            : null;
+        throw new Error(
+          serverError ?? `Request failed with status ${res.status}`
+        );
+      }
+
       setStatus("success");
       reset();
-    } catch {
+    } catch (error) {
+      console.error("[ContactForm] Submission failed", error);
+      setErrorMessage(
+        error instanceof Error ? error.message : "Unexpected error"
+      );
       setStatus("error");
     }
   };
@@ -66,7 +86,10 @@ export function ContactForm() {
           type="button"
           variant="outline"
           className="mt-6 border-border"
-          onClick={() => setStatus("idle")}
+          onClick={() => {
+            setErrorMessage(null);
+            setStatus("idle");
+          }}
         >
           Send another message
         </Button>
@@ -184,7 +207,8 @@ export function ContactForm() {
 
       {status === "error" && (
         <p className="text-sm text-(--error)">
-          Something went wrong. Please try again or email us directly.
+          {errorMessage ?? "Something went wrong."} Please try again or email us
+          directly.
         </p>
       )}
 
