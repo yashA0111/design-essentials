@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { homeAboutContent } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { SplitTitle } from "@/components/common/SplitTitle";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 

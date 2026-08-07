@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getFeaturedProjects } from "@/lib/data/projects";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { SplitTitle } from "@/components/common/SplitTitle";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 

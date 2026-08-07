@@ -2,7 +2,7 @@
 
 import { services } from "@/lib/data/services";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { SplitTitle } from "@/components/common/SplitTitle";
 import { ServiceCard } from "@/components/cards/ServiceCard";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 

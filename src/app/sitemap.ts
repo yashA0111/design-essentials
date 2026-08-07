@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 import { services } from "@/lib/data/services";
 import { projects } from "@/lib/data/projects";
 import { blogPosts } from "@/lib/data/siteContent";
+import { SITE } from "@/lib/constants";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in";
+const BASE_URL = SITE.url;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [

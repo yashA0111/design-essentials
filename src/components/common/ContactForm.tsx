@@ -3,22 +3,16 @@
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { contactPageContent } from "@/lib/data/siteContent";
+import {
+  CONTACT_FIELD_LIMITS,
+  contactSchema,
+  type ContactFormData,
+} from "@/lib/validation/contact";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
-const contactSchema = z.object({
-  fullName: z.string().min(2, "Full name is required"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
-  enquiry: z.string().min(10, "Please provide at least 10 characters"),
-  website: z.string().max(0).optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
 
 const FIELD_ORDER = [
   "fullName",
@@ -51,6 +45,9 @@ type FieldKey = (typeof FIELD_ORDER)[number];
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle"
+  );
+  const [errorMessage, setErrorMessage] = useState<string>(
+    contactPageContent.errorMessage
   );
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -117,10 +114,30 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Failed");
+
+      if (!res.ok) {
+        const payload: unknown = await res.json().catch(() => null);
+        const serverMessage =
+          payload &&
+          typeof payload === "object" &&
+          "error" in payload &&
+          typeof (payload as { error: unknown }).error === "string"
+            ? (payload as { error: string }).error
+            : null;
+
+        setErrorMessage(
+          res.status === 429 && serverMessage
+            ? serverMessage
+            : contactPageContent.errorMessage
+        );
+        setStatus("error");
+        return;
+      }
+
       setStatus("success");
       reset();
     } catch {
+      setErrorMessage(contactPageContent.errorMessage);
       setStatus("error");
     }
   };
@@ -196,6 +213,7 @@ export function ContactForm() {
           type="text"
           autoComplete="name"
           autoCapitalize="words"
+          maxLength={CONTACT_FIELD_LIMITS.fullName}
           placeholder="Enter your full name"
           {...register("fullName")}
           onKeyDown={(event) => handleFieldKeyDown(event, "fullName")}
@@ -222,6 +240,7 @@ export function ContactForm() {
           type="email"
           autoComplete="email"
           inputMode="email"
+          maxLength={CONTACT_FIELD_LIMITS.email}
           placeholder="Enter your email address"
           {...register("email")}
           onKeyDown={(event) => handleFieldKeyDown(event, "email")}
@@ -248,6 +267,7 @@ export function ContactForm() {
           type="tel"
           autoComplete="tel"
           inputMode="tel"
+          maxLength={CONTACT_FIELD_LIMITS.phone}
           placeholder="Enter your phone number"
           {...register("phone")}
           onKeyDown={(event) => handleFieldKeyDown(event, "phone")}
@@ -272,6 +292,7 @@ export function ContactForm() {
         <Textarea
           id="enquiry"
           rows={4}
+          maxLength={CONTACT_FIELD_LIMITS.enquiry}
           placeholder="Tell us about your project, space, or vision…"
           {...register("enquiry")}
           onKeyDown={(event) => handleFieldKeyDown(event, "enquiry")}
@@ -297,12 +318,13 @@ export function ContactForm() {
       <AnimatePresence>
         {status === "error" && (
           <motion.p
+            role="alert"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="pb-6 text-sm text-[var(--error)]"
           >
-            {contactPageContent.errorMessage}
+            {errorMessage}
           </motion.p>
         )}
       </AnimatePresence>

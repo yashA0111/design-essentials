@@ -2,9 +2,17 @@
 
 import { useState } from "react";
 import { projects } from "@/lib/data/projects";
-import { PROJECT_FILTERS } from "@/lib/constants";
+import { services } from "@/lib/data/services";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { cn } from "@/lib/utils";
+
+// Derived from the data so every category with projects is always reachable.
+const filters = [
+  { value: "all", label: "All" },
+  ...services
+    .filter((service) => projects.some((p) => p.category === service.id))
+    .map((service) => ({ value: service.id, label: service.name })),
+];
 
 export function ProjectsGrid() {
   const [filter, setFilter] = useState("all");
@@ -16,10 +24,11 @@ export function ProjectsGrid() {
   return (
     <>
       <div className="mb-12 flex flex-wrap gap-3">
-        {PROJECT_FILTERS.map((f) => (
+        {filters.map((f) => (
           <button
             key={f.value}
             type="button"
+            aria-pressed={filter === f.value}
             onClick={() => setFilter(f.value)}
             className={cn(
               "text-nav rounded-full border px-5 py-2 transition-colors",
@@ -33,11 +42,17 @@ export function ProjectsGrid() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
-      </div>
+      {filtered.length === 0 ? (
+        <p className="text-body py-16 text-center">
+          No projects in this category yet — explore the full portfolio.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+      )}
     </>
   );
 }

@@ -6,7 +6,8 @@ import {
   Html,
   Preview,
   Text,
-} from "react-email"; 
+} from "react-email";
+import { SITE } from "@/lib/constants";
 
 type ContactConfirmationEmailProps = {
   name: string;
@@ -31,8 +32,8 @@ export function ContactConfirmationEmail({
           </Text>
           <Text style={{ color: "#8C8C8C", lineHeight: "1.75", fontSize: "16px", margin: "0 0 24px" }}>
             In the meantime, feel free to explore our portfolio at{" "}
-            <a href="https://designessentials.in/projects" style={{ color: "#C4A96B", textDecoration: "none" }}>
-              designessentials.in/projects
+            <a href={`${SITE.url}/projects`} style={{ color: "#C4A96B", textDecoration: "none" }}>
+              {SITE.url.replace(/^https?:\/\//, "")}/projects
             </a>.
           </Text>
           <Text style={{ color: "#C4A96B", marginTop: "32px", fontSize: "14px", fontWeight: "bold" }}>

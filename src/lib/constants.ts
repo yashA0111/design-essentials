@@ -1,5 +1,6 @@
 export const SITE = {
   name: "Design Essentials",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in",
   tagline: "Where Vision Becomes Space",
   description:
     "Design Essentials is a full-service architectural and interior design firm specializing in pre-engineered homes, container architecture, exhibition design, and immersive experiential spaces across India.",
@@ -22,8 +23,6 @@ export const SITE = {
   },
 } as const;
 
-
-
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -32,17 +31,3 @@ export const NAV_LINKS = [
   { label: "Blog", href: "/blog" },
 ] as const;
 
-export const PROJECT_TIMELINE_OPTIONS = [
-  { value: "ready-immediately", label: "Ready to start immediately" },
-  { value: "planning-1-3", label: "Planning for 1–3 months" },
-  { value: "exploring-3-6", label: "Exploring for 3–6 months" },
-  { value: "researching", label: "Just researching for now" },
-] as const;
-
-export const PROJECT_FILTERS = [
-  { value: "all", label: "All" },
-  { value: "pre-engineered-homes", label: "Pre-Engineered" },
-  { value: "institutional-interiors", label: "Interiors" },
-  { value: "exhibition-design", label: "Exhibitions" },
-  { value: "office-interiors", label: "Offices" },
-] as const;

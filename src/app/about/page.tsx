@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { aboutContent, milestones, teamMembers } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { SplitTitle } from "@/components/common/SplitTitle";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { ContactCTASection } from "@/components/sections/ContactCTASection";
 import { TimelineSection } from "@/components/sections/TimelineSection";
