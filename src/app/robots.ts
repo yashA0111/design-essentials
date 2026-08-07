@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/constants";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in";
+const BASE_URL = SITE.url;
 
 export default function robots(): MetadataRoute.Robots {
   return {

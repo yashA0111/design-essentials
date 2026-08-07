@@ -1,31 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import {
-  Building2,
-  Container,
-  Check,
-  House,
-  Landmark,
-  Layers,
-  Presentation,
-  type LucideIcon,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { services, getServiceBySlug } from "@/lib/data/services";
+import { ServiceIcon } from "@/components/common/ServiceIcon";
 import { getRelatedProjects } from "@/lib/data/projects";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { ContactCTASection } from "@/components/sections/ContactCTASection";
-
-const iconMap: Record<string, LucideIcon> = {
-  House,
-  Container,
-  Landmark,
-  Presentation,
-  Layers,
-  Building2,
-};
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -53,8 +35,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const service = getServiceBySlug(slug);
   if (!service) notFound();
 
-  const Icon = iconMap[service.icon] ?? House;
   const relatedProjects = getRelatedProjects(service.id, "", 3);
+  const galleryImages = [
+    { src: service.heroImage, fallback: service.heroImageFallback },
+    { src: service.cardImage, fallback: service.cardImageFallback },
+  ];
 
   return (
     <>
@@ -71,7 +56,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/50 to-transparent" />
         </div>
         <div className="container relative z-10 section-padding">
-          <Icon className="mb-4 h-8 w-8 text-[var(--gold)]" strokeWidth={1.5} />
+          <ServiceIcon
+            icon={service.icon}
+            className="mb-4 h-8 w-8 text-[var(--gold)]"
+            strokeWidth={1.5}
+          />
           <h1 className="text-section text-[var(--text-primary)]">
             {service.name}
           </h1>
@@ -128,23 +117,21 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <section data-theme="light" className="section-padding bg-[var(--surface)]">
         <div className="container">
           <SectionLabel className="mb-6">GALLERY</SectionLabel>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {[service.heroImage, service.cardImage, service.heroImage].map(
-              (img, i) => (
-                <div
-                  key={`${service.id}-gallery-${i}`}
-                  className="relative aspect-[4/3] overflow-hidden rounded-sm"
-                >
-                  <ImageWithFallback
-                    src={img}
-                    fallbackSrc={i === 1 ? service.cardImageFallback : service.heroImageFallback}
-                    alt={`${service.name} gallery image ${i + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
-              )
-            )}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {galleryImages.map((image, i) => (
+              <div
+                key={`${service.id}-gallery-${i}`}
+                className="relative aspect-[4/3] overflow-hidden rounded-sm"
+              >
+                <ImageWithFallback
+                  src={image.src}
+                  fallbackSrc={image.fallback}
+                  alt={`${service.name} gallery image ${i + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -161,17 +148,6 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           </div>
         </section>
       )}
-
-      <section data-theme="light" className="section-padding bg-[var(--surface)]">
-        <div className="container text-center">
-          <Link
-            href="/contact"
-            className="text-nav inline-block rounded-full bg-[var(--gold)] px-8 py-3 text-[var(--void)] transition-colors hover:bg-[var(--gold-muted)]"
-          >
-            Start Your {service.name} Project
-          </Link>
-        </div>
-      </section>
 
       <ContactCTASection />
     </>

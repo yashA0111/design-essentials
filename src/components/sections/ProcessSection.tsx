@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { processSteps } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { SplitTitle } from "@/components/common/SplitTitle";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);

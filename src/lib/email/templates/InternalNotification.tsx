@@ -9,22 +9,18 @@ import {
 } from "react-email";
 
 type InternalNotificationEmailProps = {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   phone: string;
   enquiry: string;
 };
 
 export function InternalNotificationEmail({
-  firstName,
-  lastName,
+  fullName,
   email,
   phone,
   enquiry,
 }: InternalNotificationEmailProps) {
-  const fullName = `${firstName} ${lastName}`;
-
   return (
     <Html>
       <Head />

@@ -82,6 +82,15 @@ export function Navbar({ darkHero }: NavbarProps = {}) {
                   className="relative"
                   onMouseEnter={() => setMegaOpen(true)}
                   onMouseLeave={() => setMegaOpen(false)}
+                  onFocus={() => setMegaOpen(true)}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget)) {
+                      setMegaOpen(false);
+                    }
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") setMegaOpen(false);
+                  }}
                 >
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -90,6 +99,7 @@ export function Navbar({ darkHero }: NavbarProps = {}) {
                   >
                     <Link
                       href={link.href}
+                      aria-expanded={megaOpen}
                       className={cn(
                         "text-nav pb-1 border-b border-transparent transition-[border-color,color] duration-200",
                         isLightState ? "hover:text-[#b08d4a]" : "hover:text-(--gold)",

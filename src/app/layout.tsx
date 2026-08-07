@@ -7,9 +7,7 @@ import { SITE } from "@/lib/constants";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in"
-  ),
+  metadataBase: new URL(SITE.url),
   title: {
     default: "Design Essentials | Architecture & Interior Design Studio",
     template: "%s | Design Essentials",
@@ -28,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://designessentials.in",
+    url: SITE.url,
     siteName: SITE.name,
     title: "Design Essentials | Architecture & Interior Design Studio",
     description: SITE.description,
@@ -58,8 +56,7 @@ const jsonLd = {
   "@type": "ProfessionalService",
   name: SITE.name,
   description: SITE.description,
-  url: "https://designessentials.in",
-  telephone: "+91-98765-43210",
+  url: SITE.url,
   email: SITE.email,
   address: {
     "@type": "PostalAddress",

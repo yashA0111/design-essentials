@@ -103,18 +103,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
-          <p className="text-nav text-(--text-tertiary)">
+        <div className="mt-16 border-t border-border pt-8">
+          <p className="text-nav text-center text-(--text-tertiary) md:text-left">
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            <Link
-              href="/contact"
-              className="text-nav text-(--text-tertiary) hover:text-(--text-secondary)"
-            >
-              Privacy Policy
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
