@@ -80,5 +80,5 @@ export const contactSchema = z
     phone: normalizePhoneNumber(data.phone, data.phoneCountry) ?? data.phone,
   }));
 
-export type ContactFormData = z.input<typeof contactSchema>;
-export type NormalizedContactFormData = z.output<typeof contactSchema>;
+export type ContactFormInput = z.input<typeof contactSchema>;
+export type ContactFormData = z.output<typeof contactSchema>;

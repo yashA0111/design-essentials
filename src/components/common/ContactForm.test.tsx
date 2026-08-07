@@ -62,6 +62,7 @@ describe("ContactForm", () => {
     expect(JSON.parse(init.body)).toMatchObject({
       fullName: "Asha Menon",
       email: "asha@example.com",
+      phone: "+919876543210",
       phoneCountry: "IN",
     });
   });

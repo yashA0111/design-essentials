@@ -11,6 +11,7 @@ import {
   DEFAULT_PHONE_COUNTRY,
   contactSchema,
   type ContactFormData,
+  type ContactFormInput,
 } from "@/lib/validation/contact";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,7 +22,7 @@ const FIELD_ORDER = [
   "email",
   "phone",
   "enquiry",
-] as const satisfies readonly (keyof ContactFormData)[];
+] as const satisfies readonly (keyof ContactFormInput)[];
 
 const inputClassName = cn(
   "h-14 rounded-none border-0 border-b border-[var(--border)] bg-transparent px-3 py-4",
@@ -64,7 +65,7 @@ export function ContactForm() {
     trigger,
     watch,
     formState: { errors },
-  } = useForm<ContactFormData>({
+  } = useForm<ContactFormInput, unknown, ContactFormData>({
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
@@ -321,6 +322,7 @@ export function ContactForm() {
               international
               defaultCountry={DEFAULT_PHONE_COUNTRY}
               country={selectedPhoneCountry as Country}
+              name={field.name}
               value={field.value}
               onChange={(value: string | undefined) => field.onChange(value ?? "")}
               onCountryChange={(country: Country | undefined) => {
@@ -333,8 +335,6 @@ export function ContactForm() {
                 handleFieldKeyDown(event, "phone")
               }
               numberInputProps={{
-                ref: field.ref,
-                name: field.name,
                 autoComplete: "tel",
                 inputMode: "tel",
                 maxLength: CONTACT_FIELD_LIMITS.phone,

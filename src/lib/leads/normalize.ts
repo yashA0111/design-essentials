@@ -1,5 +1,5 @@
 import type { CountryCode } from "libphonenumber-js";
-import type { NormalizedContactFormData } from "@/lib/validation/contact";
+import type { ContactFormData } from "@/lib/validation/contact";
 
 type LeadName = {
   firstName: string | null;
@@ -38,7 +38,7 @@ export function splitLeadName(fullName: string): LeadName {
 }
 
 export function buildWebsiteLeadPayload(
-  data: NormalizedContactFormData
+  data: ContactFormData
 ): WebsiteLeadStagingInsert {
   const { firstName, lastName } = splitLeadName(data.fullName);
 
