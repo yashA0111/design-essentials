@@ -4,9 +4,8 @@ import { SectionLabel } from "@/components/common/SectionLabel";
 import { ProjectsGrid } from "@/components/sections/ProjectsGrid";
 
 export const metadata: Metadata = {
-  title: "Projects",
-  description:
-    "Explore Design Essentials portfolio — pre-engineered homes, container architecture, museum interiors, exhibitions, experience centers, and office spaces.",
+  title: projectsPageContent.seo.title,
+  description: projectsPageContent.seo.description,
 };
 
 export default function ProjectsPage() {

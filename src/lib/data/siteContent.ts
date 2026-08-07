@@ -40,6 +40,11 @@ export const processSteps: ProcessStep[] = [
 ];
 
 export const aboutContent = {
+  seo: {
+    title: "About",
+    description:
+      "Learn about Design Essentials — our story, team, philosophy, and commitment to sustainable architectural design across India.",
+  },
   heroEyebrow: "About Us",
   heroTitle: "Design Essentials",
   heroSubtitle: "Where Vision Becomes Space",
@@ -240,6 +245,11 @@ export const contactCtaContent = {
 };
 
 export const contactPageContent = {
+  seo: {
+    title: "Contact",
+    description:
+      "Get in touch with Design Essentials to start your architectural or interior design project. Based in Noida, serving clients across India.",
+  },
   eyebrow: "GET IN TOUCH",
   headingLine1: "Let's",
   headingItalic: "Create",
@@ -263,6 +273,11 @@ export const contactPageContent = {
 } as const;
 
 export const projectsPageContent = {
+  seo: {
+    title: "Projects",
+    description:
+      "Explore Design Essentials portfolio — pre-engineered homes, container architecture, museum interiors, exhibitions, experience centers, and office spaces.",
+  },
   eyebrow: "PORTFOLIO",
   title: "Our Projects",
   intro:
@@ -270,6 +285,11 @@ export const projectsPageContent = {
 } as const;
 
 export const servicesPageContent = {
+  seo: {
+    title: "Services",
+    description:
+      "Explore Design Essentials services — pre-engineered homes, container architecture, museum interiors, exhibition design, experience centers, and office interiors.",
+  },
   eyebrow: "OUR SERVICES",
   title: "Complete Design Solutions",
   intro:
@@ -277,6 +297,11 @@ export const servicesPageContent = {
 } as const;
 
 export const blogPageContent = {
+  seo: {
+    title: "Blog",
+    description:
+      "Insights on architecture, interior design, sustainability, and experience design from the Design Essentials team.",
+  },
   eyebrow: "INSIGHTS",
   title: "Blog",
   readMoreLabel: "Read More →",

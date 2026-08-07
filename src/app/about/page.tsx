@@ -7,9 +7,8 @@ import { ContactCTASection } from "@/components/sections/ContactCTASection";
 import { TimelineSection } from "@/components/sections/TimelineSection";
 
 export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Learn about Design Essentials — our story, team, philosophy, and commitment to sustainable architectural design across India.",
+  title: aboutContent.seo.title,
+  description: aboutContent.seo.description,
 };
 
 export default function AboutPage() {

@@ -6,9 +6,8 @@ import { ServiceCard } from "@/components/cards/ServiceCard";
 import { ContactCTASection } from "@/components/sections/ContactCTASection";
 
 export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Explore Design Essentials services — pre-engineered homes, container architecture, museum interiors, exhibition design, experience centers, and office interiors.",
+  title: servicesPageContent.seo.title,
+  description: servicesPageContent.seo.description,
 };
 
 export default function ServicesPage() {

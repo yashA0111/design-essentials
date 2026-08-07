@@ -5,9 +5,8 @@ import { SectionLabel } from "@/components/common/SectionLabel";
 import { ContactForm } from "@/components/common/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Get in touch with Design Essentials to start your architectural or interior design project. Based in Noida, serving clients across India.",
+  title: contactPageContent.seo.title,
+  description: contactPageContent.seo.description,
 };
 
 export default function ContactPage() {

@@ -6,9 +6,8 @@ import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Insights on architecture, interior design, sustainability, and experience design from the Design Essentials team.",
+  title: blogPageContent.seo.title,
+  description: blogPageContent.seo.description,
 };
 
 export default function BlogPage() {
