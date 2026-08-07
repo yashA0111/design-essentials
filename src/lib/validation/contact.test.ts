@@ -5,6 +5,7 @@ const validInput = {
   fullName: "Asha Menon",
   email: "asha@example.com",
   phone: "+91 98765 43210",
+  phoneCountry: "IN",
   enquiry: "We are planning a container studio in Goa and would like a quote.",
 };
 
@@ -13,8 +14,11 @@ describe("contactSchema", () => {
     const parsed = contactSchema.parse({
       ...validInput,
       fullName: "  Asha Menon  ",
+      email: "  ASHA@EXAMPLE.COM  ",
     });
     expect(parsed.fullName).toBe("Asha Menon");
+    expect(parsed.email).toBe("asha@example.com");
+    expect(parsed.phone).toBe("+919876543210");
   });
 
   it.each([

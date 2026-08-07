@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { ContactConfirmationEmail } from "@/lib/email/templates/ContactConfirmation";
 import { InternalNotificationEmail } from "@/lib/email/templates/InternalNotification";
 import { SITE } from "@/lib/constants";
+import { buildWebsiteLeadPayload } from "@/lib/leads/normalize";
 import { contactSchema } from "@/lib/validation/contact";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
@@ -76,9 +77,13 @@ export async function POST(request: Request) {
   }
 
   const resend = new Resend(apiKey);
+  const leadPayload = buildWebsiteLeadPayload(parsed.data);
   const { fullName, email, phone, enquiry } = parsed.data;
 
   try {
+    // TODO: Insert leadPayload into website_leads_staging once Supabase is provisioned.
+    void leadPayload;
+
     const results = await Promise.allSettled([
       resend.emails.send({
         from: `Design Essentials <${SITE.email}>`,

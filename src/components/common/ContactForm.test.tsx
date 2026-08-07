@@ -29,6 +29,10 @@ function submit() {
 describe("ContactForm", () => {
   beforeEach(() => {
     fetchMock.mockReset();
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ countryCode: "IN" }),
+    });
     vi.stubGlobal("fetch", fetchMock);
   });
 
@@ -37,7 +41,12 @@ describe("ContactForm", () => {
   });
 
   it("posts the enquiry and shows the success state", async () => {
-    fetchMock.mockResolvedValue({ ok: true, status: 200 });
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ countryCode: "IN" }),
+      })
+      .mockResolvedValueOnce({ ok: true, status: 200 });
     render(<ContactForm />);
     fillForm();
     submit();
@@ -47,10 +56,14 @@ describe("ContactForm", () => {
       "/api/contact",
       expect.objectContaining({ method: "POST" })
     );
-    const [, init] = fetchMock.mock.calls[0];
+    const [, init] = (fetchMock.mock.calls as [string, RequestInit][]).find(
+      ([url]) => url === "/api/contact"
+    )!;
     expect(JSON.parse(init.body)).toMatchObject({
       fullName: "Asha Menon",
       email: "asha@example.com",
+      phone: "+919876543210",
+      phoneCountry: "IN",
     });
   });
 
@@ -62,15 +75,23 @@ describe("ContactForm", () => {
     submit();
 
     await screen.findByText("Please enter a valid email address");
-    expect(fetchMock).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalledWith(
+      "/api/contact",
+      expect.objectContaining({ method: "POST" })
+    );
   });
 
   it("surfaces the rate limit message from the server", async () => {
-    fetchMock.mockResolvedValue({
-      ok: false,
-      status: 429,
-      json: async () => ({ error: "Too many enquiries. Try later." }),
-    });
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ countryCode: "IN" }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 429,
+        json: async () => ({ error: "Too many enquiries. Try later." }),
+      });
     render(<ContactForm />);
     fillForm();
     submit();
@@ -79,11 +100,16 @@ describe("ContactForm", () => {
   });
 
   it("falls back to the generic message for other failures", async () => {
-    fetchMock.mockResolvedValue({
-      ok: false,
-      status: 500,
-      json: async () => ({ error: "Failed to send email" }),
-    });
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ countryCode: "IN" }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        json: async () => ({ error: "Failed to send email" }),
+      });
     render(<ContactForm />);
     fillForm();
     submit();

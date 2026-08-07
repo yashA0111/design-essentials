@@ -1,14 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
+import PhoneInput, { type Country } from "react-phone-number-input";
 import { contactPageContent } from "@/lib/data/siteContent";
 import {
   CONTACT_FIELD_LIMITS,
+  DEFAULT_PHONE_COUNTRY,
   contactSchema,
   type ContactFormData,
+  type ContactFormInput,
 } from "@/lib/validation/contact";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,7 +22,7 @@ const FIELD_ORDER = [
   "email",
   "phone",
   "enquiry",
-] as const satisfies readonly (keyof ContactFormData)[];
+] as const satisfies readonly (keyof ContactFormInput)[];
 
 const inputClassName = cn(
   "h-14 rounded-none border-0 border-b border-[var(--border)] bg-transparent px-3 py-4",
@@ -53,17 +56,65 @@ export function ContactForm() {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     getValues,
     setFocus,
+    setValue,
     trigger,
+    watch,
     formState: { errors },
-  } = useForm<ContactFormData>({
+  } = useForm<ContactFormInput, unknown, ContactFormData>({
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
+    defaultValues: { phoneCountry: DEFAULT_PHONE_COUNTRY },
   });
+
+  const selectedPhoneCountry = watch("phoneCountry") ?? DEFAULT_PHONE_COUNTRY;
+
+  useEffect(() => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timezone) {
+      setValue("timezone", timezone, {
+        shouldDirty: false,
+        shouldValidate: false,
+      });
+    }
+
+    let cancelled = false;
+
+    fetch("/api/contact/context")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload: unknown) => {
+        if (cancelled || !payload || typeof payload !== "object") {
+          return;
+        }
+
+        const countryCode = (payload as { countryCode?: unknown }).countryCode;
+        if (typeof countryCode !== "string" || countryCode.length !== 2) {
+          return;
+        }
+
+        const normalizedCountry = countryCode.toUpperCase() as Country;
+        setValue("geoCountryCode", normalizedCountry, {
+          shouldDirty: false,
+          shouldValidate: false,
+        });
+        setValue("phoneCountry", normalizedCountry, {
+          shouldDirty: false,
+          shouldValidate: false,
+        });
+      })
+      .catch(() => {
+        // Country detection is only a convenience; India remains the fallback.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [setValue]);
 
   const focusNextEmptyField = async (currentField: FieldKey) => {
     // Validate current field immediately when pressing Enter
@@ -262,17 +313,38 @@ export function ContactForm() {
         <label htmlFor="phone" className={labelClassName}>
           {fields.phone}
         </label>
-        <Input
-          id="phone"
-          type="tel"
-          autoComplete="tel"
-          inputMode="tel"
-          maxLength={CONTACT_FIELD_LIMITS.phone}
-          placeholder="Enter your phone number"
-          {...register("phone")}
-          onKeyDown={(event) => handleFieldKeyDown(event, "phone")}
-          className={inputClassName}
-          aria-invalid={Boolean(errors.phone)}
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <PhoneInput
+              id="phone"
+              international
+              defaultCountry={DEFAULT_PHONE_COUNTRY}
+              country={selectedPhoneCountry as Country}
+              name={field.name}
+              value={field.value}
+              onChange={(value: string | undefined) => field.onChange(value ?? "")}
+              onCountryChange={(country: Country | undefined) => {
+                if (country) {
+                  setValue("phoneCountry", country, { shouldValidate: true });
+                }
+              }}
+              onBlur={field.onBlur}
+              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                handleFieldKeyDown(event, "phone")
+              }
+              numberInputProps={{
+                autoComplete: "tel",
+                inputMode: "tel",
+                maxLength: CONTACT_FIELD_LIMITS.phone,
+                placeholder: "Enter your phone number",
+                className: inputClassName,
+                "aria-invalid": Boolean(errors.phone),
+              }}
+              className="flex items-center gap-3"
+            />
+          )}
         />
         <p
           className={cn(
