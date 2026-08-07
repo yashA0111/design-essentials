@@ -3,31 +3,27 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { projects, getProjectBySlug } from "@/lib/data/projects";
 import { getServiceById } from "@/lib/data/services";
+import { toSlugParams } from "@/lib/data/query";
+import { metadataFromSeo } from "@/lib/seo";
+import { GOLD_LINK } from "@/lib/styles";
+import type { SlugPageProps } from "@/types/page";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+import { HeroBackdrop } from "@/components/common/HeroBackdrop";
+import { GalleryImage } from "@/components/common/GalleryImage";
 import { ContactCTASection } from "@/components/sections/ContactCTASection";
 
-type PageProps = {
-  params: Promise<{ slug: string }>;
-};
-
 export async function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return toSlugParams(projects);
 }
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: SlugPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
-  if (!project) return {};
-  return {
-    title: project.seo.metaTitle,
-    description: project.seo.metaDescription,
-  };
+  return metadataFromSeo(getProjectBySlug(slug)?.seo);
 }
 
-export default async function ProjectDetailPage({ params }: PageProps) {
+export default async function ProjectDetailPage({ params }: SlugPageProps) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
@@ -39,16 +35,11 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   return (
     <>
       <section className="relative min-h-[70vh] pt-20">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src={project.heroImage}
-            alt={`${project.title} — ${project.location}`}
-            fill
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-(--void) via-(--void)/40 to-transparent" />
-        </div>
+        <HeroBackdrop
+          src={project.heroImage}
+          alt={`${project.title} — ${project.location}`}
+          overlayClassName="via-(--void)/40"
+        />
         <div className="container relative z-10 flex min-h-[70vh] flex-col justify-end section-padding">
           <p className="text-eyebrow mb-4">{service?.name}</p>
           <h1 className="text-section text-(--text-primary)">
@@ -88,17 +79,12 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="container">
           <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
             {project.galleryImages.map((img, i) => (
-              <div
+              <GalleryImage
                 key={`${project.id}-img-${i}`}
-                className="relative mb-4 aspect-4/3 break-inside-avoid overflow-hidden rounded-sm"
-              >
-                <ImageWithFallback
-                  src={img}
-                  alt={`${project.title} gallery image ${i + 1}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
+                src={img}
+                alt={`${project.title} gallery image ${i + 1}`}
+                className="mb-4 break-inside-avoid"
+              />
             ))}
           </div>
         </div>
@@ -124,7 +110,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           </span>
           <Link
             href={`/projects/${nextProject.slug}`}
-            className="text-card-title text-(--gold) transition-colors hover:text-(--gold-muted)"
+            className={`text-card-title ${GOLD_LINK}`}
           >
             {nextProject.title} →
           </Link>

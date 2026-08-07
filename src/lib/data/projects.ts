@@ -1,4 +1,5 @@
 import type { Project } from "@/types/project";
+import { findBySlug } from "@/lib/data/query";
 
 export const projects: Project[] = [
   {
@@ -167,7 +168,7 @@ export const projects: Project[] = [
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+  return findBySlug(projects, slug);
 }
 
 export function getFeaturedProjects(): Project[] {

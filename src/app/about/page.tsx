@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { aboutContent, milestones, teamMembers } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { HeroBackdrop } from "@/components/common/HeroBackdrop";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { ContactCTASection } from "@/components/sections/ContactCTASection";
 import { TimelineSection } from "@/components/sections/TimelineSection";
@@ -16,16 +17,11 @@ export default function AboutPage() {
   return (
     <>
       <section className="relative flex min-h-[60vh] items-end section-padding">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80"
-            alt="Design Essentials studio and architectural workspace"
-            fill
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-(--void) via-(--void)/60 to-transparent" />
-        </div>
+        <HeroBackdrop
+          src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80"
+          alt="Design Essentials studio and architectural workspace"
+          overlayClassName="via-(--void)/60"
+        />
         <div className="container relative z-10">
           <SectionLabel className="mb-4">{aboutContent.heroEyebrow}</SectionLabel>
           <h1 className="text-hero text-(--text-primary)">

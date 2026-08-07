@@ -1,74 +1,50 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  Building2,
-  Container,
-  Check,
-  House,
-  Landmark,
-  Layers,
-  Presentation,
-  type LucideIcon,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { services, getServiceBySlug } from "@/lib/data/services";
 import { getRelatedProjects } from "@/lib/data/projects";
+import { toSlugParams } from "@/lib/data/query";
+import {
+  FALLBACK_SERVICE_ICON,
+  SERVICE_ICONS,
+} from "@/lib/serviceIcons";
+import { metadataFromSeo } from "@/lib/seo";
+import { GOLD_BUTTON } from "@/lib/styles";
+import type { SlugPageProps } from "@/types/page";
 import { SectionLabel } from "@/components/common/SectionLabel";
-import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+import { HeroBackdrop } from "@/components/common/HeroBackdrop";
+import { GalleryImage } from "@/components/common/GalleryImage";
+import { ProcessStepCard } from "@/components/cards/ProcessStepCard";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { ContactCTASection } from "@/components/sections/ContactCTASection";
 
-const iconMap: Record<string, LucideIcon> = {
-  House,
-  Container,
-  Landmark,
-  Presentation,
-  Layers,
-  Building2,
-};
-
-type PageProps = {
-  params: Promise<{ slug: string }>;
-};
-
 export async function generateStaticParams() {
-  return services.map((s) => ({ slug: s.slug }));
+  return toSlugParams(services);
 }
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: SlugPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
-  if (!service) return {};
-  return {
-    title: service.seo.metaTitle,
-    description: service.seo.metaDescription,
-    keywords: service.seo.keywords,
-  };
+  return metadataFromSeo(getServiceBySlug(slug)?.seo);
 }
 
-export default async function ServiceDetailPage({ params }: PageProps) {
+export default async function ServiceDetailPage({ params }: SlugPageProps) {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) notFound();
 
-  const Icon = iconMap[service.icon] ?? House;
+  const Icon = SERVICE_ICONS[service.icon] ?? FALLBACK_SERVICE_ICON;
   const relatedProjects = getRelatedProjects(service.id, "", 3);
 
   return (
     <>
       <section className="relative flex min-h-[60vh] items-end pt-20">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src={service.heroImage}
-            alt={`${service.name} — hero image`}
-            fill
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-(--void) via-(--void)/50 to-transparent" />
-        </div>
+        <HeroBackdrop
+          src={service.heroImage}
+          alt={`${service.name} — hero image`}
+        />
         <div className="container relative z-10 section-padding">
           <Icon className="mb-4 h-8 w-8 text-(--gold)" strokeWidth={1.5} />
           <h1 className="text-section text-(--text-primary)">
@@ -107,18 +83,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <SectionLabel className="mb-6">OUR PROCESS</SectionLabel>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {service.process.map((step) => (
-              <div
-                key={step.step}
-                className="border border-border p-6"
-              >
-                <span className="font-(family-name:--font-display) text-3xl text-(--gold)">
-                  {String(step.step).padStart(2, "0")}
-                </span>
-                <h3 className="text-card-title mt-3 text-(--text-primary)">
-                  {step.title}
-                </h3>
-                <p className="text-body mt-2 text-sm">{step.description}</p>
-              </div>
+              <ProcessStepCard key={step.step} step={step} />
             ))}
           </div>
         </div>
@@ -130,17 +95,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[service.heroImage, service.cardImage, service.heroImage].map(
               (img, i) => (
-                <div
+                <GalleryImage
                   key={`${service.id}-gallery-${i}`}
-                  className="relative aspect-4/3 overflow-hidden rounded-sm"
-                >
-                  <ImageWithFallback
-                    src={img}
-                    alt={`${service.name} gallery image ${i + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
+                  src={img}
+                  alt={`${service.name} gallery image ${i + 1}`}
+                />
               )
             )}
           </div>
@@ -164,7 +123,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         <div className="container text-center">
           <Link
             href="/contact"
-            className="text-nav inline-block rounded-full bg-(--gold) px-8 py-3 text-(--void) transition-colors hover:bg-(--gold-muted)"
+            className={`text-nav inline-block px-8 py-3 ${GOLD_BUTTON}`}
           >
             Start Your {service.name} Project
           </Link>

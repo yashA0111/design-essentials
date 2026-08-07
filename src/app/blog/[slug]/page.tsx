@@ -2,31 +2,27 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { blogPosts, getBlogPostBySlug } from "@/lib/data/siteContent";
+import { toSlugParams } from "@/lib/data/query";
+import { formatDate } from "@/lib/format";
+import { metadataFromSeo } from "@/lib/seo";
+import { GOLD_LINK } from "@/lib/styles";
+import type { SlugPageProps } from "@/types/page";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
-import { Badge } from "@/components/ui/badge";
-
-type PageProps = {
-  params: Promise<{ slug: string }>;
-};
+import { CategoryBadge } from "@/components/common/CategoryBadge";
 
 export async function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  return toSlugParams(blogPosts);
 }
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: SlugPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
-  if (!post) return {};
-  return {
-    title: post.seo.metaTitle,
-    description: post.seo.metaDescription,
-  };
+  return metadataFromSeo(getBlogPostBySlug(slug)?.seo);
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function BlogPostPage({ params }: SlugPageProps) {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   if (!post) notFound();
@@ -36,34 +32,22 @@ export default async function BlogPostPage({ params }: PageProps) {
       <div className="container max-w-3xl">
         <Link
           href="/blog"
-          className="text-nav mb-8 inline-block text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
+          className={`text-nav mb-8 inline-block ${GOLD_LINK}`}
         >
           ← Back to Blog
         </Link>
 
-        <Badge
-          variant="outline"
-          className="mb-4 border-[var(--border)] text-[var(--text-secondary)]"
-        >
-          {post.category}
-        </Badge>
+        <CategoryBadge className="mb-4">{post.category}</CategoryBadge>
 
-        <h1 className="text-section mb-4 text-[var(--text-primary)]">
+        <h1 className="text-section mb-4 text-(--text-primary)">
           {post.title}
         </h1>
 
-        <time
-          dateTime={post.date}
-          className="text-nav text-[var(--text-tertiary)]"
-        >
-          {new Date(post.date).toLocaleDateString("en-IN", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
+        <time dateTime={post.date} className="text-nav text-(--text-tertiary)">
+          {formatDate(post.date)}
         </time>
 
-        <div className="relative my-10 aspect-[16/9] overflow-hidden rounded-sm">
+        <div className="relative my-10 aspect-16/9 overflow-hidden rounded-sm">
           <ImageWithFallback
             src={post.image}
             alt={post.title}

@@ -1,12 +1,9 @@
+import { Text } from "@react-email/components";
 import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Preview,
-  Text,
-} from "@react-email/components";
+  EMAIL_COLORS,
+  EmailLayout,
+  emailTextStyle,
+} from "@/lib/email/EmailLayout";
 
 type InternalNotificationEmailProps = {
   name: string;
@@ -17,6 +14,14 @@ type InternalNotificationEmailProps = {
   budget?: string;
 };
 
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <Text style={{ color: EMAIL_COLORS.text }}>
+      <strong>{label}:</strong> {value}
+    </Text>
+  );
+}
+
 export function InternalNotificationEmail({
   name,
   email,
@@ -26,42 +31,21 @@ export function InternalNotificationEmail({
   budget,
 }: InternalNotificationEmailProps) {
   return (
-    <Html>
-      <Head />
-      <Preview>
-        New inquiry: {service} — {name}
-      </Preview>
-      <Body style={{ backgroundColor: "#111111", color: "#F0EDE8", fontFamily: "sans-serif" }}>
-        <Container style={{ padding: "40px 20px" }}>
-          <Heading style={{ color: "#C4A96B", fontWeight: 400 }}>
-            New Project Inquiry
-          </Heading>
-          <Text style={{ color: "#F0EDE8" }}>
-            <strong>Name:</strong> {name}
-          </Text>
-          <Text style={{ color: "#F0EDE8" }}>
-            <strong>Email:</strong> {email}
-          </Text>
-          {phone && (
-            <Text style={{ color: "#F0EDE8" }}>
-              <strong>Phone:</strong> {phone}
-            </Text>
-          )}
-          <Text style={{ color: "#F0EDE8" }}>
-            <strong>Service:</strong> {service}
-          </Text>
-          {budget && (
-            <Text style={{ color: "#F0EDE8" }}>
-              <strong>Budget:</strong> {budget}
-            </Text>
-          )}
-          <Text style={{ color: "#8C8C8C", lineHeight: 1.75, marginTop: 24 }}>
-            <strong style={{ color: "#F0EDE8" }}>Brief:</strong>
-            <br />
-            {brief}
-          </Text>
-        </Container>
-      </Body>
-    </Html>
+    <EmailLayout
+      preview={`New inquiry: ${service} — ${name}`}
+      heading="New Project Inquiry"
+      backgroundColor={EMAIL_COLORS.surface}
+    >
+      <DetailRow label="Name" value={name} />
+      <DetailRow label="Email" value={email} />
+      {phone && <DetailRow label="Phone" value={phone} />}
+      <DetailRow label="Service" value={service} />
+      {budget && <DetailRow label="Budget" value={budget} />}
+      <Text style={{ ...emailTextStyle, marginTop: 24 }}>
+        <strong style={{ color: EMAIL_COLORS.text }}>Brief:</strong>
+        <br />
+        {brief}
+      </Text>
+    </EmailLayout>
   );
 }

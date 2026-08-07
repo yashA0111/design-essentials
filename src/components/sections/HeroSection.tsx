@@ -3,15 +3,13 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "@/lib/gsap";
 import { heroContent } from "@/lib/data/siteContent";
-import { SITE } from "@/lib/constants";
+import { GOLD_BUTTON } from "@/lib/styles";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+import { SocialLinks } from "@/components/common/SocialLinks";
 import { Button } from "@/components/ui/button";
 import { fadeInUpItem, staggerContainer } from "@/components/animations/pageVariants";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -92,7 +90,7 @@ export function HeroSection() {
             <Button
               asChild
               size="lg"
-              className="rounded-full bg-(--gold) px-8 text-(--void) hover:bg-(--gold-muted)"
+              className={`px-8 ${GOLD_BUTTON}`}
             >
               <Link href="/contact">{heroContent.ctaPrimary}</Link>
             </Button>
@@ -108,19 +106,10 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-8 left-[clamp(20px,5vw,100px)] hidden items-center gap-6 lg:flex">
-        {Object.entries(SITE.socials).slice(0, 3).map(([key, href]) => (
-          <a
-            key={key}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-nav capitalize text-(--text-secondary) transition-colors hover:text-(--gold)"
-          >
-            {key}
-          </a>
-        ))}
-      </div>
+      <SocialLinks
+        limit={3}
+        className="absolute bottom-8 left-[clamp(20px,5vw,100px)] hidden items-center gap-6 lg:flex"
+      />
 
       <div className="absolute right-[clamp(20px,5vw,100px)] bottom-8 hidden flex-col items-end gap-2 md:flex">
         <span className="text-nav text-(--text-secondary)">Scroll</span>

@@ -1,4 +1,5 @@
 import type { Service } from "@/types/service";
+import { findById, findBySlug } from "@/lib/data/query";
 
 export const services: Service[] = [
   {
@@ -358,9 +359,9 @@ export const services: Service[] = [
 ];
 
 export function getServiceBySlug(slug: string): Service | undefined {
-  return services.find((s) => s.slug === slug);
+  return findBySlug(services, slug);
 }
 
 export function getServiceById(id: string): Service | undefined {
-  return services.find((s) => s.id === id);
+  return findById(services, id);
 }

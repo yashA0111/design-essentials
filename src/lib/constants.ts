@@ -1,3 +1,6 @@
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in";
+
 export const SITE = {
   name: "Design Essentials",
   tagline: "Where Vision Becomes Space",

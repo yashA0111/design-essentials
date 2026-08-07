@@ -1,18 +1,8 @@
-import { z } from "zod";
 import { Resend } from "resend";
 import { ContactConfirmationEmail } from "@/lib/email/templates/ContactConfirmation";
 import { InternalNotificationEmail } from "@/lib/email/templates/InternalNotification";
 import { SITE } from "@/lib/constants";
-
-const contactSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().optional(),
-  service: z.string(),
-  brief: z.string().min(10),
-  budget: z.string().optional(),
-  website: z.string().max(0).optional(),
-});
+import { contactSchema } from "@/lib/validation/contact";
 
 export async function POST(request: Request) {
   const body: unknown = await request.json();

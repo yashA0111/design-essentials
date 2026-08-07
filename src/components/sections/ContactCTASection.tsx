@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { contactCtaContent } from "@/lib/data/siteContent";
+import { GOLD_BUTTON } from "@/lib/styles";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 
@@ -51,7 +52,7 @@ export function ContactCTASection() {
           <Button
             asChild
             size="lg"
-            className="rounded-full bg-[var(--gold)] px-10 py-6 text-lg text-[var(--void)] hover:bg-[var(--gold-muted)]"
+            className={`px-10 py-6 text-lg ${GOLD_BUTTON}`}
           >
             <Link href="/contact">{contactCtaContent.ctaLabel}</Link>
           </Button>

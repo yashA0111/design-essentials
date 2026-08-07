@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu } from "lucide-react";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS } from "@/lib/constants";
 import { services } from "@/lib/data/services";
+import { GOLD_BUTTON } from "@/lib/styles";
+import { SocialLinks } from "@/components/common/SocialLinks";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -16,6 +18,44 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+
+type DesktopNavLinkProps = {
+  href: string;
+  label: string;
+  index: number;
+  isActive: boolean;
+  scrolled: boolean;
+};
+
+function DesktopNavLink({
+  href,
+  label,
+  index,
+  isActive,
+  scrolled,
+}: DesktopNavLinkProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+    >
+      <Link
+        href={href}
+        className={cn(
+          "text-nav transition-colors hover:text-(--gold)",
+          isActive
+            ? "text-(--gold)"
+            : scrolled
+            ? "text-(--text-secondary)"
+            : "text-(--text-primary)"
+        )}
+      >
+        {label}
+      </Link>
+    </motion.div>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -65,25 +105,13 @@ export function Navbar() {
                 onMouseEnter={() => setMegaOpen(true)}
                 onMouseLeave={() => setMegaOpen(false)}
               >
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    className={cn(
-                      "text-nav transition-colors hover:text-(--gold)",
-                      isActive
-                        ? "text-(--gold)"
-                        : scrolled
-                        ? "text-(--text-secondary)"
-                        : "text-(--text-primary)"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
+                <DesktopNavLink
+                  href={link.href}
+                  label={link.label}
+                  index={i}
+                  isActive={isActive}
+                  scrolled={scrolled}
+                />
                 <AnimatePresence>
                   {megaOpen && (
                     <motion.div
@@ -115,42 +143,23 @@ export function Navbar() {
                 </AnimatePresence>
               </div>
             ) : (
-              <motion.div
+              <DesktopNavLink
                 key={link.href}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-              >
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "text-nav transition-colors hover:text-(--gold)",
-                    isActive
-                      ? "text-(--gold)"
-                      : scrolled
-                      ? "text-(--text-secondary)"
-                      : "text-(--text-primary)"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
+                href={link.href}
+                label={link.label}
+                index={i}
+                isActive={isActive}
+                scrolled={scrolled}
+              />
             );
           })}
-          <Button
-            asChild
-            className="rounded-full bg-(--gold) px-6 text-(--void) hover:bg-(--gold-muted)"
-          >
+          <Button asChild className={`px-6 ${GOLD_BUTTON}`}>
             <Link href="/contact">Start Project</Link>
           </Button>
         </div>
 
         <div className="flex items-center gap-3 lg:hidden">
-          <Button
-            asChild
-            size="sm"
-            className="rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
-          >
+          <Button asChild size="sm" className={GOLD_BUTTON}>
             <Link href="/contact">Start</Link>
           </Button>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -197,19 +206,7 @@ export function Navbar() {
                   <p className="font-(family-name:--font-display) text-xs font-semibold uppercase tracking-wider text-(--text-tertiary) mb-3">
                     Connect
                   </p>
-                  <div className="flex flex-wrap gap-x-6 gap-y-2">
-                    {Object.entries(SITE.socials).map(([key, href]) => (
-                      <a
-                        key={key}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-nav capitalize text-(--text-secondary) transition-colors hover:text-(--gold)"
-                      >
-                        {key}
-                      </a>
-                    ))}
-                  </div>
+                  <SocialLinks className="flex-wrap gap-x-6 gap-y-2" />
                 </div>
               </div>
             </SheetContent>

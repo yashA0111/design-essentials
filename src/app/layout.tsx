@@ -3,15 +3,15 @@ import { displayFont, bodyFont, utilityFont } from "./fonts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/common/SmoothScroll";
-import { SITE } from "@/lib/constants";
+import { SITE, SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
+const DEFAULT_TITLE = "Design Essentials | Architecture & Interior Design Studio";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in"
-  ),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Design Essentials | Architecture & Interior Design Studio",
+    default: DEFAULT_TITLE,
     template: "%s | Design Essentials",
   },
   description: SITE.description,
@@ -28,15 +28,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://designessentials.in",
+    url: SITE_URL,
     siteName: SITE.name,
-    title: "Design Essentials | Architecture & Interior Design Studio",
+    title: DEFAULT_TITLE,
     description: SITE.description,
     images: [{ url: "/og/home.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Design Essentials | Architecture & Interior Design Studio",
+    title: DEFAULT_TITLE,
     description: SITE.description,
     images: ["/og/home.jpg"],
   },
@@ -58,7 +58,7 @@ const jsonLd = {
   "@type": "ProfessionalService",
   name: SITE.name,
   description: SITE.description,
-  url: "https://designessentials.in",
+  url: SITE_URL,
   telephone: "+91-98765-43210",
   email: SITE.email,
   address: {
