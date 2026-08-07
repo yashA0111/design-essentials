@@ -3,25 +3,39 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { services } from "@/lib/data/services";
 import { BUDGET_OPTIONS } from "@/lib/constants";
+import { contactSchema, type ContactFormData } from "@/lib/validation/contact";
+import { GOLD_BUTTON } from "@/lib/styles";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email"),
-  phone: z.string().optional(),
-  service: z.string().min(1, "Please select a service"),
-  brief: z.string().min(10, "Please provide at least 10 characters"),
-  budget: z.string().optional(),
-  website: z.string().max(0).optional(),
-});
+const FIELD_CLASS = "border-border bg-(--surface)";
+const SELECT_CLASS =
+  "flex h-9 w-full rounded-lg border border-border bg-(--surface) px-3 text-sm text-(--text-primary) outline-none";
 
-type ContactFormData = z.infer<typeof contactSchema>;
+type FieldProps = {
+  id: string;
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+};
+
+function Field({ id, label, error, children }: FieldProps) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="text-nav mb-2 block text-(--text-secondary)"
+      >
+        {label}
+      </label>
+      {children}
+      {error && <p className="mt-1 text-sm text-(--error)">{error}</p>}
+    </div>
+  );
+}
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
@@ -85,58 +99,34 @@ export function ContactForm() {
         aria-hidden="true"
       />
 
-      <div>
-        <label htmlFor="name" className="text-nav mb-2 block text-(--text-secondary)">
-          Name *
-        </label>
-        <Input
-          id="name"
-          {...register("name")}
-          className="border-border bg-(--surface)"
-        />
-        {errors.name && (
-          <p className="mt-1 text-sm text-(--error)">{errors.name.message}</p>
-        )}
-      </div>
+      <Field id="name" label="Name *" error={errors.name?.message}>
+        <Input id="name" {...register("name")} className={FIELD_CLASS} />
+      </Field>
 
-      <div>
-        <label htmlFor="email" className="text-nav mb-2 block text-(--text-secondary)">
-          Email *
-        </label>
+      <Field id="email" label="Email *" error={errors.email?.message}>
         <Input
           id="email"
           type="email"
           {...register("email")}
-          className="border-border bg-(--surface)"
+          className={FIELD_CLASS}
         />
-        {errors.email && (
-          <p className="mt-1 text-sm text-(--error)">{errors.email.message}</p>
-        )}
-      </div>
+      </Field>
 
-      <div>
-        <label htmlFor="phone" className="text-nav mb-2 block text-(--text-secondary)">
-          Phone
-        </label>
+      <Field id="phone" label="Phone">
         <Input
           id="phone"
           type="tel"
           {...register("phone")}
-          className="border-border bg-(--surface)"
+          className={FIELD_CLASS}
         />
-      </div>
+      </Field>
 
-      <div>
-        <label htmlFor="service" className="text-nav mb-2 block text-(--text-secondary)">
-          Service Interest *
-        </label>
-        <select
-          id="service"
-          {...register("service")}
-          className={cn(
-            "flex h-9 w-full rounded-lg border border-border bg-(--surface) px-3 text-sm text-(--text-primary) outline-none"
-          )}
-        >
+      <Field
+        id="service"
+        label="Service Interest *"
+        error={errors.service?.message}
+      >
+        <select id="service" {...register("service")} className={SELECT_CLASS}>
           <option value="">Select a service</option>
           {services.map((s) => (
             <option key={s.id} value={s.name}>
@@ -144,35 +134,19 @@ export function ContactForm() {
             </option>
           ))}
         </select>
-        {errors.service && (
-          <p className="mt-1 text-sm text-(--error)">{errors.service.message}</p>
-        )}
-      </div>
+      </Field>
 
-      <div>
-        <label htmlFor="brief" className="text-nav mb-2 block text-(--text-secondary)">
-          Project Brief *
-        </label>
+      <Field id="brief" label="Project Brief *" error={errors.brief?.message}>
         <Textarea
           id="brief"
           rows={5}
           {...register("brief")}
-          className="border-border bg-(--surface)"
+          className={FIELD_CLASS}
         />
-        {errors.brief && (
-          <p className="mt-1 text-sm text-(--error)">{errors.brief.message}</p>
-        )}
-      </div>
+      </Field>
 
-      <div>
-        <label htmlFor="budget" className="text-nav mb-2 block text-(--text-secondary)">
-          Budget Range
-        </label>
-        <select
-          id="budget"
-          {...register("budget")}
-          className="flex h-9 w-full rounded-lg border border-border bg-(--surface) px-3 text-sm text-(--text-primary) outline-none"
-        >
+      <Field id="budget" label="Budget Range">
+        <select id="budget" {...register("budget")} className={SELECT_CLASS}>
           <option value="">Select budget range</option>
           {BUDGET_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.label}>
@@ -180,7 +154,7 @@ export function ContactForm() {
             </option>
           ))}
         </select>
-      </div>
+      </Field>
 
       {status === "error" && (
         <p className="text-sm text-(--error)">
@@ -191,7 +165,7 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={status === "loading"}
-        className="w-full rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
+        className={`w-full ${GOLD_BUTTON}`}
       >
         {status === "loading" ? "Sending..." : "Submit Inquiry"}
       </Button>

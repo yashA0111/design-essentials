@@ -1,25 +1,11 @@
 import Link from "next/link";
-import {
-  Building2,
-  Container,
-  House,
-  Landmark,
-  Layers,
-  Presentation,
-  type LucideIcon,
-} from "lucide-react";
 import type { Service } from "@/types/service";
+import {
+  FALLBACK_SERVICE_ICON,
+  SERVICE_ICONS,
+} from "@/lib/serviceIcons";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { cn } from "@/lib/utils";
-
-const iconMap: Record<string, LucideIcon> = {
-  House,
-  Container,
-  Landmark,
-  Presentation,
-  Layers,
-  Building2,
-};
 
 type ServiceCardProps = {
   service: Service;
@@ -32,7 +18,7 @@ export function ServiceCard({
   className,
   variant = "grid",
 }: ServiceCardProps) {
-  const Icon = iconMap[service.icon] ?? House;
+  const Icon = SERVICE_ICONS[service.icon] ?? FALLBACK_SERVICE_ICON;
 
   return (
     <Link

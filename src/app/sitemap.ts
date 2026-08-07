@@ -2,70 +2,43 @@ import type { MetadataRoute } from "next";
 import { services } from "@/lib/data/services";
 import { projects } from "@/lib/data/projects";
 import { blogPosts } from "@/lib/data/siteContent";
+import { SITE_URL } from "@/lib/constants";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in";
+type SitemapEntry = MetadataRoute.Sitemap[number];
+
+function entry(
+  path: string,
+  changeFrequency: SitemapEntry["changeFrequency"],
+  priority: number
+): SitemapEntry {
+  return {
+    url: `${SITE_URL}${path}`,
+    lastModified: new Date(),
+    changeFrequency,
+    priority,
+  };
+}
+
+function collectionEntries(
+  items: readonly { slug: string }[],
+  basePath: string,
+  priority: number
+): MetadataRoute.Sitemap {
+  return items.map((item) =>
+    entry(`${basePath}/${item.slug}`, "monthly", priority)
+  );
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: BASE_URL,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/services`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
+  return [
+    entry("", "weekly", 1),
+    entry("/about", "monthly", 0.9),
+    entry("/services", "monthly", 0.9),
+    entry("/projects", "monthly", 0.8),
+    entry("/contact", "monthly", 0.7),
+    entry("/blog", "weekly", 0.7),
+    ...collectionEntries(services, "/services", 0.8),
+    ...collectionEntries(projects, "/projects", 0.7),
+    ...collectionEntries(blogPosts, "/blog", 0.6),
   ];
-
-  const serviceRoutes: MetadataRoute.Sitemap = services.map((s) => ({
-    url: `${BASE_URL}/services/${s.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const projectRoutes: MetadataRoute.Sitemap = projects.map((p) => ({
-    url: `${BASE_URL}/projects/${p.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
-  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((b) => ({
-    url: `${BASE_URL}/blog/${b.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
-
-  return [...staticRoutes, ...serviceRoutes, ...projectRoutes, ...blogRoutes];
 }

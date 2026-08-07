@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { getFeaturedProjects } from "@/lib/data/projects";
+import { GOLD_LINK } from "@/lib/styles";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/AnimatedTitle";
 import { ProjectCard } from "@/components/cards/ProjectCard";
@@ -22,7 +23,7 @@ export function FeaturedProjectsSection() {
           <Link
             data-reveal
             href="/projects"
-            className="text-nav text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
+            className={`text-nav ${GOLD_LINK}`}
           >
             All Projects →
           </Link>

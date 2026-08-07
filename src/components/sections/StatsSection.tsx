@@ -1,12 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "@/lib/gsap";
 import { stats } from "@/lib/data/stats";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
-
-gsap.registerPlugin(ScrollTrigger);
 
 function StatItem({
   value,

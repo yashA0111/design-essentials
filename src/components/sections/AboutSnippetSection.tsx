@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { homeAboutContent } from "@/lib/data/siteContent";
+import { GOLD_LINK } from "@/lib/styles";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/AnimatedTitle";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
@@ -46,7 +47,7 @@ export function AboutSnippetSection() {
           <Link
             data-reveal
             href="/about"
-            className="text-nav mt-6 inline-block text-(--gold) transition-colors hover:text-(--gold-muted)"
+            className={`text-nav mt-6 inline-block ${GOLD_LINK}`}
           >
             {homeAboutContent.ctaLabel}
           </Link>

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { services } from "@/lib/data/services";
+import { GOLD_BUTTON } from "@/lib/styles";
+import { ContactDetails } from "@/components/common/ContactDetails";
 import { Button } from "@/components/ui/button";
 
 export function Footer() {
@@ -75,29 +77,8 @@ export function Footer() {
             <h3 className="text-eyebrow mb-6 text-(--text-secondary)">
               Contact
             </h3>
-            <address className="text-body not-italic">
-              <p>{SITE.address.full}</p>
-              <p className="mt-2">
-                <a
-                  href={`mailto:${SITE.email}`}
-                  className="transition-colors hover:text-(--gold)"
-                >
-                  {SITE.email}
-                </a>
-              </p>
-              <p className="mt-1">
-                <a
-                  href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-                  className="transition-colors hover:text-(--gold)"
-                >
-                  {SITE.phone}
-                </a>
-              </p>
-            </address>
-            <Button
-              asChild
-              className="mt-6 rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
-            >
+            <ContactDetails emailClassName="mt-2" phoneClassName="mt-1" />
+            <Button asChild className={`mt-6 ${GOLD_BUTTON}`}>
               <Link href="/contact">Get a Quote</Link>
             </Button>
           </div>

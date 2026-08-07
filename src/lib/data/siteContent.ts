@@ -5,6 +5,7 @@ import type {
   ProcessStep,
   TeamMember,
 } from "@/types/site";
+import { findBySlug } from "@/lib/data/query";
 
 export const processSteps: ProcessStep[] = [
   {
@@ -181,7 +182,7 @@ export const blogPosts: BlogPost[] = [
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug);
+  return findBySlug(blogPosts, slug);
 }
 
 export const marqueeItems = [

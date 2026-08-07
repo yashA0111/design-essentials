@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "@/lib/gsap";
 import { processSteps } from "@/lib/data/siteContent";
+import { formatStepNumber } from "@/lib/format";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/AnimatedTitle";
+import { ProcessStepCard } from "@/components/cards/ProcessStepCard";
 import { cn } from "@/lib/utils";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export function ProcessSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -59,18 +58,12 @@ export function ProcessSection() {
         <div className="hidden lg:block">
           <div ref={trackRef} className="flex gap-8 px-[clamp(20px,5vw,100px)]">
             {processSteps.map((step) => (
-              <div
+              <ProcessStepCard
                 key={step.step}
-                className="w-[400px] shrink-0 border border-border bg-(--void) p-8"
-              >
-                <span className="font-(family-name:--font-display) text-5xl text-(--gold)">
-                  {String(step.step).padStart(2, "0")}
-                </span>
-                <h3 className="text-card-title mt-4 text-(--text-primary)">
-                  {step.title}
-                </h3>
-                <p className="text-body mt-3">{step.description}</p>
-              </div>
+                step={step}
+                variant="wide"
+                className="w-[400px] shrink-0"
+              />
             ))}
           </div>
         </div>
@@ -91,7 +84,7 @@ export function ProcessSection() {
               >
                 <span className="flex items-center gap-4">
                   <span className="font-(family-name:--font-display) text-2xl text-(--gold)">
-                    {String(step.step).padStart(2, "0")}
+                    {formatStepNumber(step.step)}
                   </span>
                   <span className="text-card-title text-(--text-primary)">
                     {step.title}
