@@ -30,7 +30,6 @@ export const NAV_LINKS = [
   { label: "Services", href: "/services", hasDropdown: true },
   { label: "Projects", href: "/projects" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const PROJECT_TIMELINE_OPTIONS = [

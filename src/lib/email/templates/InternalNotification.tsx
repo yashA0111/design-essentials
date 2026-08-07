@@ -9,54 +9,46 @@ import {
 } from "react-email";
 
 type InternalNotificationEmailProps = {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone?: string;
-  service: string;
-  brief: string;
-  timeline: string;
+  phone: string;
+  enquiry: string;
 };
 
 export function InternalNotificationEmail({
-  name,
+  firstName,
+  lastName,
   email,
   phone,
-  service,
-  brief,
-  timeline,
+  enquiry,
 }: InternalNotificationEmailProps) {
+  const fullName = `${firstName} ${lastName}`;
+
   return (
     <Html>
       <Head />
       <Preview>
-        New inquiry: {service} — {name}
+        New enquiry — {fullName}
       </Preview>
       <Body style={{ backgroundColor: "#111111", color: "#F0EDE8", fontFamily: "sans-serif" }}>
         <Container style={{ padding: "40px 20px" }}>
           <Heading style={{ color: "#C4A96B", fontWeight: 400 }}>
-            New Project Inquiry
+            New Project Enquiry
           </Heading>
           <Text style={{ color: "#F0EDE8" }}>
-            <strong>Name:</strong> {name}
+            <strong>Name:</strong> {fullName}
           </Text>
           <Text style={{ color: "#F0EDE8" }}>
             <strong>Email:</strong> {email}
           </Text>
-          {phone && (
-            <Text style={{ color: "#F0EDE8" }}>
-              <strong>Phone:</strong> {phone}
-            </Text>
-          )}
           <Text style={{ color: "#F0EDE8" }}>
-            <strong>Service:</strong> {service}
-          </Text>
-          <Text style={{ color: "#F0EDE8" }}>
-            <strong>Project Timeline:</strong> {timeline}
+            <strong>Phone:</strong> {phone}
           </Text>
           <Text style={{ color: "#8C8C8C", lineHeight: 1.75, marginTop: 24 }}>
-            <strong style={{ color: "#F0EDE8" }}>Brief:</strong>
+            <strong style={{ color: "#F0EDE8" }}>Enquiry:</strong>
             <br />
-            {brief}
+            {enquiry}
           </Text>
         </Container>
       </Body>

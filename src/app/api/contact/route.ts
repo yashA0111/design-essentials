@@ -5,12 +5,11 @@ import { InternalNotificationEmail } from "@/lib/email/templates/InternalNotific
 import { SITE } from "@/lib/constants";
 
 const contactSchema = z.object({
-  name: z.string().min(2),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   email: z.string().email(),
-  phone: z.string().optional(),
-  service: z.string(),
-  brief: z.string().min(10),
-  timeline: z.string().min(1),
+  phone: z.string().min(10),
+  enquiry: z.string().min(10),
   website: z.string().max(0).optional(),
 });
 
@@ -25,6 +24,7 @@ export async function POST(request: Request) {
     );
   }
 
+  // Honeypot check — bots fill the hidden website field
   if (parsed.data.website) {
     return Response.json({ success: true });
   }
@@ -38,6 +38,7 @@ export async function POST(request: Request) {
   }
 
   const resend = new Resend(apiKey);
+  const fullName = `${parsed.data.firstName} ${parsed.data.lastName}`;
 
   try {
     await Promise.all([
@@ -45,13 +46,19 @@ export async function POST(request: Request) {
         from: `Design Essentials <${SITE.email}>`,
         to: parsed.data.email,
         subject: "We've received your inquiry — Design Essentials",
-        react: ContactConfirmationEmail({ name: parsed.data.name }),
+        react: ContactConfirmationEmail({ name: fullName }),
       }),
       resend.emails.send({
         from: `Website Contact <${SITE.email}>`,
         to: SITE.email,
-        subject: `New Project Inquiry: ${parsed.data.service} — ${parsed.data.name}`,
-        react: InternalNotificationEmail(parsed.data),
+        subject: `New Enquiry — ${fullName}`,
+        react: InternalNotificationEmail({
+          firstName: parsed.data.firstName,
+          lastName: parsed.data.lastName,
+          email: parsed.data.email,
+          phone: parsed.data.phone,
+          enquiry: parsed.data.enquiry,
+        }),
       }),
     ]);
 

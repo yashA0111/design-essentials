@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Leaf } from "lucide-react";
-import { aboutContent } from "@/lib/data/siteContent";
+import { aboutContent, ecoSectionContent } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 
@@ -20,12 +20,12 @@ export function EcoSection() {
       />
       <div className="container relative z-10 max-w-3xl">
         <div data-reveal>
-          <SectionLabel className="mb-6 sage-text">ECO DESIGN</SectionLabel>
+          <SectionLabel className="mb-6 sage-text">{ecoSectionContent.eyebrow}</SectionLabel>
         </div>
         <div data-reveal>
           <h2 className="text-section text-[var(--text-primary)]">
-            <em className="font-light italic text-[var(--sage)]">Sustainable</em>{" "}
-            by Design
+            <em className="font-light italic text-[var(--sage)]">{ecoSectionContent.headingItalic}</em>{" "}
+            {ecoSectionContent.headingRest}
           </h2>
         </div>
         <p data-reveal className="text-body mt-8 text-lg">
@@ -36,7 +36,7 @@ export function EcoSection() {
           href="/about#eco"
           className="text-nav mt-8 inline-block text-[var(--sage)] transition-colors hover:text-[var(--sage-muted)]"
         >
-          Our Eco Philosophy →
+          {ecoSectionContent.ctaLabel}
         </Link>
       </div>
     </section>

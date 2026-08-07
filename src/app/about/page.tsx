@@ -18,7 +18,7 @@ export default function AboutPage() {
       <section className="relative flex min-h-[60vh] items-end section-padding">
         <div className="absolute inset-0">
           <ImageWithFallback
-            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80"
+            src={aboutContent.heroImage}
             alt="Design Essentials studio and architectural workspace"
             fill
             priority
@@ -45,7 +45,7 @@ export default function AboutPage() {
 
       <section data-theme="light" className="section-padding bg-(--surface)">
         <div className="container">
-          <SectionLabel className="mb-6">OUR STORY</SectionLabel>
+          <SectionLabel className="mb-6">{aboutContent.storyLabel}</SectionLabel>
           <p className="text-body mb-16 max-w-3xl text-lg">{aboutContent.storyIntro}</p>
           <TimelineSection milestones={milestones} />
         </div>
@@ -53,7 +53,7 @@ export default function AboutPage() {
 
       <section data-theme="light" className="section-padding bg-[var(--void)]">
         <div className="container">
-          <SectionLabel className="mb-6">OUR TEAM</SectionLabel>
+          <SectionLabel className="mb-6">{aboutContent.teamLabel}</SectionLabel>
           <SplitTitle rest="The People Behind" italicWord="the Vision" className="mb-16" />
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {teamMembers.map((member) => (
@@ -84,7 +84,7 @@ export default function AboutPage() {
 
       <section data-theme="light" className="section-padding bg-(--surface)">
         <div className="container">
-          <SectionLabel className="mb-6">PHILOSOPHY</SectionLabel>
+          <SectionLabel className="mb-6">{aboutContent.philosophyLabel}</SectionLabel>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {aboutContent.philosophyPillars.map((pillar) => (
               <div

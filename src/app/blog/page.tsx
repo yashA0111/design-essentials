@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { blogPosts } from "@/lib/data/siteContent";
+import { blogPageContent, blogPosts } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { Badge } from "@/components/ui/badge";
@@ -15,8 +15,8 @@ export default function BlogPage() {
   return (
     <section data-theme="light" className="section-padding bg-[var(--void)] pt-32">
       <div className="container">
-        <SectionLabel className="mb-6">INSIGHTS</SectionLabel>
-        <h1 className="text-section mb-16 text-[var(--text-primary)]">Blog</h1>
+        <SectionLabel className="mb-6">{blogPageContent.eyebrow}</SectionLabel>
+        <h1 className="text-section mb-16 text-[var(--text-primary)]">{blogPageContent.title}</h1>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post) => (
@@ -59,7 +59,7 @@ export default function BlogPage() {
                     })}
                   </time>
                   <span className="text-nav text-[var(--gold)]">
-                    Read More →
+                    {blogPageContent.readMoreLabel}
                   </span>
                 </div>
               </div>

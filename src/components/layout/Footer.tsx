@@ -75,12 +75,12 @@ export function Footer() {
             <h3 className="text-eyebrow mb-6 text-(--text-secondary)">
               Contact
             </h3>
-            <address className="text-body not-italic">
+            <address className="text-body not-italic min-w-0">
               <p>{SITE.address.full}</p>
-              <p className="mt-2">
+              <p className="mt-2 min-w-0">
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="transition-colors hover:text-(--gold)"
+                  className="transition-colors hover:text-(--gold) break-words [overflow-wrap:anywhere]"
                 >
                   {SITE.email}
                 </a>
@@ -96,9 +96,9 @@ export function Footer() {
             </address>
             <Button
               asChild
-              className="mt-6 rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted)"
+              className="mt-6 rounded-full bg-(--gold) text-(--void) hover:bg-(--gold-muted) uppercase tracking-[0.08em] text-[12px] font-medium cursor-pointer"
             >
-              <Link href="/contact">Get a Quote</Link>
+              <Link href="/contact">Start Your Project</Link>
             </Button>
           </div>
         </div>

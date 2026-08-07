@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
+import { contactPageContent } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { ContactForm } from "@/components/common/ContactForm";
 
@@ -11,63 +12,91 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <section data-theme="light" className="section-padding bg-[var(--void)] pt-32">
-      <div className="container">
-        <SectionLabel className="mb-6">GET IN TOUCH</SectionLabel>
-        <h1 className="text-section mb-16 text-[var(--text-primary)]">
-          Start Your Project
-        </h1>
+    <section
+      data-theme="light"
+      className="min-h-screen bg-[var(--void)] pt-32 pb-24 lg:pt-40 lg:pb-32"
+    >
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+          {/* Left Column: Heading, Intro & Direct Contact Info */}
+          <div className="lg:col-span-5">
+            <SectionLabel className="mb-6">
+              {contactPageContent.eyebrow}
+            </SectionLabel>
+            
+            <h1 className="font-(family-name:--font-display) text-[clamp(36px,4.5vw,56px)] font-light leading-[1.1] text-[var(--text-primary)]">
+              {contactPageContent.headingLine1}{" "}
+              <em className="font-light italic text-[var(--gold)]">
+                {contactPageContent.headingItalic}
+              </em>
+              <br />
+              {contactPageContent.headingLine2}
+            </h1>
+            
+            <p className="text-body mt-6 text-[var(--text-secondary)] text-base leading-relaxed">
+              {contactPageContent.intro}
+            </p>
 
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-[40%_60%]">
-          <div>
-            <h2 className="text-card-title mb-6 text-[var(--text-primary)]">
-              Contact Information
-            </h2>
-            <address className="text-body space-y-4 not-italic">
-              <p>{SITE.address.full}</p>
-              <p>
-                <a
-                  href={`mailto:${SITE.email}`}
-                  className="transition-colors hover:text-[var(--gold)]"
-                >
-                  {SITE.email}
-                </a>
-              </p>
-              <p>
-                <a
-                  href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-                  className="transition-colors hover:text-[var(--gold)]"
-                >
-                  {SITE.phone}
-                </a>
-              </p>
-            </address>
+            {/* Direct Contact Info */}
+            <div className="mt-12 space-y-8 border-t border-[var(--border)] pt-8">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="min-w-0">
+                  <p className="text-eyebrow mb-2 text-[var(--text-tertiary)]">
+                    Email
+                  </p>
+                  <a
+                    href={`mailto:${SITE.email}`}
+                    className="text-body text-sm text-[var(--text-primary)] transition-colors hover:text-[var(--gold)] break-words [overflow-wrap:anywhere]"
+                  >
+                    {SITE.email}
+                  </a>
+                </div>
 
-            <div className="mt-8 flex gap-4">
-              {Object.entries(SITE.socials).map(([key, href]) => (
-                <a
-                  key={key}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-nav capitalize text-[var(--text-secondary)] transition-colors hover:text-[var(--gold)]"
-                >
-                  {key}
-                </a>
-              ))}
-            </div>
+                <div>
+                  <p className="text-eyebrow mb-2 text-[var(--text-tertiary)]">
+                    Phone
+                  </p>
+                  <a
+                    href={`tel:${SITE.phone.replace(/\s/g, "")}`}
+                    className="text-body text-sm text-[var(--text-primary)] transition-colors hover:text-[var(--gold)]"
+                  >
+                    {SITE.phone}
+                  </a>
+                </div>
 
-            <div className="mt-12 aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--surface)]">
-              <iframe
-                title="Design Essentials office location map"
-                src={SITE.mapUrl}
-                className="h-full w-full border-0"
-                loading="lazy"
-              />
+                <div>
+                  <p className="text-eyebrow mb-2 text-[var(--text-tertiary)]">
+                    Studio
+                  </p>
+                  <address className="text-body text-sm not-italic text-[var(--text-primary)]">
+                    {SITE.address.full}
+                  </address>
+                </div>
+
+                <div>
+                  <p className="text-eyebrow mb-3 text-[var(--text-tertiary)]">
+                    Follow
+                  </p>
+                  <div className="flex flex-wrap gap-x-5 gap-y-1">
+                    {Object.entries(SITE.socials).map(([key, href]) => (
+                      <a
+                        key={key}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-nav text-xs capitalize text-[var(--text-secondary)] transition-colors hover:text-[var(--gold)]"
+                      >
+                        {key}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div>
+          {/* Right Column: Contact Form */}
+          <div className="lg:col-span-7">
             <ContactForm />
           </div>
         </div>

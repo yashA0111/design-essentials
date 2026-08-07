@@ -43,6 +43,11 @@ export const aboutContent = {
   heroEyebrow: "About Us",
   heroTitle: "Design Essentials",
   heroSubtitle: "Where Vision Becomes Space",
+  heroImage:
+    "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80",
+  storyLabel: "OUR STORY",
+  teamLabel: "OUR TEAM",
+  philosophyLabel: "PHILOSOPHY",
   mission:
     "We believe every space has a story waiting to be told. Design Essentials exists to uncover that story — through rigorous design thinking, material honesty, and an unwavering commitment to delivering spaces that inspire the people who inhabit them.",
   storyIntro:
@@ -233,3 +238,53 @@ export const contactCtaContent = {
   subtext: "Let's design something remarkable together.",
   ctaLabel: "Start Your Project",
 };
+
+export const contactPageContent = {
+  eyebrow: "GET IN TOUCH",
+  headingLine1: "Let's",
+  headingItalic: "Create",
+  headingLine2: "Something Remarkable",
+  intro:
+    "Share a few details about your project and we'll be in touch within one business day.",
+  submitLabel: "Send Enquiry",
+  submitLoadingLabel: "Sending…",
+  successTitle: "Thank you for reaching out",
+  successMessage:
+    "Thank you! We've received your enquiry and will be in touch within one business day.",
+  successCta: "Send another message",
+  errorMessage:
+    "Something went wrong. Please try again or email us directly.",
+  fields: {
+    fullName: "Full Name",
+    email: "Email",
+    phone: "Phone Number",
+    enquiry: "Enquiry or Project Description",
+  },
+} as const;
+
+export const projectsPageContent = {
+  eyebrow: "PORTFOLIO",
+  title: "Our Projects",
+  intro:
+    "A selection of completed work across our six design domains — each project a testament to precision, innovation, and craft.",
+} as const;
+
+export const servicesPageContent = {
+  eyebrow: "OUR SERVICES",
+  title: "Complete Design Solutions",
+  intro:
+    "Six domains, one vision — from concept to completion, we deliver spaces that inspire across every scale and sector.",
+} as const;
+
+export const blogPageContent = {
+  eyebrow: "INSIGHTS",
+  title: "Blog",
+  readMoreLabel: "Read More →",
+} as const;
+
+export const ecoSectionContent = {
+  eyebrow: "ECO DESIGN",
+  headingItalic: "Sustainable",
+  headingRest: "by Design",
+  ctaLabel: "Our Eco Philosophy →",
+} as const;

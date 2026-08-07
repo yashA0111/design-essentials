@@ -109,14 +109,14 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-8 left-[clamp(20px,5vw,100px)] hidden items-center gap-6 lg:flex">
+      <div className="absolute bottom-8 left-[clamp(20px,5vw,100px)] z-20 hidden items-center gap-6 lg:flex">
         {Object.entries(SITE.socials).slice(0, 3).map(([key, href]) => (
           <a
             key={key}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-nav capitalize text-(--text-secondary) transition-colors hover:text-(--gold)"
+            className="text-nav capitalize text-(--text-secondary) transition-colors hover:text-(--gold) pointer-events-auto"
           >
             {key}
           </a>
