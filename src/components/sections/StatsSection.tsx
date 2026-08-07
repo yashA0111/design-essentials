@@ -36,7 +36,7 @@ function StatItem({
         },
         onUpdate: () => {
           if (displayRef.current) {
-            displayRef.current.innerHTML =
+            displayRef.current.textContent =
               Math.round(counterRef.current.val) + suffix;
           }
         },
@@ -51,8 +51,9 @@ function StatItem({
       <span
         ref={displayRef}
         className="font-(family-name:--font-display) text-5xl text-(--gold) md:text-6xl"
-        dangerouslySetInnerHTML={{ __html: `0${suffix}` }}
-      />
+      >
+        {`0${suffix}`}
+      </span>
       <p className="text-nav mt-3 text-(--text-secondary)">{label}</p>
     </div>
   );
