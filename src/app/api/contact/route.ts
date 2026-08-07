@@ -11,7 +11,7 @@ const contactSchema = z.object({
   service: z.string().min(1).max(100),
   brief: z.string().min(10).max(5000),
   budget: z.string().max(100).optional(),
-  website: z.string().max(0).optional(),
+  website: z.string().optional(),
 });
 
 const MAX_BODY_BYTES = 20_000;
