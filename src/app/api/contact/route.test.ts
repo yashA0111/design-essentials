@@ -23,6 +23,7 @@ const validBody = {
   fullName: "Asha Menon",
   email: "asha@example.com",
   phone: "+91 98765 43210",
+  phoneCountry: "IN",
   enquiry: "We are planning a container studio in Goa and would like a quote.",
 };
 
@@ -44,11 +45,14 @@ describe("POST /api/contact", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
-  it("sends both emails for a valid enquiry", async () => {
-    const response = await POST(post(validBody));
+  it("normalizes contact data and sends both emails for a valid enquiry", async () => {
+    const response = await POST(post({ ...validBody, email: "  ASHA@EXAMPLE.COM  " }));
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ success: true });
     expect(send).toHaveBeenCalledTimes(2);
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "asha@example.com" })
+    );
   });
 
   it("rejects a non-JSON content type", async () => {
