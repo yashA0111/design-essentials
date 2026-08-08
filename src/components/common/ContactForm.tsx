@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { contactPageContent } from "@/lib/data/siteContent";
@@ -12,6 +12,7 @@ import {
 } from "@/lib/validation/contact";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { CountryCodeSelector } from "@/components/ui/CountryCodeSelector";
 import { COUNTRY_CALLING_CODE_OPTIONS, DEFAULT_COUNTRY_CODE } from "@/lib/contact/countries";
 import { cn } from "@/lib/utils";
 
@@ -85,8 +86,6 @@ export function ContactForm() {
     reValidateMode: "onChange",
     defaultValues: { countryCode: DEFAULT_COUNTRY_CODE },
   });
-  const selectedCountryCode = useWatch({ control, name: "countryCode" }) ?? DEFAULT_COUNTRY_CODE;
-  const selectedCallingCode = COUNTRY_CALLING_CODES.get(selectedCountryCode) ?? "+91";
 
   const focusNextEmptyField = async (currentField: FieldKey) => {
     // Validate current field immediately when pressing Enter
@@ -296,26 +295,23 @@ export function ContactForm() {
           {fields.phone}
         </label>
         <div className="flex border-b border-[var(--border)] focus-within:border-[var(--gold)]">
-          <div className="relative h-14 w-20 shrink-0 border-r border-[var(--border)]">
-            <span aria-hidden="true" className="pointer-events-none flex h-full items-center px-3 font-(family-name:--font-body) text-[15px] text-[var(--text-primary)]">
-              {selectedCallingCode}
-              <svg className="ml-auto h-4 w-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="m4 6 4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <label className="sr-only" htmlFor="countryCode">Phone country or region</label>
-            <select
-              id="countryCode"
-              {...register("countryCode")}
-              onKeyDown={handleCountryKeyDown}
-              className="absolute inset-0 h-full w-full cursor-pointer opacity-0 focus-visible:outline-2 focus-visible:outline-[var(--gold)] focus-visible:outline-offset-2"
-              aria-invalid={Boolean(errors.countryCode)}
-            >
-              {COUNTRY_CALLING_CODE_OPTIONS.map(({ code, name, callingCode }) => (
-                <option key={code} value={code}>{callingCode} · {code} — {name}</option>
-              ))}
-            </select>
-          </div>
+          <Controller
+            name="countryCode"
+            control={control}
+            render={({ field }) => (
+              <CountryCodeSelector
+                id="countryCode"
+                name={field.name}
+                value={field.value ?? DEFAULT_COUNTRY_CODE}
+                onChange={(val) => {
+                  field.onChange(val);
+                }}
+                onKeyDown={handleCountryKeyDown}
+                onSelectNext={() => setFocus("phone")}
+                hasError={Boolean(errors.countryCode)}
+              />
+            )}
+          />
           <Input
             id="phone"
             type="tel"

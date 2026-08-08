@@ -1239,3 +1239,30 @@ export const COUNTRY_CALLING_CODE_OPTIONS: readonly CountryCallingCodeOption[] =
 
 export const DEFAULT_COUNTRY_CODE = "IN";
 export const SUPPORTED_COUNTRY_CODES = new Set(COUNTRY_CALLING_CODE_OPTIONS.map(({ code }) => code));
+
+export const FEATURED_COUNTRY_CODES = [
+  "IN", // India
+  "US", // United States
+  "GB", // United Kingdom
+  "DE", // Germany (EU)
+  "FR", // France (EU)
+  "IT", // Italy (EU)
+  "ES", // Spain (EU)
+  "NL", // Netherlands (EU)
+  "BE", // Belgium (EU)
+  "IE", // Ireland (EU)
+  "PT", // Portugal (EU)
+  "AT", // Austria (EU)
+  "SE", // Sweden (EU)
+  "DK", // Denmark (EU)
+  "FI", // Finland (EU)
+  "PL", // Poland (EU)
+  "GR", // Greece (EU)
+] as const;
+
+const optionsByCode = new Map(COUNTRY_CALLING_CODE_OPTIONS.map((opt) => [opt.code, opt]));
+
+export const FEATURED_COUNTRY_OPTIONS: readonly CountryCallingCodeOption[] = FEATURED_COUNTRY_CODES
+  .map((code) => optionsByCode.get(code))
+  .filter((opt): opt is CountryCallingCodeOption => opt !== undefined);
+
