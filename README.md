@@ -41,7 +41,7 @@ For an identity conflict, verify identities and merge/repair the canonical lead 
 
 ## Retention and erasure
 
-Raw submitted strings are nulled after `CONTACT_RAW_RETENTION_DAYS` (90 default). Canonical enquiry, lead, identity, and job audit records are retained for legitimate business processing; raw purge does **not** erase canonical PII. For an approved erasure request, transactionally delete pending jobs/invites, enquiries, identities, and then the lead (FKs cascade as configured). Delete/verify the corresponding Zoho Lead separately: V1 is not bidirectional.
+Raw submitted strings are nulled after `CONTACT_RAW_RETENTION_DAYS` (90 default). Canonical enquiry, lead, identity, and job audit records are retained for legitimate business processing; raw purge does **not** erase canonical PII. Each enquiry also retains the selected ISO 3166-1 alpha-2 phone country (`country_code`) to preserve the user’s country context where E.164 calling codes are shared; the normalized E.164 number remains the sole phone identity and idempotency input. For an approved erasure request, transactionally delete pending jobs/invites, enquiries, identities, and then the lead (FKs cascade as configured). Delete/verify the corresponding Zoho Lead separately: V1 is not bidirectional.
 
 ## Secrets and rotation
 

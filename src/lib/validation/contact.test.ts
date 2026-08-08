@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CONTACT_FIELD_LIMITS, contactSchema } from "./contact";
+import { CONTACT_FIELD_LIMITS, contactRequestSchema, contactSchema } from "./contact";
 
 const validInput = {
   fullName: "Asha Menon",
@@ -10,40 +10,39 @@ const validInput = {
 
 describe("contactSchema", () => {
   it("accepts a well-formed enquiry and trims whitespace", () => {
-    const parsed = contactSchema.parse({
-      ...validInput,
-      fullName: "  Asha Menon  ",
-    });
+    const parsed = contactSchema.parse({ ...validInput, fullName: "  Asha Menon  " });
     expect(parsed.fullName).toBe("Asha Menon");
+  });
+
+  it("accepts short national-phone shapes and delegates country-specific validity to the server", () => {
+    for (const phone of ["21 23 45 67", "20 12 34 56", "8123 4567"]) {
+      expect(contactSchema.safeParse({ ...validInput, phone }).success).toBe(true);
+    }
+  });
+
+  it("normalizes a supplied ISO country code and defaults legacy requests to India", () => {
+    expect(contactSchema.parse({ ...validInput, countryCode: " gb " }).countryCode).toBe("GB");
+    expect(contactRequestSchema.parse(validInput).countryCode).toBe("IN");
   });
 
   it.each([
     ["fullName", "A"],
     ["email", "not-an-email"],
-    ["phone", "12345"],
+    ["phone", ""],
     ["phone", "call me"],
+    ["countryCode", "India"],
     ["enquiry", "too short"],
   ])("rejects an invalid %s", (field, value) => {
     const result = contactSchema.safeParse({ ...validInput, [field]: value });
     expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.flatten().fieldErrors).toHaveProperty(field);
-    }
+    if (!result.success) expect(result.error.flatten().fieldErrors).toHaveProperty(field);
   });
 
   it("rejects oversized fields", () => {
-    const result = contactSchema.safeParse({
-      ...validInput,
-      enquiry: "x".repeat(CONTACT_FIELD_LIMITS.enquiry + 1),
-    });
-    expect(result.success).toBe(false);
+    expect(contactSchema.safeParse({ ...validInput, enquiry: "x".repeat(CONTACT_FIELD_LIMITS.enquiry + 1) }).success).toBe(false);
   });
 
   it("keeps the honeypot value for the caller to inspect", () => {
-    const parsed = contactSchema.parse({
-      ...validInput,
-      website: "https://spam.example",
-    });
-    expect(parsed.website).toBe("https://spam.example");
+    expect(contactSchema.parse({ ...validInput, website: "https://spam.example" }).website).toBe("https://spam.example");
   });
 });

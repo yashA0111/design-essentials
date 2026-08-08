@@ -12,6 +12,7 @@ import {
 } from "@/lib/validation/contact";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { COUNTRY_CALLING_CODE_OPTIONS, DEFAULT_COUNTRY_CODE } from "@/lib/contact/countries";
 import { cn } from "@/lib/utils";
 
 const FIELD_ORDER = [
@@ -77,6 +78,7 @@ export function ContactForm() {
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
+    defaultValues: { countryCode: DEFAULT_COUNTRY_CODE },
   });
 
   const focusNextEmptyField = async (currentField: FieldKey) => {
@@ -118,6 +120,12 @@ export function ContactForm() {
 
     event.preventDefault();
     void focusNextEmptyField(currentField);
+  };
+
+  const handleCountryKeyDown = (event: React.KeyboardEvent<HTMLSelectElement>) => {
+    if (event.key !== "Enter" || event.shiftKey || event.ctrlKey || event.metaKey) return;
+    event.preventDefault();
+    setFocus("phone");
   };
 
   const onSubmit = async (data: ContactFormData) => {
@@ -280,25 +288,39 @@ export function ContactForm() {
         <label htmlFor="phone" className={labelClassName}>
           {fields.phone}
         </label>
-        <Input
-          id="phone"
-          type="tel"
-          autoComplete="tel"
-          inputMode="tel"
-          maxLength={CONTACT_FIELD_LIMITS.phone}
-          placeholder="Enter your phone number"
-          {...register("phone")}
-          onKeyDown={(event) => handleFieldKeyDown(event, "phone")}
-          className={inputClassName}
-          aria-invalid={Boolean(errors.phone)}
-        />
+        <div className="flex border-b border-[var(--border)] focus-within:border-[var(--gold)]">
+          <label className="sr-only" htmlFor="countryCode">Phone country or region</label>
+          <select
+            id="countryCode"
+            {...register("countryCode")}
+            onKeyDown={handleCountryKeyDown}
+            className="h-14 w-[5.75rem] shrink-0 rounded-none border-0 border-r border-[var(--border)] bg-transparent px-2 py-4 font-(family-name:--font-body) text-[15px] text-[var(--text-primary)] shadow-none transition-all duration-300 focus-visible:outline-2 focus-visible:outline-[var(--gold)] focus-visible:outline-offset-2 sm:w-32 sm:px-3"
+            aria-invalid={Boolean(errors.countryCode)}
+          >
+            {COUNTRY_CALLING_CODE_OPTIONS.map(({ code, name, callingCode }) => (
+              <option key={code} value={code}>{callingCode} · {code} — {name}</option>
+            ))}
+          </select>
+          <Input
+            id="phone"
+            type="tel"
+            autoComplete="tel-national"
+            inputMode="tel"
+            maxLength={CONTACT_FIELD_LIMITS.phone}
+            placeholder="Enter your phone number"
+            {...register("phone")}
+            onKeyDown={(event) => handleFieldKeyDown(event, "phone")}
+            className={cn(inputClassName, "min-w-0 flex-1 border-b-0")}
+            aria-invalid={Boolean(errors.phone)}
+          />
+        </div>
         <p
           className={cn(
             "mt-2 min-h-[18px] text-xs text-[var(--error)] transition-opacity duration-200",
-            errors.phone ? "opacity-100" : "opacity-0"
+            errors.phone || errors.countryCode ? "opacity-100" : "opacity-0"
           )}
         >
-          {errors.phone?.message ?? "\u00A0"}
+          {errors.phone?.message ?? errors.countryCode?.message ?? "\u00A0"}
         </p>
       </div>
 

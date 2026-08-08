@@ -14,13 +14,13 @@ describeDb("Postgres contact intake integration", () => {
   beforeEach(async () => { await sql`TRUNCATE workflow_jobs, form2_invites, lead_identities, enquiries, leads, contact_abuse_counters CASCADE`; });
 
   it("persists an exact replay once and rejects a reused UUID with a different canonical payload", async () => {
-    const input = normalize("asha@example.com", "+91 98765 43210");
+    const input = normalizeContactInput({ fullName: "Asha Menon", email: "asha@example.com", phone: "21 23 45 67", countryCode: "NO", enquiry: "A detailed enquiry for a studio project." });
     const first = await persistContactSubmission(input, ids.first);
     const replay = await persistContactSubmission(input, ids.first);
     expect(first.replayed).toBe(false); expect(replay).toMatchObject({ replayed: true, enquiryId: first.enquiryId });
     await expect(persistContactSubmission(normalize("other@example.com", "+91 98765 43210"), ids.first)).rejects.toBeInstanceOf(IdempotencyConflictError);
-    const counts = await sql<{ enquiries: number; jobs: number }[]>`SELECT (SELECT count(*)::int FROM enquiries) AS enquiries, (SELECT count(*)::int FROM workflow_jobs) AS jobs`;
-    expect(counts[0]).toEqual({ enquiries: 1, jobs: 4 });
+    const counts = await sql<{ enquiries: number; jobs: number; country_code: string; normalized_phone: string }[]>`SELECT (SELECT count(*)::int FROM enquiries) AS enquiries, (SELECT count(*)::int FROM workflow_jobs) AS jobs, (SELECT country_code FROM enquiries LIMIT 1) AS country_code, (SELECT normalized_phone FROM enquiries LIMIT 1) AS normalized_phone`;
+    expect(counts[0]).toEqual({ enquiries: 1, jobs: 4, country_code: "NO", normalized_phone: "+4721234567" });
   });
 
   it("links repeated identities to one lead but persists split email/phone evidence as an identity conflict", async () => {

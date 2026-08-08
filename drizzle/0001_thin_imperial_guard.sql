@@ -1,0 +1,1 @@
+ALTER TABLE "enquiries" ADD COLUMN "country_code" text DEFAULT 'IN' NOT NULL;

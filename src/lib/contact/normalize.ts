@@ -1,9 +1,10 @@
 import { createHmac } from "node:crypto";
-import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
 import { z } from "zod";
+import { DEFAULT_COUNTRY_CODE, SUPPORTED_COUNTRY_CODES } from "./countries";
 
-export type RawContactInput = { fullName: string; email: string; phone: string; enquiry: string };
-export type NormalizedContact = RawContactInput & { normalizedFullName: string; normalizedEmail: string; normalizedPhone: string; normalizedEnquiry: string; firstName: string; lastName: string };
+export type RawContactInput = { fullName: string; email: string; phone: string; countryCode?: string; enquiry: string };
+export type NormalizedContact = RawContactInput & { countryCode: string; normalizedFullName: string; normalizedEmail: string; normalizedPhone: string; normalizedEnquiry: string; firstName: string; lastName: string };
 
 const hasForbiddenControl = (value: string, allowTabsAndNewlines = false) => /[\p{Cc}\p{Cs}]/u.test(allowTabsAndNewlines ? value.replace(/[\t\n]/g, "") : value);
 const unicodeTrim = (value: string) => value.replace(/^\s+|\s+$/gu, "");
@@ -22,15 +23,17 @@ export function normalizeContactInput(raw: RawContactInput): NormalizedContact {
   const normalizedFullName = unicodeTrim(raw.fullName.normalize("NFKC")).replace(/\s+/gu, " ");
   const normalizedEmail = unicodeTrim(raw.email.normalize("NFKC")).toLowerCase();
   const phoneSource = unicodeTrim(raw.phone.normalize("NFKC")).replace(/^00/, "+");
+  const countryCode = (raw.countryCode ?? DEFAULT_COUNTRY_CODE).trim().toUpperCase();
   const normalizedEnquiry = unicodeTrim(raw.enquiry.normalize("NFKC").replace(/\r\n?/g, "\n"));
   if (normalizedFullName.length < 2 || normalizedFullName.length > 120 || hasForbiddenControl(normalizedFullName)) throw new Error("CONTACT_INVALID");
   if (normalizedEmail.length > 254 || !z.string().email().safeParse(normalizedEmail).success) throw new Error("CONTACT_INVALID");
   if (normalizedEnquiry.length < 10 || normalizedEnquiry.length > 4000 || hasForbiddenControl(normalizedEnquiry, true)) throw new Error("CONTACT_INVALID");
+  if (!SUPPORTED_COUNTRY_CODES.has(countryCode)) throw new Error("CONTACT_INVALID");
   if (/\b(?:ext\.?|extension|x)\s*\d+/iu.test(phoneSource)) throw new Error("CONTACT_INVALID");
-  const parsedPhone = parsePhoneNumberFromString(phoneSource, phoneSource.startsWith("+") ? undefined : "IN");
+  const parsedPhone = parsePhoneNumberFromString(phoneSource, phoneSource.startsWith("+") ? undefined : countryCode as CountryCode);
   if (!parsedPhone?.isValid() || !parsedPhone.number.startsWith("+")) throw new Error("CONTACT_INVALID");
   const { firstName, lastName } = splitZohoName(normalizedFullName);
-  return { ...raw, normalizedFullName, normalizedEmail, normalizedPhone: parsedPhone.number, normalizedEnquiry, firstName, lastName };
+  return { ...raw, countryCode, normalizedFullName, normalizedEmail, normalizedPhone: parsedPhone.number, normalizedEnquiry, firstName, lastName };
 }
 
 /** HMAC of length-prefixed canonical fields eliminates delimiter ambiguity. */
