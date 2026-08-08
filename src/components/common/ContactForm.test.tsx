@@ -24,13 +24,22 @@ describe("ContactForm", () => {
 
   afterEach(() => vi.unstubAllGlobals());
 
-  it("offers full country labels and defaults the compact selector to India", () => {
+  it("shows only the selected calling code while retaining full country options", () => {
     render(<ContactForm />);
     const country = screen.getByLabelText("Phone country or region") as HTMLSelectElement;
     expect(country.value).toBe("IN");
-    expect(country.className).toContain("w-[5.75rem]");
+    expect(country.className).toContain("opacity-0");
+    expect(screen.getByText("+91")).toBeDefined();
+    expect(screen.queryByText("+91 · IN")).toBeNull();
     expect(screen.getByRole("option", { name: "+91 · IN — India" })).toBeDefined();
     expect(screen.getByRole("option", { name: "+44 · GB — United Kingdom" })).toBeDefined();
+  });
+
+  it("updates the visible calling code when the country changes", () => {
+    render(<ContactForm />);
+    fireEvent.change(screen.getByLabelText("Phone country or region"), { target: { value: "GB" } });
+    expect(screen.getByText("+44")).toBeDefined();
+    expect(screen.queryByText("GB")).toBeNull();
   });
 
   it("posts the selected country and enquiry, then shows the success state", async () => {
