@@ -37,7 +37,7 @@ describe("ContactForm", () => {
   });
 
   it("posts the enquiry and shows the success state", async () => {
-    fetchMock.mockResolvedValue({ ok: true, status: 200 });
+    fetchMock.mockResolvedValue({ ok: true, status: 202 });
     render(<ContactForm />);
     fillForm();
     submit();
@@ -51,8 +51,11 @@ describe("ContactForm", () => {
     expect(JSON.parse(init.body)).toMatchObject({
       fullName: "Asha Menon",
       email: "asha@example.com",
+      submissionId: expect.any(String),
     });
   });
+
+  it("includes the Zoho processing disclosure", () => { render(<ContactForm />); expect(screen.getByText(/share them with Zoho CRM/i)).toBeDefined(); expect(screen.getByRole("link", { name: /privacy policy/i })).toBeDefined(); });
 
   it("blocks submission and reports invalid fields", async () => {
     render(<ContactForm />);

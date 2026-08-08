@@ -1,0 +1,4 @@
+import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+export function encryptionKey(value = process.env.CONTACT_TOKEN_ENCRYPTION_KEY) { if (!value) throw new Error("TOKEN_ENCRYPTION_KEY_MISSING"); const key = Buffer.from(value, "base64"); if (key.length !== 32) throw new Error("TOKEN_ENCRYPTION_KEY_INVALID"); return key; }
+export function encryptSecret(value: string) { const iv = randomBytes(12); const cipher = createCipheriv("aes-256-gcm", encryptionKey(), iv); const encrypted = Buffer.concat([cipher.update(value, "utf8"), cipher.final()]); return Buffer.concat([iv, cipher.getAuthTag(), encrypted]).toString("base64"); }
+export function decryptSecret(value: string) { const buffer = Buffer.from(value, "base64"); const decipher = createDecipheriv("aes-256-gcm", encryptionKey(), buffer.subarray(0, 12)); decipher.setAuthTag(buffer.subarray(12, 28)); return Buffer.concat([decipher.update(buffer.subarray(28)), decipher.final()]).toString("utf8"); }

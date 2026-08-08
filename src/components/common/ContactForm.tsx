@@ -42,6 +42,19 @@ const labelClassName =
 
 type FieldKey = (typeof FIELD_ORDER)[number];
 
+function createSubmissionId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  const bytes = new Uint8Array(16);
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40; bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  // No secure identifier is available: omit it and let the server generate one.
+  return undefined;
+}
+
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
     "idle"
@@ -50,6 +63,7 @@ export function ContactForm() {
     contactPageContent.errorMessage
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const [submissionId, setSubmissionId] = useState<string | null | undefined>(undefined);
 
   const {
     register,
@@ -107,12 +121,14 @@ export function ContactForm() {
   };
 
   const onSubmit = async (data: ContactFormData) => {
+    const activeSubmissionId = submissionId === undefined ? createSubmissionId() : submissionId;
+    if (submissionId === undefined) setSubmissionId(activeSubmissionId);
     setStatus("loading");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, ...(activeSubmissionId ? { submissionId: activeSubmissionId } : {}) }),
       });
 
       if (!res.ok) {
@@ -136,6 +152,7 @@ export function ContactForm() {
 
       setStatus("success");
       reset();
+      setSubmissionId(undefined);
     } catch {
       setErrorMessage(contactPageContent.errorMessage);
       setStatus("error");
@@ -175,7 +192,7 @@ export function ContactForm() {
           <button
             type="button"
             className="mt-10 text-eyebrow border-b border-[var(--gold)] pb-1 text-[var(--text-primary)] transition-colors hover:text-[var(--gold)] cursor-pointer"
-            onClick={() => setStatus("idle")}
+            onClick={() => { setSubmissionId(undefined); setStatus("idle"); }}
           >
             {contactPageContent.successCta}
           </button>
@@ -189,7 +206,8 @@ export function ContactForm() {
   return (
     <form
       ref={formRef}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data) => void onSubmit(data))}
+      onChange={() => { if (status === "error") setSubmissionId(undefined); }}
       noValidate
       className="space-y-0"
     >
@@ -310,8 +328,14 @@ export function ContactForm() {
       </div>
 
       {/* Required field notice */}
-      <p className="mb-4 text-[11px] text-[var(--text-tertiary)]">
+      <p className="mb-1 text-[11px] text-[var(--text-tertiary)]">
         * All fields are required
+      </p>
+      <p className="mb-4 text-[11px] leading-relaxed text-[var(--text-tertiary)]">
+        We’ll store these details and share them with Zoho CRM to respond to your enquiry. {" "}
+        <a className="text-[var(--text-primary)] underline decoration-[var(--gold)] underline-offset-3 focus-visible:outline-2 focus-visible:outline-[var(--gold)]" href={process.env.NEXT_PUBLIC_PRIVACY_POLICY_URL ?? "/privacy"} target="_blank" rel="noreferrer">
+          See our Privacy Policy.
+        </a>
       </p>
 
       {/* Error banner */}

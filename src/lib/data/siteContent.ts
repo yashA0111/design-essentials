@@ -257,7 +257,7 @@ export const contactPageContent = {
   intro:
     "Share a few details about your project and we'll be in touch within one business day.",
   submitLabel: "Send Enquiry",
-  submitLoadingLabel: "Sending…",
+  submitLoadingLabel: "Submitting…",
   successTitle: "Thank you for reaching out",
   successMessage:
     "Thank you! We've received your enquiry and will be in touch within one business day.",
