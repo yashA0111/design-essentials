@@ -1,0 +1,8 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+const query = vi.fn(); const zohoFetch = vi.fn();
+vi.mock("@/lib/db/client", () => ({ getSql: () => query })); vi.mock("./client", () => ({ zohoFetch }));
+const { syncZohoLead } = await import("./lead-sync");
+const response = (status: number, body?: object) => new Response(body ? JSON.stringify(body) : null, { status, headers: body ? { "content-type": "application/json" } : {} });
+describe("Zoho lead sync", () => { beforeEach(() => { vi.stubEnv("CONTACT_WORKER_ZOHO_ENABLED", "true"); vi.stubEnv("ZOHO_PROJECT_DISCOVERY_FIELD", "Description"); vi.stubEnv("ZOHO_LEAD_LAYOUT_ID", "layout"); query.mockReset(); zohoFetch.mockReset(); query.mockResolvedValueOnce([{ zoho_lead_id: null, first_name: "Asha", last_name: "Menon", normalized_email: "asha@example.com", normalized_phone: "+919876543210", normalized_enquiry: "A detailed project request" }]).mockResolvedValue([]); });
+ it("handles 204 searches and reconciles a stale create response with canonical and national phone search", async () => { zohoFetch.mockResolvedValueOnce(response(204)).mockResolvedValueOnce(response(204)).mockResolvedValueOnce(response(204)).mockResolvedValueOnce(response(200, { data: [{ code: "DUPLICATE_DATA" }] })).mockResolvedValueOnce(response(200, { data: [{ id: "zoho-1" }] })).mockResolvedValueOnce(response(204)).mockResolvedValueOnce(response(204)); await expect(syncZohoLead("00000000-0000-4000-8000-000000000001", "00000000-0000-4000-8000-000000000002")).resolves.toBe("zoho-1"); expect(zohoFetch.mock.calls.some(([path]) => String(path).includes("9876543210"))).toBe(true); });
+});
