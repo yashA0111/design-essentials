@@ -1,13 +1,14 @@
-"use client";
-
-import Link from "next/link";
 import { homeAboutContent } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/SplitTitle";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 
-export function AboutSnippetSection() {
+export function AboutSnippetSection({
+  content = homeAboutContent,
+}: {
+  content?: typeof homeAboutContent;
+} = {}) {
   const ref = useScrollReveal();
 
   return (
@@ -18,39 +19,39 @@ export function AboutSnippetSection() {
           className="relative aspect-[4/5] overflow-hidden rounded-sm"
         >
           <ImageWithFallback
-            src={homeAboutContent.image}
-            fallbackSrc={homeAboutContent.fallbackImage}
-            alt={homeAboutContent.imageAlt}
+            src={content.image}
+            fallbackSrc={content.fallbackImage}
+            alt={content.imageAlt}
             fill
             sizes="(max-width: 1024px) 100vw, 55vw"
           />
         </div>
         <div>
           <div data-reveal>
-            <SectionLabel className="mb-6">{homeAboutContent.eyebrow}</SectionLabel>
+            <SectionLabel className="mb-6">{content.eyebrow}</SectionLabel>
           </div>
           <div data-reveal>
             <SplitTitle
-              rest={homeAboutContent.headingRest}
-              italicWord={homeAboutContent.headingItalic}
+              rest={content.headingRest}
+              italicWord={content.headingItalic}
               className="mb-8"
             />
           </div>
-          {homeAboutContent.paragraphs.map((p) => (
+          {content.paragraphs.map((p) => (
             <p key={p.slice(0, 20)} data-reveal className="text-body mb-4">
               {p}
             </p>
           ))}
           <p data-reveal className="text-nav mt-6 text-[var(--text-primary)]">
-            {homeAboutContent.stats}
+            {content.stats}
           </p>
-          <Link
+          <a
             data-reveal
             href="/about"
             className="text-nav mt-6 inline-block text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
           >
-            {homeAboutContent.ctaLabel}
-          </Link>
+            {content.ctaLabel}
+          </a>
         </div>
       </div>
     </section>

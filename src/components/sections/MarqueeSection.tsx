@@ -1,7 +1,12 @@
 import { marqueeItems } from "@/lib/data/siteContent";
 
-export function MarqueeSection() {
-  const items = [...marqueeItems, ...marqueeItems];
+export function MarqueeSection({
+  items: propItems = marqueeItems,
+}: {
+  items?: string[];
+} = {}) {
+  const baseItems = propItems.length > 0 ? propItems : marqueeItems;
+  const items = [...baseItems, ...baseItems];
 
   return (
     <section

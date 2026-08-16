@@ -1,11 +1,12 @@
-"use client";
-
-import Link from "next/link";
 import { contactCtaContent } from "@/lib/data/siteContent";
 import { Button } from "@/components/ui/button";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 
-export function ContactCTASection() {
+export function ContactCTASection({
+  content = contactCtaContent,
+}: {
+  content?: typeof contactCtaContent;
+} = {}) {
   const ref = useScrollReveal();
 
   return (
@@ -39,13 +40,13 @@ export function ContactCTASection() {
           data-reveal
           className="text-section mb-6 text-[var(--text-primary)]"
         >
-          {contactCtaContent.headingRest}{" "}
+          {content.headingRest}{" "}
           <em className="font-light italic text-[var(--gold)]">
-            {contactCtaContent.headingItalic}
+            {content.headingItalic}
           </em>
         </h2>
         <p data-reveal className="text-body mx-auto mb-10 max-w-xl text-lg">
-          {contactCtaContent.subtext}
+          {content.subtext}
         </p>
         <div data-reveal>
           <Button
@@ -53,7 +54,7 @@ export function ContactCTASection() {
             size="lg"
             className="rounded-full bg-[var(--gold)] px-10 py-6 text-lg text-[var(--void)] hover:bg-[var(--gold-muted)]"
           >
-            <Link href="/contact">{contactCtaContent.ctaLabel}</Link>
+            <a href="/contact">{content.ctaLabel}</a>
           </Button>
         </div>
       </div>

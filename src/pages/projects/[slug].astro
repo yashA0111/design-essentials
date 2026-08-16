@@ -1,0 +1,129 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getProjects } from "@/lib/sanity";
+import { getServiceById } from "@/lib/data/services";
+import { SectionLabel } from "@/components/common/SectionLabel";
+import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+import { ContactCTASection } from "@/components/sections/ContactCTASection";
+
+export async function getStaticPaths() {
+  const allProjects = await getProjects();
+  return allProjects.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p, allProjects },
+  }));
+}
+
+const { project, allProjects } = Astro.props;
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+
+const service = getServiceById(project.category);
+const currentIndex = allProjects.findIndex((p) => p.slug === project.slug);
+const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+---
+
+<RootLayout
+  title={project.seo.metaTitle}
+  description={project.seo.metaDescription}
+  darkHero={true}
+>
+  <section class="relative min-h-[70vh] pt-20">
+    <div class="absolute inset-0">
+      <ImageWithFallback
+        src={project.heroImage}
+        fallbackSrc={project.heroImageFallback}
+        alt={`${project.title} — ${project.location}`}
+        fill
+        priority
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/40 to-transparent"></div>
+    </div>
+    <div class="container relative z-10 flex min-h-[70vh] flex-col justify-end section-padding">
+      <p class="text-eyebrow mb-4">{service?.name}</p>
+      <h1 class="text-section text-[var(--text-primary)]">
+        {project.title}
+      </h1>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--void)]">
+    <div class="container">
+      <div class="mb-12 grid grid-cols-2 gap-6 md:grid-cols-4">
+        {[
+          { label: "Client", value: project.client },
+          { label: "Category", value: service?.name ?? project.category },
+          { label: "Year", value: String(project.year) },
+          { label: "Location", value: project.location },
+        ].map((item) => (
+          <div key={item.label}>
+            <p class="text-eyebrow mb-1 text-[var(--text-tertiary)]">
+              {item.label}
+            </p>
+            <p class="text-nav text-[var(--text-primary)]">
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div class="max-w-3xl">
+        <SectionLabel className="mb-6">OVERVIEW</SectionLabel>
+        <p class="text-body text-lg">{project.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--surface)]">
+    <div class="container">
+      <div class="columns-1 gap-4 md:columns-2 lg:columns-3">
+        {project.galleryImages.map((img, i) => (
+          <div
+            key={`${project.id}-img-${i}`}
+            class="relative mb-4 aspect-[4/3] break-inside-avoid overflow-hidden rounded-sm"
+          >
+            <ImageWithFallback
+              src={img}
+              fallbackSrc={project.galleryImageFallbacks?.[i]}
+              alt={`${project.title} gallery image ${i + 1}`}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--void)]">
+    <div class="container grid grid-cols-1 gap-12 md:grid-cols-2">
+      <div>
+        <SectionLabel className="mb-6">THE CHALLENGE</SectionLabel>
+        <p class="text-body text-lg">{project.challenge}</p>
+      </div>
+      <div>
+        <SectionLabel className="mb-6">THE SOLUTION</SectionLabel>
+        <p class="text-body text-lg">{project.solution}</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-theme="light" class="border-t border-[var(--border)] bg-[var(--void)] section-padding">
+    <div class="container flex items-center justify-between">
+      <span class="text-nav text-[var(--text-tertiary)]">
+        Next Project
+      </span>
+      <a
+        href={`/projects/${nextProject.slug}`}
+        class="text-card-title text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
+      >
+        {nextProject.title} →
+      </a>
+    </div>
+  </section>
+
+  <ContactCTASection client:visible />
+</RootLayout>

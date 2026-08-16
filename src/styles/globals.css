@@ -66,6 +66,11 @@
   --text-secondary: #8c8c8c;
   --text-tertiary: #7a7a7a;
 
+  /* Fonts */
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-utility: "Space Grotesk", monospace, sans-serif;
+
   /* Functional */
   --success: #5a9e6f;
   --error: #c45a5a;
@@ -175,7 +180,7 @@
   border-color: var(--gold);
 }
 
-/* ─── BASE STYLES ────────────────────────────────────────── */
+/* ─── BASE STYLES & LENIS INTEGRATION ─────────────────────── */
 *,
 *::before,
 *::after {
@@ -184,9 +189,29 @@
 
 html {
   overflow-y: scroll;
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 body {
@@ -340,6 +365,73 @@ body {
   .marquee-track {
     animation: none;
   }
+}
+
+/* ─── GPU-ACCELERATED LIQUID GLASS NAVBAR ───────────────── */
+header#site-header {
+  transform: translateZ(0);
+}
+
+/* Dedicated hardware-accelerated glass backdrop layer */
+header#site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.07),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transform: translateZ(0);
+  will-change: opacity;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+header#site-header.is-scrolled::before,
+header#site-header[data-scrolled="true"]::before {
+  opacity: 1;
+}
+
+.nav-brand-text {
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+header#site-header.is-scrolled .nav-brand-text,
+header#site-header[data-scrolled="true"] .nav-brand-text {
+  color: #1a1a1a !important;
+}
+
+.nav-link-item {
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+header#site-header.is-scrolled .nav-link-item:not(.is-active),
+header#site-header[data-scrolled="true"] .nav-link-item:not(.is-active) {
+  color: #4a4540 !important;
+  border-color: transparent !important;
+}
+
+header#site-header.is-scrolled .nav-link-item:not(.is-active):hover,
+header#site-header[data-scrolled="true"] .nav-link-item:not(.is-active):hover {
+  color: #b08d4a !important;
+  border-color: #b08d4a !important;
+}
+
+header#site-header.is-scrolled .nav-link-item.is-active,
+header#site-header[data-scrolled="true"] .nav-link-item.is-active {
+  color: #b08d4a !important;
+  border-color: #b08d4a !important;
+  font-weight: 500 !important;
+}
+
+header#site-header.is-scrolled .mobile-menu-btn,
+header#site-header[data-scrolled="true"] .mobile-menu-btn {
+  color: #1a1a1a !important;
 }
 
 @layer base {

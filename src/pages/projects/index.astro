@@ -1,0 +1,40 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { projectsPageContent } from "@/lib/data/siteContent";
+import { SectionLabel } from "@/components/common/SectionLabel";
+import { ProjectsGrid } from "@/components/sections/ProjectsGrid";
+import { getProjects, getServices } from "@/lib/sanity";
+
+const [allProjects, allServices] = await Promise.all([
+  getProjects(),
+  getServices(),
+]);
+---
+
+<RootLayout
+  title={projectsPageContent.seo.title}
+  description={projectsPageContent.seo.description}
+  darkHero={false}
+>
+  <section data-theme="light" class="section-padding bg-[var(--void)] pt-32">
+    <div class="container">
+      <SectionLabel className="mb-6">{projectsPageContent.eyebrow}</SectionLabel>
+      <h1 class="text-section mb-6 text-[var(--text-primary)]">
+        {projectsPageContent.title}
+      </h1>
+      <p class="text-body max-w-2xl text-lg">
+        {projectsPageContent.intro}
+      </p>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--void)] pt-0">
+    <div class="container">
+      <ProjectsGrid
+        initialProjects={allProjects}
+        initialServices={allServices}
+        client:load
+      />
+    </div>
+  </section>
+</RootLayout>

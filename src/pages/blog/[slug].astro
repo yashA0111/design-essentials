@@ -1,0 +1,95 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getBlogPosts } from "@/lib/sanity";
+import { SectionLabel } from "@/components/common/SectionLabel";
+import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+import { Badge } from "@/components/ui/badge";
+import PortableText from "@/components/common/PortableText.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getBlogPosts();
+  return allPosts.map((p) => ({
+    params: { slug: p.slug },
+    props: { post: p },
+  }));
+}
+
+const { post } = Astro.props;
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+---
+
+<RootLayout
+  title={post.seo?.metaTitle || post.title}
+  description={post.seo?.metaDescription || post.excerpt}
+  darkHero={false}
+>
+  <article class="section-padding pt-32">
+    <div class="container max-w-3xl">
+      <a
+        href="/blog"
+        class="text-nav mb-8 inline-block text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
+      >
+        ← Back to Blog
+      </a>
+
+      <Badge
+        variant="outline"
+        className="mb-4 border-[var(--border)] text-[var(--text-secondary)]"
+      >
+        {post.category}
+      </Badge>
+
+      <h1 class="text-section mb-4 text-[var(--text-primary)]">
+        {post.title}
+      </h1>
+
+      <time
+        datetime={post.date}
+        class="text-nav text-[var(--text-tertiary)]"
+      >
+        {new Date(post.date).toLocaleDateString("en-IN", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </time>
+
+      <div class="relative my-10 aspect-[16/9] overflow-hidden rounded-sm">
+        <ImageWithFallback
+          src={post.image}
+          alt={post.title}
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 768px"
+        />
+      </div>
+
+      <SectionLabel className="mb-6">ARTICLE</SectionLabel>
+
+      {post.body && Array.isArray(post.body) && post.body.length > 0 ? (
+        <PortableText value={post.body} />
+      ) : (
+        <div class="space-y-6 text-body text-lg leading-relaxed">
+          <p>{post.excerpt}</p>
+          <p>
+            At Design Essentials, we believe that great design starts with
+            understanding — of the site, the client, and the story the space
+            needs to tell. This article explores the principles and practices
+            that guide our work in {post.category.toLowerCase()}, drawing on
+            real project experience and industry insight.
+          </p>
+          <p>
+            Whether you&apos;re planning a new build, a fit-out, or an immersive
+            brand environment, the fundamentals remain the same: clarity of
+            vision, honesty of materials, and precision in execution. We invite
+            you to explore our portfolio or reach out to discuss how these
+            principles might apply to your project.
+          </p>
+        </div>
+      )}
+    </div>
+  </article>
+</RootLayout>

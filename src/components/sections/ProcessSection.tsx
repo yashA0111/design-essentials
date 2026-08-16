@@ -8,13 +8,20 @@ import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/SplitTitle";
 import { cn } from "@/lib/utils";
 
+import type { ProcessStep } from "@/types/site";
+
 gsap.registerPlugin(ScrollTrigger);
 
-export function ProcessSection() {
+export function ProcessSection({
+  steps = processSteps,
+}: {
+  steps?: ProcessStep[];
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const pinContainerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [openStep, setOpenStep] = useState<number | null>(1);
+  const currentSteps = steps.length > 0 ? steps : processSteps;
 
   useEffect(() => {
     const mm = gsap.matchMedia();
@@ -59,7 +66,7 @@ export function ProcessSection() {
         {/* Desktop horizontal scroll */}
         <div className="hidden lg:block">
           <div ref={trackRef} className="flex gap-8 px-[clamp(20px,5vw,100px)]">
-            {processSteps.map((step) => (
+            {currentSteps.map((step) => (
               <div
                 key={step.step}
                 className="w-[400px] shrink-0 border border-border bg-(--void) p-8"
@@ -78,7 +85,7 @@ export function ProcessSection() {
 
         {/* Mobile accordion */}
         <div className="container lg:hidden">
-          {processSteps.map((step) => (
+          {currentSteps.map((step) => (
             <div
               key={step.step}
               className="border-b border-border"

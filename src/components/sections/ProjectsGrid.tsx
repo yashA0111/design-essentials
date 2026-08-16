@@ -5,21 +5,29 @@ import { projects } from "@/lib/data/projects";
 import { services } from "@/lib/data/services";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { cn } from "@/lib/utils";
+import type { Project } from "@/types/project";
+import type { Service } from "@/types/service";
 
-// Derived from the data so every category with projects is always reachable.
-const filters = [
-  { value: "all", label: "All" },
-  ...services
-    .filter((service) => projects.some((p) => p.category === service.id))
-    .map((service) => ({ value: service.id, label: service.name })),
-];
-
-export function ProjectsGrid() {
+export function ProjectsGrid({
+  initialProjects = projects,
+  initialServices = services,
+}: {
+  initialProjects?: Project[];
+  initialServices?: Service[];
+} = {}) {
   const [filter, setFilter] = useState("all");
+
+  const filters = [
+    { value: "all", label: "All" },
+    ...initialServices
+      .filter((service) => initialProjects.some((p) => p.category === service.id))
+      .map((service) => ({ value: service.id, label: service.name })),
+  ];
+
   const filtered =
     filter === "all"
-      ? projects
-      : projects.filter((p) => p.category === filter);
+      ? initialProjects
+      : initialProjects.filter((p) => p.category === filter);
 
   return (
     <>

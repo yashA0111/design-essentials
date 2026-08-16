@@ -1,0 +1,130 @@
+---
+import { getImageUrl } from "@/lib/sanity";
+import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+
+interface Props {
+  value?: any[];
+}
+
+const { value = [] } = Astro.props;
+
+function renderSpan(child: any, markDefs: any[] = []) {
+  let content = child.text || "";
+  const marks: string[] = child.marks || [];
+
+  if (marks.length === 0) {
+    return content;
+  }
+
+  // Check for link marks (which match markDefs._key)
+  for (const markKey of marks) {
+    const linkDef = markDefs.find((def) => def._key === markKey);
+    if (linkDef && linkDef.href) {
+      return `<a href="${linkDef.href}" target="_blank" rel="noopener noreferrer" class="text-[var(--gold)] underline hover:text-[var(--gold-muted)]">${content}</a>`;
+    }
+  }
+
+  // Handle standard formatting marks
+  if (marks.includes("strong")) {
+    content = `<strong>${content}</strong>`;
+  }
+  if (marks.includes("em")) {
+    content = `<em>${content}</em>`;
+  }
+  if (marks.includes("underline")) {
+    content = `<u>${content}</u>`;
+  }
+  if (marks.includes("code")) {
+    content = `<code class="bg-[var(--surface)] px-1.5 py-0.5 rounded text-sm">${content}</code>`;
+  }
+
+  return content;
+}
+
+function renderBlockChildren(block: any) {
+  if (!block.children) return "";
+  const markDefs = block.markDefs || [];
+  return block.children.map((child: any) => renderSpan(child, markDefs)).join("");
+}
+---
+
+<div class="prose-custom space-y-6 text-body text-lg leading-relaxed">
+  {
+    Array.isArray(value) &&
+      value.map((block: any) => {
+        // Image block
+        if (block._type === "image") {
+          const imgUrl = getImageUrl(block);
+          return (
+            <figure class="my-8 overflow-hidden rounded-sm border border-[var(--border)]">
+              <div class="relative aspect-[16/9] w-full">
+                <ImageWithFallback
+                  src={imgUrl}
+                  alt={block.alt || "Article image"}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 768px"
+                />
+              </div>
+              {block.caption && (
+                <figcaption class="p-3 text-center text-sm text-[var(--text-tertiary)] italic">
+                  {block.caption}
+                </figcaption>
+              )}
+            </figure>
+          );
+        }
+
+        // Standard Text Block
+        if (block._type === "block") {
+          const htmlContent = renderBlockChildren(block);
+
+          // Headings
+          if (block.style === "h2") {
+            return (
+              <h2
+                class="font-[family-name:var(--font-display)] text-2xl font-light text-[var(--text-primary)] md:text-3xl mt-10 mb-4"
+                set:html={htmlContent}
+              />
+            );
+          }
+
+          if (block.style === "h3") {
+            return (
+              <h3
+                class="font-[family-name:var(--font-display)] text-xl font-light text-[var(--gold)] md:text-2xl mt-8 mb-3"
+                set:html={htmlContent}
+              />
+            );
+          }
+
+          // Quote / Blockquote
+          if (block.style === "blockquote") {
+            return (
+              <blockquote
+                class="border-l-2 border-[var(--gold)] pl-6 italic text-[var(--text-primary)] my-6"
+                set:html={htmlContent}
+              />
+            );
+          }
+
+          // List item
+          if (block.listItem === "bullet") {
+            return (
+              <li class="list-disc ml-6 pl-2 text-[var(--text-secondary)]" set:html={htmlContent} />
+            );
+          }
+
+          if (block.listItem === "number") {
+            return (
+              <li class="list-decimal ml-6 pl-2 text-[var(--text-secondary)]" set:html={htmlContent} />
+            );
+          }
+
+          // Default Paragraph
+          return <p class="text-body" set:html={htmlContent} />;
+        }
+
+        return null;
+      })
+  }
+</div>

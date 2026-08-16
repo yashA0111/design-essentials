@@ -1,15 +1,17 @@
-"use client";
-
-import Link from "next/link";
 import { getFeaturedProjects } from "@/lib/data/projects";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/SplitTitle";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
+import type { Project } from "@/types/project";
 
-export function FeaturedProjectsSection() {
+export function FeaturedProjectsSection({
+  initialProjects,
+}: {
+  initialProjects?: Project[];
+} = {}) {
   const ref = useScrollReveal();
-  const featured = getFeaturedProjects();
+  const featured = initialProjects ?? getFeaturedProjects();
 
   return (
     <section ref={ref} data-theme="light" className="section-padding bg-[var(--surface)]">
@@ -19,13 +21,13 @@ export function FeaturedProjectsSection() {
             <SectionLabel className="mb-6">SELECTED WORK</SectionLabel>
             <SplitTitle rest="Projects That" italicWord="Define Excellence" />
           </div>
-          <Link
+          <a
             data-reveal
             href="/projects"
             className="text-nav text-[var(--gold)] transition-colors hover:text-[var(--gold-muted)]"
           >
             All Projects →
-          </Link>
+          </a>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {featured[0] && (

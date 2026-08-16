@@ -2,21 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { testimonials } from "@/lib/data/testimonials";
+import { testimonials as staticTestimonials } from "@/lib/data/testimonials";
 import { TestimonialCard } from "@/components/cards/TestimonialCard";
 import { SectionLabel } from "@/components/common/SectionLabel";
+import type { Testimonial } from "@/types/testimonial";
 
-export function TestimonialsSection() {
+export function TestimonialsSection({
+  initialTestimonials = staticTestimonials,
+}: {
+  initialTestimonials?: Testimonial[];
+} = {}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const testimonials = initialTestimonials.length > 0 ? initialTestimonials : staticTestimonials;
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || testimonials.length <= 1) return;
     const timer = setInterval(() => {
       setIndex((i) => (i + 1) % testimonials.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, [paused]);
+  }, [paused, testimonials.length]);
 
   return (
     <section

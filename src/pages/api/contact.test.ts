@@ -17,7 +17,7 @@ vi.mock("@/lib/email/templates/InternalNotification", () => ({
   InternalNotificationEmail: () => null,
 }));
 
-const { POST } = await import("./route");
+const { POST } = await import("./contact");
 
 const validBody = {
   fullName: "Asha Menon",
@@ -35,6 +35,11 @@ function post(body: unknown, init: RequestInit = {}) {
   });
 }
 
+function callPost(request: Request) {
+  // Pass Astro APIContext with request
+  return (POST as any)({ request });
+}
+
 describe("POST /api/contact", () => {
   beforeEach(() => {
     resetRateLimits();
@@ -45,14 +50,14 @@ describe("POST /api/contact", () => {
   });
 
   it("sends both emails for a valid enquiry", async () => {
-    const response = await POST(post(validBody));
+    const response = await callPost(post(validBody));
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ success: true });
     expect(send).toHaveBeenCalledTimes(2);
   });
 
   it("rejects a non-JSON content type", async () => {
-    const response = await POST(
+    const response = await callPost(
       post(validBody, { headers: { "content-type": "text/plain" } })
     );
     expect(response.status).toBe(415);
@@ -60,12 +65,12 @@ describe("POST /api/contact", () => {
   });
 
   it("rejects malformed JSON", async () => {
-    const response = await POST(post("{ not json"));
+    const response = await callPost(post("{ not json"));
     expect(response.status).toBe(400);
   });
 
   it("returns field errors for invalid data", async () => {
-    const response = await POST(post({ ...validBody, email: "nope" }));
+    const response = await callPost(post({ ...validBody, email: "nope" }));
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toMatchObject({
       fieldErrors: { email: expect.any(Array) },
@@ -73,14 +78,14 @@ describe("POST /api/contact", () => {
   });
 
   it("rejects an oversized payload", async () => {
-    const response = await POST(
+    const response = await callPost(
       post({ ...validBody, enquiry: "x".repeat(20_000) })
     );
     expect(response.status).toBe(413);
   });
 
   it("silently accepts honeypot submissions without sending email", async () => {
-    const response = await POST(
+    const response = await callPost(
       post({ ...validBody, website: "https://spam.example" })
     );
     expect(response.status).toBe(200);
@@ -94,18 +99,18 @@ describe("POST /api/contact", () => {
     };
 
     for (let i = 0; i < 5; i += 1) {
-      const ok = await POST(post(validBody, { headers }));
+      const ok = await callPost(post(validBody, { headers }));
       expect(ok.status).toBe(200);
     }
 
-    const limited = await POST(post(validBody, { headers }));
+    const limited = await callPost(post(validBody, { headers }));
     expect(limited.status).toBe(429);
     expect(limited.headers.get("Retry-After")).toBeTruthy();
   });
 
   it("reports a 503 when the email service is not configured", async () => {
     vi.stubEnv("RESEND_API_KEY", "");
-    const response = await POST(post(validBody));
+    const response = await callPost(post(validBody));
     expect(response.status).toBe(503);
   });
 
@@ -113,7 +118,7 @@ describe("POST /api/contact", () => {
     send
       .mockResolvedValueOnce({ data: { id: "ok" }, error: null })
       .mockResolvedValueOnce({ data: null, error: { message: "boom" } });
-    const response = await POST(post(validBody));
+    const response = await callPost(post(validBody));
     expect(response.status).toBe(502);
   });
 
@@ -121,7 +126,7 @@ describe("POST /api/contact", () => {
     send
       .mockRejectedValueOnce(new Error("network"))
       .mockResolvedValueOnce({ data: { id: "ok" }, error: null });
-    const response = await POST(post(validBody));
+    const response = await callPost(post(validBody));
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       success: true,

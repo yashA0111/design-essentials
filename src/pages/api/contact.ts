@@ -1,9 +1,13 @@
+import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import { ContactConfirmationEmail } from "@/lib/email/templates/ContactConfirmation";
 import { InternalNotificationEmail } from "@/lib/email/templates/InternalNotification";
 import { SITE } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/sanity";
 import { contactSchema } from "@/lib/validation/contact";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
+
+export const prerender = false;
 
 const MAX_BODY_BYTES = 16 * 1024;
 const RATE_LIMIT = 5;
@@ -18,7 +22,7 @@ function errorResponse(
   return Response.json({ error: message, ...extra }, { status, headers });
 }
 
-export async function POST(request: Request) {
+export const POST: APIRoute = async ({ request }) => {
   if (!request.headers.get("content-type")?.includes("application/json")) {
     return errorResponse("Unsupported content type", 415);
   }
@@ -77,18 +81,20 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey);
   const { fullName, email, phone, enquiry } = parsed.data;
+  const settings = await getSiteSettings();
+  const targetEmail = settings?.email || SITE.email;
 
   try {
     const results = await Promise.allSettled([
       resend.emails.send({
-        from: `Design Essentials <${SITE.email}>`,
+        from: `Design Essentials <${targetEmail}>`,
         to: email,
         subject: "We've received your inquiry — Design Essentials",
         react: ContactConfirmationEmail({ name: fullName }),
       }),
       resend.emails.send({
-        from: `Website Contact <${SITE.email}>`,
-        to: SITE.email,
+        from: `Website Contact <${targetEmail}>`,
+        to: targetEmail,
         subject: `New Enquiry — ${fullName}`,
         react: InternalNotificationEmail({ fullName, email, phone, enquiry }),
       }),
@@ -120,4 +126,4 @@ export async function POST(request: Request) {
     console.error("[contact] unexpected failure", error);
     return errorResponse("Failed to send email", 500);
   }
-}
+};

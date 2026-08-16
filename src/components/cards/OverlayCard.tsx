@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ImageWithFallback } from "@/components/common/ImageWithFallback";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +29,7 @@ export function OverlayCard({
   className,
 }: OverlayCardProps) {
   return (
-    <Link
+    <a
       href={href}
       className={cn(
         "group relative block overflow-hidden rounded-sm",
@@ -56,6 +55,6 @@ export function OverlayCard({
       </div>
 
       {corner && <div className="absolute top-5 left-5 z-10">{corner}</div>}
-    </Link>
+    </a>
   );
 }

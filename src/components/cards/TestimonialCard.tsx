@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { Testimonial } from "@/types/testimonial";
 import { cn } from "@/lib/utils";
 
@@ -17,13 +16,14 @@ export function TestimonialCard({
         &ldquo;{testimonial.quote}&rdquo;
       </blockquote>
       <div className="mt-8 flex flex-col items-center gap-3">
-        <Image
+        <img
           src={testimonial.avatar}
           alt={testimonial.clientName}
           width={56}
           height={56}
-          className="rounded-full object-cover"
-          sizes="56px"
+          loading="lazy"
+          decoding="async"
+          className="h-14 w-14 rounded-full object-cover"
         />
         <div>
           <p className="text-card-title text-[var(--text-primary)]">

@@ -1,6 +1,3 @@
-"use client";
-
-import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -29,29 +26,34 @@ export function ImageWithFallback({
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
 
+  const activeSrc = (!src || typeof src !== "string" || src.trim() === "" || error)
+    ? (fallbackSrc || "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80")
+    : src;
+
   if (fill) {
     return (
-      <Image
-        src={error ? fallbackSrc : src}
+      <img
+        src={activeSrc}
         alt={alt}
-        fill
-        sizes={sizes ?? "100vw"}
-        className={cn("object-cover", className)}
-        priority={priority}
+        sizes={sizes}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        className={cn("absolute inset-0 h-full w-full object-cover", className)}
         onError={() => setError(true)}
       />
     );
   }
 
   return (
-    <Image
-      src={error ? fallbackSrc : src}
+    <img
+      src={activeSrc}
       alt={alt}
       width={width ?? 1200}
       height={height ?? 800}
       sizes={sizes}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
       className={cn("object-cover", className)}
-      priority={priority}
       onError={() => setError(true)}
     />
   );

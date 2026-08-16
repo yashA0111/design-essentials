@@ -1,0 +1,47 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { MarqueeSection } from "@/components/sections/MarqueeSection";
+import { AboutSnippetSection } from "@/components/sections/AboutSnippetSection";
+import { ServicesSection } from "@/components/sections/ServicesSection";
+import { FeaturedProjectsSection } from "@/components/sections/FeaturedProjectsSection";
+import { ProcessSection } from "@/components/sections/ProcessSection";
+import { StatsSection } from "@/components/sections/StatsSection";
+import { EcoSection } from "@/components/sections/EcoSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { ContactCTASection } from "@/components/sections/ContactCTASection";
+import {
+  getFeaturedProjects,
+  getHomePageContent,
+  getServices,
+  getStats,
+  getTestimonials,
+} from "@/lib/sanity";
+
+const [
+  homeContent,
+  featuredProjects,
+  allServices,
+  allStats,
+  allTestimonials,
+] = await Promise.all([
+  getHomePageContent(),
+  getFeaturedProjects(),
+  getServices(),
+  getStats(),
+  getTestimonials(),
+]);
+---
+
+<RootLayout title="Design Essentials | Architecture & Interior Design Studio" darkHero={true}>
+  <HeroSection content={homeContent.hero} client:load />
+  <MarqueeSection items={homeContent.marquee} client:visible />
+  <AboutSnippetSection content={homeContent.aboutSnippet} client:visible />
+  <ServicesSection initialServices={allServices} client:visible />
+  <FeaturedProjectsSection initialProjects={featuredProjects} client:visible />
+  <ProcessSection steps={homeContent.processSteps} client:visible />
+  <StatsSection initialStats={allStats} client:visible />
+  <EcoSection content={homeContent.ecoSection} client:visible />
+  <TestimonialsSection initialTestimonials={allTestimonials} client:visible />
+  <ContactCTASection content={homeContent.contactCta} client:visible />
+</RootLayout>

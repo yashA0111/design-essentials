@@ -1,0 +1,118 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getAboutPageContent } from "@/lib/sanity";
+import { SectionLabel } from "@/components/common/SectionLabel";
+import { SplitTitle } from "@/components/common/SplitTitle";
+import { ImageWithFallback } from "@/components/common/ImageWithFallback";
+import { ContactCTASection } from "@/components/sections/ContactCTASection";
+import { TimelineSection } from "@/components/sections/TimelineSection";
+
+const { about: aboutContent, milestones, teamMembers } = await getAboutPageContent();
+---
+
+<RootLayout
+  title={aboutContent.seo.title}
+  description={aboutContent.seo.description}
+  darkHero={true}
+>
+  <section class="relative flex min-h-[60vh] items-end section-padding">
+    <div class="absolute inset-0">
+      <ImageWithFallback
+        src={aboutContent.heroImage}
+        alt="Design Essentials studio and architectural workspace"
+        fill
+        priority
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-[var(--void)] via-[var(--void)]/60 to-transparent"></div>
+    </div>
+    <div class="container relative z-10">
+      <SectionLabel className="mb-4">{aboutContent.heroEyebrow}</SectionLabel>
+      <h1 class="text-hero text-[var(--text-primary)]">
+        {aboutContent.heroTitle}
+      </h1>
+      <p class="text-body mt-4 text-lg">{aboutContent.heroSubtitle}</p>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--void)]">
+    <div class="container max-w-4xl">
+      <p class="font-[family-name:var(--font-display)] text-2xl leading-relaxed text-[var(--text-primary)] md:text-3xl">
+        {aboutContent.mission}
+      </p>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--surface)]">
+    <div class="container">
+      <SectionLabel className="mb-6">{aboutContent.storyLabel}</SectionLabel>
+      <p class="text-body mb-16 max-w-3xl text-lg">{aboutContent.storyIntro}</p>
+      <TimelineSection milestones={milestones} client:visible />
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--void)]">
+    <div class="container">
+      <SectionLabel className="mb-6">{aboutContent.teamLabel}</SectionLabel>
+      <SplitTitle rest="The People Behind" italicWord="the Vision" className="mb-16" />
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {teamMembers.map((member) => (
+          <article
+            key={member.id}
+            class="border border-[var(--border)] bg-[var(--surface)]"
+          >
+            <div class="relative aspect-4/5">
+              <ImageWithFallback
+                src={member.image}
+                alt={member.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-card-title text-[var(--text-primary)]">
+                {member.name}
+              </h3>
+              <p class="text-nav mt-1 text-[var(--gold)]">{member.title}</p>
+              <p class="text-body mt-4 text-sm">{member.bio}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--surface)]">
+    <div class="container">
+      <SectionLabel className="mb-6">{aboutContent.philosophyLabel}</SectionLabel>
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {aboutContent.philosophyPillars.map((pillar) => (
+          <div
+            key={pillar.title}
+            class="border border-[var(--border)] p-8"
+          >
+            <h3 class="text-card-title mb-4 text-[var(--gold)]">
+              {pillar.title}
+            </h3>
+            <p class="text-body">{pillar.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="eco" class="section-padding">
+    <div class="container max-w-3xl">
+      <SectionLabel className="mb-6 sage-text">ECO DESIGN</SectionLabel>
+      <h2 class="text-section mb-8 text-[var(--text-primary)]">
+        <em class="font-light italic text-[var(--sage)]">
+          {aboutContent.ecoHeading.split(" ")[0]}
+        </em>{" "}
+        {aboutContent.ecoHeading.split(" ").slice(1).join(" ")}
+      </h2>
+      <p class="text-body text-lg">{aboutContent.ecoBody}</p>
+    </div>
+  </section>
+
+  <ContactCTASection client:visible />
+</RootLayout>

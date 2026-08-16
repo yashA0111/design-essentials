@@ -1,0 +1,144 @@
+---
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { SmoothScroll } from "@/components/common/SmoothScroll";
+import { SITE } from "@/lib/constants";
+import { getServices, getSiteSettings } from "@/lib/sanity";
+import "@/styles/globals.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  darkHero?: boolean;
+  serviceType?: string[];
+}
+
+const [allServices, siteSettings] = await Promise.all([
+  getServices(),
+  getSiteSettings(),
+]);
+
+const {
+  title = "Design Essentials | Architecture & Interior Design Studio",
+  description = SITE.description,
+  image = "/og/home.jpg",
+  darkHero,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://designessentials.in");
+const imageURL = new URL(image, canonicalURL);
+
+const formattedTitle = title.includes("Design Essentials")
+  ? title
+  : `${title} | Design Essentials`;
+
+const email = siteSettings?.email || SITE.email;
+const address = siteSettings?.address || SITE.address.full;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: siteSettings?.title || SITE.name,
+  description: SITE.description,
+  url: SITE.url,
+  email: email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: address,
+    addressCountry: "IN",
+  },
+  priceRange: "₹₹₹",
+  serviceType: [
+    "Architecture",
+    "Interior Design",
+    "Exhibition Design",
+    "Experience Center Design",
+  ],
+  sameAs: [
+    siteSettings?.instagramUrl || SITE.socials.instagram,
+    siteSettings?.linkedinUrl || SITE.socials.linkedin,
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- SEO Primary Meta Tags -->
+    <title>{formattedTitle}</title>
+    <meta name="title" content={formattedTitle} />
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="architect India, interior designer, pre-engineered homes, container architecture, exhibition design, experience center design, office interior design, museum interior"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={formattedTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={formattedTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <SmoothScroll client:load />
+    <Navbar client:load pathname={Astro.url.pathname} darkHero={darkHero} services={allServices} settings={siteSettings} />
+    <main>
+      <slot />
+    </main>
+    <Footer services={allServices} settings={siteSettings} client:visible />
+
+    <script is:inline>
+      (function() {
+        var header = document.getElementById("site-header");
+        if (!header) return;
+        var wasScrolled = false;
+        function checkScroll() {
+          var isScrolled = (window.scrollY || document.documentElement.scrollTop || 0) > 30;
+          if (isScrolled !== wasScrolled) {
+            wasScrolled = isScrolled;
+            if (isScrolled) {
+              header.classList.add("is-scrolled");
+              header.setAttribute("data-scrolled", "true");
+            } else {
+              header.classList.remove("is-scrolled");
+              header.setAttribute("data-scrolled", "false");
+            }
+          }
+        }
+        window.addEventListener("scroll", checkScroll, { passive: true });
+        window.addEventListener("page-scroll", checkScroll, { passive: true });
+        checkScroll();
+      })();
+    </script>
+  </body>
+</html>

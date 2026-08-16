@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { stats } from "@/lib/data/stats";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
+import type { Stat } from "@/types/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,14 +60,18 @@ function StatItem({
   );
 }
 
-export function StatsSection() {
+export function StatsSection({
+  initialStats = stats,
+}: {
+  initialStats?: Stat[];
+} = {}) {
   const ref = useScrollReveal();
 
   return (
     <section ref={ref} data-theme="light" className="section-padding bg-[var(--void)] stats-grid-bg">
       <div className="container">
         <div className="grid grid-cols-2 gap-12 lg:grid-cols-4">
-          {stats.map((stat) => (
+          {initialStats.map((stat) => (
             <div key={stat.id} data-reveal>
               <StatItem
                 value={stat.value}

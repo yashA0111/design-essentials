@@ -1,0 +1,42 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { getServices } from "@/lib/sanity";
+import { servicesPageContent } from "@/lib/data/siteContent";
+import { SectionLabel } from "@/components/common/SectionLabel";
+import { ServiceCard } from "@/components/cards/ServiceCard";
+import { ContactCTASection } from "@/components/sections/ContactCTASection";
+
+const allServices = await getServices();
+---
+
+<RootLayout
+  title={servicesPageContent.seo.title}
+  description={servicesPageContent.seo.description}
+  darkHero={false}
+>
+  <section data-theme="light" class="section-padding bg-[var(--void)] pt-32">
+    <div class="container">
+      <SectionLabel className="mb-6">{servicesPageContent.eyebrow}</SectionLabel>
+      <h1 class="text-section mb-6 text-[var(--text-primary)]">
+        {servicesPageContent.title}
+      </h1>
+      <p class="text-body max-w-2xl text-lg">
+        {servicesPageContent.intro}
+      </p>
+    </div>
+  </section>
+
+  <section data-theme="light" class="section-padding bg-[var(--void)] pt-0">
+    <div class="container grid grid-cols-1 gap-8 md:grid-cols-2">
+      {allServices.map((service) => (
+        <ServiceCard
+          key={service.id}
+          service={service}
+          variant="detailed"
+        />
+      ))}
+    </div>
+  </section>
+
+  <ContactCTASection client:visible />
+</RootLayout>

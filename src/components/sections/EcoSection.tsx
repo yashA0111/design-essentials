@@ -1,12 +1,15 @@
-"use client";
-
-import Link from "next/link";
 import { Leaf } from "lucide-react";
 import { aboutContent, ecoSectionContent } from "@/lib/data/siteContent";
 import { SectionLabel } from "@/components/common/SectionLabel";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
 
-export function EcoSection() {
+export function EcoSection({
+  content = ecoSectionContent,
+  body = aboutContent.ecoBody,
+}: {
+  content?: typeof ecoSectionContent;
+  body?: string;
+} = {}) {
   const ref = useScrollReveal();
 
   return (
@@ -20,24 +23,24 @@ export function EcoSection() {
       />
       <div className="container relative z-10 max-w-3xl">
         <div data-reveal>
-          <SectionLabel className="mb-6 sage-text">{ecoSectionContent.eyebrow}</SectionLabel>
+          <SectionLabel className="mb-6 sage-text">{content.eyebrow}</SectionLabel>
         </div>
         <div data-reveal>
           <h2 className="text-section text-[var(--text-primary)]">
-            <em className="font-light italic text-[var(--sage)]">{ecoSectionContent.headingItalic}</em>{" "}
-            {ecoSectionContent.headingRest}
+            <em className="font-light italic text-[var(--sage)]">{content.headingItalic}</em>{" "}
+            {content.headingRest}
           </h2>
         </div>
         <p data-reveal className="text-body mt-8 text-lg">
-          {aboutContent.ecoBody}
+          {body}
         </p>
-        <Link
+        <a
           data-reveal
           href="/about#eco"
           className="text-nav mt-8 inline-block text-[var(--sage)] transition-colors hover:text-[var(--sage-muted)]"
         >
-          {ecoSectionContent.ctaLabel}
-        </Link>
+          {content.ctaLabel}
+        </a>
       </div>
     </section>
   );

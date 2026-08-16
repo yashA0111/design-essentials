@@ -5,8 +5,13 @@ import { SectionLabel } from "@/components/common/SectionLabel";
 import { SplitTitle } from "@/components/common/SplitTitle";
 import { ServiceCard } from "@/components/cards/ServiceCard";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
+import type { Service } from "@/types/service";
 
-export function ServicesSection() {
+export function ServicesSection({
+  initialServices = services,
+}: {
+  initialServices?: Service[];
+} = {}) {
   const ref = useScrollReveal(0.08);
 
   return (
@@ -17,7 +22,7 @@ export function ServicesSection() {
           <SplitTitle rest="Six Domains," italicWord="One Vision" />
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {services.map((service) => (
+          {initialServices.map((service) => (
             <div key={service.id} data-reveal>
               <ServiceCard service={service} />
             </div>
