@@ -4,9 +4,9 @@ import {
   getProjectBySlug,
   getRelatedProjects,
   projects,
-} from "./projects";
-import { getServiceById, getServiceBySlug, services } from "./services";
-import { blogPosts, getBlogPostBySlug } from "./siteContent";
+} from "@/lib/data/projects";
+import { getServiceById, getServiceBySlug, services } from "@/lib/data/services";
+import { blogPosts, getBlogPostBySlug } from "@/lib/data/siteContent";
 
 describe("content lookups", () => {
   it("resolves projects, services and posts by slug", () => {

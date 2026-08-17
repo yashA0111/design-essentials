@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { ContactForm } from "./ContactForm";
+import { ContactForm } from "@/components/common/ContactForm";
 import { contactPageContent } from "@/lib/data/siteContent";
 
 const fetchMock = vi.fn();

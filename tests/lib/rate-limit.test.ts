@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { getClientIp, rateLimit, resetRateLimits } from "./rate-limit";
+import { getClientIp, rateLimit, resetRateLimits } from "@/lib/rate-limit";
 
 describe("rateLimit", () => {
   beforeEach(() => {

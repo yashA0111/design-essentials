@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import { createImageUrlBuilder } from "@sanity/image-url";
 import type { Project } from "@/types/project";
 import type { Service } from "@/types/service";
 import type { Testimonial } from "@/types/testimonial";
@@ -25,18 +25,18 @@ export const sanityClient = createClient({
   projectId:
     (typeof import.meta !== "undefined" && import.meta.env?.PUBLIC_SANITY_PROJECT_ID) ||
     process.env.PUBLIC_SANITY_PROJECT_ID ||
-    "",
+    "dummy-project",
   dataset:
     (typeof import.meta !== "undefined" && import.meta.env?.PUBLIC_SANITY_DATASET) ||
     process.env.PUBLIC_SANITY_DATASET ||
-    "",
+    "production",
   useCdn: true,
   apiVersion: "2024-01-01",
 });
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
-export type SanityImageSource = Parameters<ReturnType<typeof imageUrlBuilder>["image"]>[0];
+export type SanityImageSource = Parameters<ReturnType<typeof createImageUrlBuilder>["image"]>[0];
 
 export function urlForImage(source: SanityImageSource) {
   return builder.image(source);

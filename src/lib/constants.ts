@@ -1,25 +1,37 @@
+const getSiteUrl = () => {
+  if (typeof import.meta !== "undefined" && import.meta.env?.PUBLIC_SITE_URL) {
+    return import.meta.env.PUBLIC_SITE_URL;
+  }
+  if (typeof process !== "undefined") {
+    if (process.env.PUBLIC_SITE_URL) return process.env.PUBLIC_SITE_URL;
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  }
+  return "http://localhost:4321";
+};
+
 export const SITE = {
   name: "Design Essentials",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://designessentials.in",
+  url: getSiteUrl(),
   tagline: "Where Vision Becomes Space",
   description:
     "Design Essentials is a full-service architectural and interior design firm specializing in pre-engineered homes, container architecture, exhibition design, and immersive experiential spaces across India.",
-  email: "contact@designessentials.in",
-  phone: "+91 98765 43210",
+  email: "[email]",
+  phone: "[Phone Number]",
   address: {
-    line1: "Plot 42, Sector 18",
-    city: "Gurgaon",
-    state: "Haryana",
-    pin: "122002",
-    full: "Plot 42, Sector 18, Gurgaon, Haryana, India",
+    line1: "[line 1]",
+    city: "[city]",
+    state: "[state]",
+    pin: "[pin]",
+    full: "[line 1], [city], [state], [pin], India",
   },
   mapUrl:
-    "https://maps.google.com/maps?q=Gurgaon+Sector+18&t=&z=13&ie=UTF8&iwloc=&output=embed",
+    "",
   socials: {
-    instagram: "https://instagram.com/designessentials",
-    linkedin: "https://linkedin.com/company/designessentials",
-    behance: "https://behance.net/designessentials",
-    pinterest: "https://pinterest.com/designessentials",
+    instagram: "",
+    linkedin: "",
+    behance: "",
+    pinterest: "",
   },
 } as const;
 

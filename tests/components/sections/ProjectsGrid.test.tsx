@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { act } from "react";
-import { ProjectsGrid } from "./ProjectsGrid";
+import { ProjectsGrid } from "@/components/sections/ProjectsGrid";
 import { projects } from "@/lib/data/projects";
 import { services } from "@/lib/data/services";
 

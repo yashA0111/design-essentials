@@ -17,7 +17,7 @@ vi.mock("@/lib/email/templates/InternalNotification", () => ({
   InternalNotificationEmail: () => null,
 }));
 
-const { POST } = await import("./contact");
+const { POST } = await import("@/pages/api/contact");
 
 const validBody = {
   fullName: "Asha Menon",

@@ -5,9 +5,14 @@ import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
 
-// https://astro.build/config
 export default defineConfig({
-  site: process.env.PUBLIC_SITE_URL || "https://designessentials.in",
+  site:
+    process.env.PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:4321"),
   output: "static",
   adapter: vercel({
     webAnalytics: { enabled: false },

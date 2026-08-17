@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CONTACT_FIELD_LIMITS, contactSchema } from "./contact";
+import { CONTACT_FIELD_LIMITS, contactSchema } from "@/lib/validation/contact";
 
 const validInput = {
   fullName: "Asha Menon",

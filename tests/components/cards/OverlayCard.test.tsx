@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { ProjectCard } from "./ProjectCard";
-import { ServiceCard } from "./ServiceCard";
+import { ProjectCard } from "@/components/cards/ProjectCard";
+import { ServiceCard } from "@/components/cards/ServiceCard";
 import { projects } from "@/lib/data/projects";
 import { getServiceById, services } from "@/lib/data/services";
 
